@@ -1,5 +1,6 @@
 import type { CtaMode, LandingConfig } from '../../../types/landing';
 import { RenderPanel } from '../../../components/RenderPanel';
+import { Qualifier } from '../../../components/ClaimsList';
 
 /**
  * The hero.
@@ -31,12 +32,17 @@ export function Hero({
           <h1 className="t-title-xl">{home.headline}</h1>
           {home.subhead && <p className="t-body-lg dim hero-subhead">{home.subhead}</p>}
           {ctaMode !== 'none' && (
-            <div className="hero-actions">
-              {onCta}
-              <a className="t-body-lg link" href="#the-build">
-                Watch the build →
-              </a>
-            </div>
+            <>
+              <div className="hero-actions">
+                {onCta}
+                <a className="t-body-lg link" href="#the-build">
+                  Watch the build →
+                </a>
+              </div>
+              {/* The button is a commercial call to action, so the line that
+                  qualifies it sits with it rather than further down the page. */}
+              <Qualifier text={config.early_access.qualifier} />
+            </>
           )}
         </div>
         <div className="hero-render">

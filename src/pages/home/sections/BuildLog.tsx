@@ -1,11 +1,11 @@
 import type { CtaMode, LandingConfig } from '../../../types/landing';
-import { EarlyAccessForm } from '../../../components/EarlyAccessForm';
+import { EarlyAccessCta } from '../../../components/EarlyAccessCta';
 import { Qualifier } from '../../../components/ClaimsList';
 
 /**
- * The second ask, at the foot of the page. Same component, same endpoint,
- * same three fields — so a lead from here is indistinguishable upstream from
- * one taken higher up the page.
+ * The second ask, at the foot of the page. It keeps its heading and its body
+ * and gets the same button as everywhere else — it does not collect an email
+ * inline. Every lead on this site is taken on /vfarm.
  */
 export function BuildLog({ config, ctaMode }: { config: LandingConfig; ctaMode: CtaMode }) {
   if (ctaMode === 'none') return null;
@@ -18,7 +18,7 @@ export function BuildLog({ config, ctaMode }: { config: LandingConfig; ctaMode: 
             One email a week: what the engine did, what broke, and where vFarm actually is.
           </p>
         </div>
-        <EarlyAccessForm config={config} ctaMode={ctaMode} sourcePage="/" />
+        <EarlyAccessCta config={config} ctaMode={ctaMode} />
         <Qualifier text={config.early_access.qualifier} />
       </div>
     </section>
