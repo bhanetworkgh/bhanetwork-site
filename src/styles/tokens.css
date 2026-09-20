@@ -1,0 +1,147 @@
+/* ---------------------------------------------------------------------------
+   Design tokens.
+
+   These are the BHA Engine Dashboard's tokens, lifted verbatim so the public
+   site and the internal dashboard read as one product. Where the dashboard's
+   src/index.css and this site's brief disagreed, the dashboard won — that is
+   the rule, and the only place it bit was --accent (#0a7aff, not #0a6ee6).
+
+   The dashboard flips themes on a [data-theme] attribute because it has a
+   toggle. This site has no toggle and no storage, so the same variable names
+   flip on prefers-color-scheme instead.
+   --------------------------------------------------------------------------- */
+
+:root {
+  color-scheme: light;
+
+  /* Surfaces. --bg is the page and nothing else; --panel is cards; --raised is
+     a quiet fill *inside* a card — chips, table headers, empty wells. */
+  --bg: #f5f5f7;
+  --panel: #ffffff;
+  --raised: #f2f2f4;
+  --hover: #ededf0;
+
+  /* The only hairlines in the system, and they are almost never used: two
+     blocks are separated with space, not a rule. */
+  --line: rgba(0, 0, 0, 0.06);
+  --line-strong: rgba(0, 0, 0, 0.12);
+
+  /* Text. --ink is all primary copy, --dim is subtitles and captions, --faint
+     is chevrons and the quietest kicker only. Never set a sentence in --faint. */
+  --ink: #1d1d1f;
+  --dim: #6e6e73;
+  --faint: #a1a1a6;
+
+  /* One accent: system blue. The interface accent, the primary button fill and
+     the focus ring. --accent-ink is the darker step, for accent-coloured text. */
+  --accent: #0a7aff;
+  --accent-soft: rgba(10, 122, 255, 0.12);
+  --accent-ink: #0066d6;
+  --accent-on: #ffffff;
+
+  /* Colour carries meaning. Nothing healthy gets colour for decoration. */
+  --ok: #34c759;
+  --ok-soft: rgba(52, 199, 89, 0.14);
+  --degraded: #d98a00;
+  --degraded-soft: rgba(217, 138, 0, 0.12);
+  --failing: #e03a2f;
+  --failing-soft: rgba(224, 58, 47, 0.1);
+
+  /* The render panel's ground, and the wash behind the hero. */
+  --hero-a: #dfe9ff;
+  --hero-b: #e9dcff;
+  --hero-c: #cfe4ff;
+  --aurora-a: rgba(10, 122, 255, 0.16);
+  --aurora-b: rgba(175, 82, 222, 0.14);
+  --aurora-c: rgba(48, 176, 199, 0.12);
+
+  /* Depth is light, not outline: a gloss lip along a surface's top edge and
+     two soft, wide shadows. */
+  --gloss: rgba(255, 255, 255, 0.9);
+  --glass-edge: rgba(255, 255, 255, 0.75);
+  --frost-card: rgba(255, 255, 255, 0.72);
+  --frost-bar: rgba(245, 245, 247, 0.22);
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.03), 0 4px 16px rgba(0, 0, 0, 0.04);
+  --shadow-pop: 0 12px 32px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(0, 0, 0, 0.04);
+
+  /* Type. One family. There is no uppercase style in this system. */
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas,
+    "Liberation Mono", monospace;
+
+  /* Radius. 8 small tiles and wells, 12 buttons and inputs, 18 cards and
+     panels, 24 the largest surfaces, 999 pills. */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 24px;
+
+  /* Spacing: a 4px scale, named for the steps actually in use. */
+  --sp-1: 2px;
+  --sp-2: 4px;
+  --sp-3: 6px;
+  --sp-4: 8px;
+  --sp-5: 10px;
+  --sp-6: 12px;
+  --sp-7: 16px;
+  --sp-8: 20px;
+  --sp-9: 24px;
+  --sp-10: 32px;
+  --sp-11: 40px;
+  --sp-12: 48px;
+
+  /* Layout. */
+  --measure: 1200px;
+  --gutter: 24px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+
+    --bg: #141416;
+    --panel: #1c1c1f;
+    --raised: #232327;
+    --hover: #2a2a2f;
+
+    --line: rgba(255, 255, 255, 0.07);
+    --line-strong: rgba(255, 255, 255, 0.14);
+
+    --ink: #f2f2f4;
+    --dim: #a1a1a8;
+    --faint: #6b6b72;
+
+    --accent: #3d95ff;
+    --accent-soft: rgba(61, 149, 255, 0.18);
+    --accent-ink: #6aaeff;
+    --accent-on: #141416;
+
+    --ok: #30d158;
+    --ok-soft: rgba(48, 209, 88, 0.16);
+    --degraded: #ffb340;
+    --degraded-soft: rgba(255, 179, 64, 0.16);
+    --failing: #ff6961;
+    --failing-soft: rgba(255, 105, 97, 0.16);
+
+    --hero-a: #1f2a4a;
+    --hero-b: #2b2350;
+    --hero-c: #17304f;
+    --aurora-a: rgba(61, 149, 255, 0.16);
+    --aurora-b: rgba(191, 90, 242, 0.14);
+    --aurora-c: rgba(64, 200, 224, 0.1);
+
+    --gloss: rgba(255, 255, 255, 0.07);
+    --glass-edge: rgba(255, 255, 255, 0.16);
+    --frost-card: rgba(28, 28, 31, 0.72);
+    --frost-bar: rgba(20, 20, 22, 0.24);
+    --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.05);
+    --shadow-pop: 0 16px 40px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.08);
+  }
+}
+
+@media (min-width: 768px) {
+  :root {
+    --gutter: 32px;
+  }
+}
