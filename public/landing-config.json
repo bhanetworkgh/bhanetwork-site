@@ -1,0 +1,61 @@
+{
+  "page_contract_version": "VFARM_LANDING_CONFIG_FUNNEL_v0.1",
+  "mechanics_contract_version": "v0.2.2",
+  "claim_state": "interest_only_live",
+  "interest_url": "https://docs.google.com/forms/d/e/1FAIpQLSfQkBm4lz4UuyL0TnbuJ7iUeE4PmWfDlfTLrKkDd23WL7gtnQ/viewform?usp=header",
+  "paid_subscription_url": null,
+  "source_campaign": "vfarm_flagship_1031",
+  "early_access_endpoint": "https://dashboard.bhanetwork.org/api/public/vfarm-early-access",
+  "home": {
+    "headline": "Headline goes here, two lines at most",
+    "subhead": "[PENDING — Jason's subhead]",
+    "headline_pending": true,
+    "kicker": "Bays Horizon Network"
+  },
+  "early_access": {
+    "headline": "Join vFarm Founding Buyer Early Access",
+    "body": "Receive build-progress updates, get priority consideration for future cabinet availability, and help shape crop and feature priorities.",
+    "qualifier": "This is an expression of interest—not a purchase, paid subscription, hardware reservation, delivery commitment, or SLA.",
+    "cta_label": "Join Early Access",
+    "success_message": "You're on the list. We'll send build updates as the flagship comes together.",
+    "error_message": "That didn't go through. Try again, or email hello@bhanetwork.org."
+  },
+  "supporting_claims": [
+    "vFarm is being developed as an enclosed, pesticide-free growing system.",
+    "Continuous environmental monitoring and digital-twin updates are part of the current product direction.",
+    "Verified build, CAD, render, configuration and monitoring progress may be shown with its real status.",
+    "Early participants may receive priority consideration and preferential pricing treatment, but exact benefits remain subject to final SPEC, BOM, production pricing and commercial approval."
+  ],
+  "what_vfarm_is": [
+    { "title": "A vertical farm rig sized for a spare room.", "body": "Four tiers, roughly the footprint of a bookshelf." },
+    { "title": "Base vFarm: frame, trays, lights, pumps.", "body": "Everything the rig needs to grow without a laptop attached." },
+    { "title": "Monitoring that reports what it did.", "body": "pH, temperature, flow. It says when something needs you." },
+    { "title": "One flagship rig running unattended by 31 Oct.", "body": "Twenty-four hours, no hands. That is the bar." }
+  ],
+  "status_tile": {
+    "enabled": true,
+    "source": "static",
+    "render_status": "Rig v3 running · updated 20:14",
+    "render_label": "CAD rev. 3.4 · 12 Sep",
+    "days_to_flagship": 42,
+    "spec_version": "v0.9.2",
+    "config_hash": "a4f19c2",
+    "last_level_up": "14 Sep",
+    "sample": true
+  },
+  "build_feed": [
+    {
+      "title": "Tray three fits with 4mm to spare",
+      "body": "The v2 frame went in the bin. This is the third print of the same bracket, and the first one that clears the light bar.",
+      "date": "2026-09-14",
+      "lane": "vFarm",
+      "duration": "1:12",
+      "featured": true,
+      "sample": true
+    },
+    { "title": "Render pipeline", "body": "Dimensions to Onshape to Stratasys.", "duration": "0:38", "sample": true },
+    { "title": "First strawberry", "body": "Eleven weeks from seed. One berry.", "duration": "0:21", "sample": true },
+    { "title": "The system learned something", "body": "It broke at 3am and fixed itself by 3:04.", "duration": "1:04", "sample": true },
+    { "title": "Real install", "body": "The rig going into a real room.", "duration": "0:52", "sample": true }
+  ]
+}
