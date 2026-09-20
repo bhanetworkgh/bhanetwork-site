@@ -1,6 +1,7 @@
+import type { ReactNode } from 'react';
 import { Wordmark } from './Wordmark';
 
-export function Footer() {
+export function Footer({ note }: { note?: ReactNode }) {
   return (
     <footer className="footer">
       <div className="container footer-inner">
@@ -15,6 +16,7 @@ export function Footer() {
           <a href="mailto:hello@bhanetwork.org">Contact</a>
         </nav>
       </div>
+      {note && <div className="container footer-note">{note}</div>}
     </footer>
   );
 }

@@ -244,23 +244,27 @@ a {
     var(--shadow-card);
 }
 
+/*
+ * Note on the two backdrop-filter declarations below, and on .topbar.
+ *
+ * The CSS minifier treats -webkit-backdrop-filter and backdrop-filter as one
+ * property and keeps whichever comes last. With the standard property written
+ * first it was dropping it and shipping only the prefixed one, which meant no
+ * blur at all in any engine that implements just the standard name. Prefix
+ * first, standard property last: both survive, and the standard one wins
+ * where both are understood. Do not reorder these.
+ */
+
 /* The floating status strip over the render. */
 .frost {
   background: var(--frost-card);
   border-radius: var(--radius-lg);
-  backdrop-filter: blur(22px) saturate(1.5);
   -webkit-backdrop-filter: blur(22px) saturate(1.5);
+  backdrop-filter: blur(22px) saturate(1.5);
   box-shadow:
     inset 0 1px 0 var(--gloss),
     inset 0 0 0 1px var(--glass-edge),
     var(--shadow-card);
-}
-
-/* The band the page scrolls under. */
-.frost-bar {
-  background: var(--frost-bar);
-  backdrop-filter: blur(18px) saturate(1.4);
-  -webkit-backdrop-filter: blur(18px) saturate(1.4);
 }
 
 /* The render panel's ground. */
@@ -406,10 +410,35 @@ a {
 
 /* Top bar ------------------------------------------------------------------ */
 
+/*
+ * The sentinel the bar watches. Out of flow, so it shifts nothing, and 24px
+ * tall, so the bar changes state once the page has scrolled past that.
+ */
+.topbar-sentinel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 24px;
+  pointer-events: none;
+}
+
 .topbar {
   position: sticky;
   top: 0;
   z-index: 10;
+  background-color: transparent;
+  border-bottom: 1px solid transparent;
+  transition:
+    background-color 200ms ease,
+    border-color 200ms ease;
+}
+/* Scrolled: a surface, not a pane. Near-opaque first, blurred second. */
+.topbar.is-scrolled {
+  background-color: var(--bar-scrolled);
+  border-bottom-color: var(--line);
+  -webkit-backdrop-filter: blur(22px) saturate(1.5);
+  backdrop-filter: blur(22px) saturate(1.5);
 }
 .topbar-inner {
   display: flex;
@@ -800,4 +829,14 @@ a {
 }
 .footer-nav a:hover {
   color: var(--ink);
+}
+
+/* What the page was built against. A sentence, so --dim, at the quiet size. */
+.footer-note {
+  margin-top: var(--sp-8);
+}
+.contract-line {
+  font-size: 11px;
+  line-height: 16px;
+  color: var(--dim);
 }
