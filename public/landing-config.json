@@ -10,7 +10,8 @@
     "headline": "Headline goes here, two lines at most",
     "subhead": "[PENDING — Jason's subhead]",
     "headline_pending": true,
-    "kicker": "Bays Horizon Network"
+    "kicker": "Bays Horizon Network",
+    "meta_description": "Bays Horizon Network is building vFarm in public. Join Early Access for build-progress updates."
   },
   "early_access": {
     "headline": "Join vFarm Founding Buyer Early Access",

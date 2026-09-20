@@ -60,7 +60,18 @@
   --gloss: rgba(255, 255, 255, 0.9);
   --glass-edge: rgba(255, 255, 255, 0.75);
   --frost-card: rgba(255, 255, 255, 0.72);
-  --frost-bar: rgba(245, 245, 247, 0.22);
+  /*
+   * The scrolled top bar. The background alone has to hide the text scrolling
+   * under it — the blur on top is the finish, not the mechanism, because a
+   * browser may ignore backdrop-filter entirely.
+   *
+   * 94% of --bg, not the 88% first tried: at 88% a high-contrast line passing
+   * under the bar still left a readable ghost (a measured 14/255 in light and
+   * 17/255 in dark, and the words could be made out). 94% halves that to 8,
+   * which is below anything the eye resolves as text, and the bar still reads
+   * as a frosted surface rather than a flat block.
+   */
+  --bar-scrolled: rgba(245, 245, 247, 0.94);
   --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.03), 0 4px 16px rgba(0, 0, 0, 0.04);
   --shadow-pop: 0 12px 32px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(0, 0, 0, 0.04);
 
@@ -134,7 +145,7 @@
     --gloss: rgba(255, 255, 255, 0.07);
     --glass-edge: rgba(255, 255, 255, 0.16);
     --frost-card: rgba(28, 28, 31, 0.72);
-    --frost-bar: rgba(20, 20, 22, 0.24);
+    --bar-scrolled: rgba(20, 20, 22, 0.94);
     --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.05);
     --shadow-pop: 0 16px 40px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.08);
   }

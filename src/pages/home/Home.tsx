@@ -7,6 +7,7 @@ import { WhatVFarmIs } from './sections/WhatVFarmIs';
 import { EarlyAccess } from './sections/EarlyAccess';
 import { EngineLine } from './sections/EngineLine';
 import { BuildLog } from './sections/BuildLog';
+import { EarlyAccessCta } from '../../components/EarlyAccessCta';
 
 /**
  * The home page.
@@ -18,7 +19,12 @@ import { BuildLog } from './sections/BuildLog';
  */
 export function Home() {
   const { config, status, ctaMode } = useLandingConfig();
-  useDescription(config?.home.subhead);
+  /*
+   * The description comes from home.meta_description, not from the subhead:
+   * the subhead is a placeholder until Jason's copy lands, and a placeholder
+   * is not something to publish to a crawler.
+   */
+  useDescription(config?.home.meta_description);
 
   if (status === 'loading') {
     return (
@@ -37,22 +43,16 @@ export function Home() {
   }
 
   /*
-   * One call to action, and its label comes from the config. The top bar's
-   * button is the same offer anchored to the same form, not a second one.
+   * Every Early Access call to action on this page is a link to /vfarm. There
+   * is no form here and no modal: the funnel cannot be completed without
+   * passing the page that carries the claims and the qualifier.
    */
   const navCta =
     ctaMode === 'none' ? undefined : (
-      <a className="btn btn-primary btn-sm" href="#early-access">
-        {config.early_access.cta_label}
-      </a>
+      <EarlyAccessCta config={config} ctaMode={ctaMode} size="sm" />
     );
 
-  const heroCta =
-    ctaMode === 'none' ? null : (
-      <a className="btn btn-primary" href="#early-access">
-        {config.early_access.cta_label}
-      </a>
-    );
+  const heroCta = <EarlyAccessCta config={config} ctaMode={ctaMode} />;
 
   return (
     <Shell cta={navCta}>

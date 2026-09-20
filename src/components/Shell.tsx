@@ -3,7 +3,15 @@ import { TopBar } from './TopBar';
 import { Footer } from './Footer';
 
 /** Page chrome. Renders whatever state the config is in — it never blanks. */
-export function Shell({ cta, children }: { cta?: ReactNode; children: ReactNode }) {
+export function Shell({
+  cta,
+  footerNote,
+  children,
+}: {
+  cta?: ReactNode;
+  footerNote?: ReactNode;
+  children: ReactNode;
+}) {
   return (
     <>
       <a className="skip-link" href="#main">
@@ -11,7 +19,7 @@ export function Shell({ cta, children }: { cta?: ReactNode; children: ReactNode 
       </a>
       <TopBar cta={cta} />
       <main id="main">{children}</main>
-      <Footer />
+      <Footer note={footerNote} />
     </>
   );
 }

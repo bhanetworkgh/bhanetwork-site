@@ -13,6 +13,7 @@ import { resolve } from 'node:path';
 export default defineConfig({
   plugins: [react()],
   build: {
+    cssTarget: ['chrome107', 'edge107', 'firefox104', 'safari15.4'],
     rollupOptions: {
       input: {
         home: resolve(import.meta.dirname, 'index.html'),
