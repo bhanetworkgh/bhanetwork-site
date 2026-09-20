@@ -58,6 +58,7 @@ function parseHome(value: unknown): HomeCopy {
     subhead: str(raw.subhead),
     headline_pending: bool(raw.headline_pending),
     kicker: str(raw.kicker),
+    meta_description: str(raw.meta_description),
   };
 }
 
