@@ -16,6 +16,10 @@ import { Button, LinkButton } from './Button';
  * entitlement, ownership, allocation, price protection or a delivery date.
  * There are no cookies and no storage: the request is the only thing that
  * leaves the page.
+ *
+ * Success is never optimistic: it is shown only after a 2xx whose body says
+ * `{"ok": true}`. Anything else keeps what was typed and shows the server's
+ * own message where it sent one.
  */
 
 type FormState = 'idle' | 'submitting' | 'success' | 'error';
@@ -39,6 +43,8 @@ export function EarlyAccessForm({
   const [trap, setTrap] = useState('');
   const [state, setState] = useState<FormState>('idle');
   const [fieldError, setFieldError] = useState<string | null>(null);
+  /** What the server said went wrong, when it said anything. */
+  const [serverMessage, setServerMessage] = useState<string | null>(null);
 
   const copy = config.early_access;
 
@@ -88,6 +94,7 @@ export function EarlyAccessForm({
       return;
     }
     setFieldError(null);
+    setServerMessage(null);
     setState('submitting');
 
     const lead: EarlyAccessLead = {
@@ -109,13 +116,44 @@ export function EarlyAccessForm({
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(lead),
       });
-      if (!response.ok) throw new Error(`early access: HTTP ${response.status}`);
-      setState('success');
+
+      /*
+       * The endpoint answers 201 {"ok":true} when the lead is stored, and
+       * {"ok":false,"message":"…"} with a 4xx or 5xx when it is not.
+       *
+       * Success is shown only when the status and the body agree. A 2xx with
+       * no body, a body that is not JSON, or {"ok":false} is a failure —
+       * telling somebody they are on the list when no row was written is the
+       * one outcome this form must never produce.
+       */
+      let payload: { ok?: unknown; message?: unknown } = {};
+      try {
+        payload = (await response.json()) as typeof payload;
+      } catch {
+        /* No body, or not JSON. Handled as a failure below. */
+      }
+
+      if (response.ok && payload.ok === true) {
+        setState('success');
+        return;
+      }
+
+      /* 403, 429, 5xx: show what the server said, so "too many submissions"
+         does not read as "something went wrong". */
+      const message =
+        typeof payload.message === 'string' && payload.message.trim()
+          ? payload.message.trim()
+          : copy.error_message;
+      console.error(`[bhanetwork] early access refused: HTTP ${response.status}`);
+      setServerMessage(message);
+      setState('error');
     } catch (error) {
+      /* No response at all — offline, DNS, CORS. There is no server message. */
       console.error('[bhanetwork] early access submission failed', error);
-      /* Whatever was typed stays typed. Retrying is one more click. */
+      setServerMessage(null);
       setState('error');
     }
+    /* Whatever was typed stays typed, either way. Retrying is one more click. */
   }
 
   const busy = state === 'submitting';
@@ -190,7 +228,7 @@ export function EarlyAccessForm({
         )}
         {state === 'error' && (
           <p className="form-error t-body" role="alert">
-            {copy.error_message}
+            {serverMessage ?? copy.error_message}
           </p>
         )}
       </div>
