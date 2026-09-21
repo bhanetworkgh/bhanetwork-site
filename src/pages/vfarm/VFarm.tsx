@@ -47,7 +47,7 @@ export function VFarm() {
 
   const navCta =
     ctaMode === 'none' ? undefined : (
-      <a className="btn btn-primary btn-sm" href="#early-access">
+      <a className="btn btn-primary btn-sm" href="/vfarm#early-access">
         {config.early_access.cta_label}
       </a>
     );
