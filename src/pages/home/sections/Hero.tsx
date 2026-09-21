@@ -5,9 +5,9 @@ import { Qualifier } from '../../../components/ClaimsList';
 /**
  * The hero.
  *
- * Every word of it is config: the kicker, the headline, the subhead. The one
- * string written here is the pending marker, which is a note about the config
- * rather than a claim about vFarm — it says a headline is still owed.
+ * Every word of it is config: the kicker, the headline, the subhead. Nothing
+ * here is written in this file. The headline and subhead are Jason's final
+ * copy, so the pending marker that used to sit above them is gone.
  */
 export function Hero({
   config,
@@ -26,9 +26,6 @@ export function Hero({
       <div className="container hero-inner">
         <div className="hero-copy stack">
           {home.kicker && <span className="t-kicker">{home.kicker}</span>}
-          {home.headline_pending && (
-            <span className="pending-marker t-body">Pending — Jason's headline</span>
-          )}
           <h1 className="t-title-xl">{home.headline}</h1>
           {home.subhead && <p className="t-body-lg dim hero-subhead">{home.subhead}</p>}
           {ctaMode !== 'none' && (

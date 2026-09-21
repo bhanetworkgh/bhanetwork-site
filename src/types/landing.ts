@@ -27,7 +27,6 @@ export type CtaMode = 'interest' | 'paid' | 'none';
 export interface HomeCopy {
   headline: string;
   subhead: string;
-  headline_pending: boolean;
   kicker: string;
   /** The home page's meta description. A sentence, so the config owns it. */
   meta_description: string;

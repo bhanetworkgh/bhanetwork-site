@@ -20,9 +20,9 @@ import { EarlyAccessCta } from '../../components/EarlyAccessCta';
 export function Home() {
   const { config, status, ctaMode } = useLandingConfig();
   /*
-   * The description comes from home.meta_description, not from the subhead:
-   * the subhead is a placeholder until Jason's copy lands, and a placeholder
-   * is not something to publish to a crawler.
+   * The description is its own config key rather than the subhead: the subhead
+   * is two sentences written to be read on the page, and a description is one
+   * sentence written to be read in a search result.
    */
   useDescription(config?.home.meta_description);
 

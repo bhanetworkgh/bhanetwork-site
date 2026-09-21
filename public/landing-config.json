@@ -7,11 +7,10 @@
   "source_campaign": "vfarm_flagship_1031",
   "early_access_endpoint": "https://dashboard.bhanetwork.org/api/public/vfarm-early-access",
   "home": {
-    "headline": "Headline goes here, two lines at most",
-    "subhead": "[PENDING — Jason's subhead]",
-    "headline_pending": true,
+    "headline": "Bays Horizon is building the autonomous vFarm in public.",
+    "subhead": "We are wiring a real vertical farm to an AI engine that learns from every harvest. Join Early Access to see the builds, system diagrams, and monthly progress as we move toward a fully automated vFarm twin.",
     "kicker": "Bays Horizon Network",
-    "meta_description": "Bays Horizon Network is building vFarm in public. Join Early Access for build-progress updates."
+    "meta_description": "We are wiring a real vertical farm to an AI engine that learns from every harvest. Join Early Access to see the builds, system diagrams, and monthly progress."
   },
   "early_access": {
     "headline": "Join vFarm Founding Buyer Early Access",
