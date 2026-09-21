@@ -531,9 +531,6 @@ a {
   gap: var(--sp-7);
   margin-top: var(--sp-2);
 }
-.pending-marker {
-  color: var(--accent-ink);
-}
 
 @media (max-width: 899px) {
   .hero-inner {
