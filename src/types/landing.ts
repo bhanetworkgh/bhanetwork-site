@@ -98,16 +98,34 @@ export interface LandingState {
   paidUrl: string | null;
 }
 
+/**
+ * Where a lead came from, captured at submit time.
+ *
+ * Every field is a string and may be empty. Empty means "the URL did not say"
+ * — it never means a value was inferred.
+ */
+export interface Attribution {
+  utm_source: string;
+  utm_medium: string;
+  utm_campaign: string;
+  asset_id: string;
+  source_channel: string;
+  landing_variant: string;
+  /** Defaults to the config's campaign key when the URL is silent. */
+  source_campaign: string;
+  /** The mechanics contract this page was built against. */
+  contract_version: string;
+}
+
 /** The page a submission came from. Matches the upstream lead envelope. */
 export type SourcePage = '/' | '/vfarm';
 
-export interface EarlyAccessLead {
+export interface EarlyAccessLead extends Attribution {
   full_name: string;
   email: string;
   organization_name: string;
   source_surface: 'bhanetwork_site';
   source_page: SourcePage;
-  source_campaign: string;
   page_contract_version: string;
   mechanics_contract_version: string;
   claim_state: string;
