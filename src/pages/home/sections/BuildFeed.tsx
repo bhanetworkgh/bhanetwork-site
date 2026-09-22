@@ -1,5 +1,4 @@
 import type { BuildFeedItem } from '../../../types/landing';
-import { SampleTag } from '../../../components/Tag';
 
 /** The date as the feed shows it: "14 Sep 2026", or the raw string if it isn't a date. */
 function formatDate(value: string): string {
@@ -26,10 +25,7 @@ function Featured({ item }: { item: BuildFeedItem }) {
         <Duration value={item.duration} />
       </div>
       <div className="feed-featured-copy stack">
-        <div className="feed-head">
-          <h3 className="t-title-sm">{item.title}</h3>
-          <SampleTag when={item.sample} />
-        </div>
+        <h3 className="t-title-sm">{item.title}</h3>
         {item.body && <p className="t-body-lg dim">{item.body}</p>}
         {meta && <span className="t-kicker">{meta}</span>}
       </div>
@@ -40,10 +36,7 @@ function Featured({ item }: { item: BuildFeedItem }) {
 function Small({ item }: { item: BuildFeedItem }) {
   return (
     <article className="card card-pad feed-card stack">
-      <div className="feed-head">
-        <Duration value={item.duration} />
-        <SampleTag when={item.sample} />
-      </div>
+      <Duration value={item.duration} />
       <h3 className="t-card-title">{item.title}</h3>
       {item.body && <p className="t-body dim">{item.body}</p>}
     </article>
@@ -51,10 +44,15 @@ function Small({ item }: { item: BuildFeedItem }) {
 }
 
 export function BuildFeed({ items }: { items: BuildFeedItem[] }) {
-  if (items.length === 0) return null;
+  /*
+   * Placeholder entries are hidden, not labelled. There is no "Sample" pill on
+   * this site any more: an item nobody can stand behind does not appear.
+   */
+  const real = items.filter((item) => !item.sample);
+  if (real.length === 0) return null;
 
-  const featured = items.find((item) => item.featured);
-  const rest = items.filter((item) => item !== featured).slice(0, 4);
+  const featured = real.find((item) => item.featured);
+  const rest = real.filter((item) => item !== featured).slice(0, 4);
 
   return (
     <section className="container section" id="the-build">

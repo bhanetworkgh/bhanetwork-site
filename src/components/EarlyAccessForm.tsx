@@ -1,5 +1,6 @@
-import { useId, useState } from 'react';
+import { useId, useMemo, useState } from 'react';
 import type { CtaMode, EarlyAccessLead, LandingConfig, SourcePage } from '../types/landing';
+import { readAttribution } from '../lib/attribution';
 import { Button, LinkButton } from './Button';
 
 /**
@@ -37,6 +38,14 @@ export function EarlyAccessForm({
   sourcePage: SourcePage;
 }) {
   const ids = useId();
+  /*
+   * Read once, at mount, from the URL this visitor actually arrived on — so a
+   * later history change cannot rewrite where a lead came from.
+   */
+  const attribution = useMemo(
+    () => readAttribution(config, window.location.search),
+    [config],
+  );
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [org, setOrg] = useState('');
@@ -103,11 +112,13 @@ export function EarlyAccessForm({
       organization_name: org.trim(),
       source_surface: 'bhanetwork_site',
       source_page: sourcePage,
-      source_campaign: config.source_campaign,
       page_contract_version: config.page_contract_version,
       mechanics_contract_version: config.mechanics_contract_version,
       claim_state: config.claim_state,
       submitted_at: new Date().toISOString(),
+      /* utm_*, asset_id, source_channel, landing_variant, source_campaign,
+         contract_version — empty where the URL was silent, never guessed. */
+      ...attribution,
     };
 
     try {
@@ -202,6 +213,16 @@ export function EarlyAccessForm({
           />
         </label>
       </div>
+
+      {/*
+        The attribution the visitor arrived with, as real hidden fields. They
+        are submitted in the JSON body above; carrying them on the form too
+        means what was captured is visible to anyone inspecting the page, and
+        that a non-JS fallback would carry them as well.
+      */}
+      {Object.entries(attribution).map(([name, value]) => (
+        <input key={name} type="hidden" name={name} value={value} readOnly />
+      ))}
 
       {/* The honeypot. Hidden from people, offered to bots. */}
       <div className="form-trap" aria-hidden="true">
