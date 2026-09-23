@@ -1,0 +1,22 @@
+# Render settings for the static site "bhanetwork-site" (srv-dao309oae00c73aj4uhg).
+#
+# The service was created in the dashboard, not from this Blueprint, so Render
+# does not read this file automatically. It records the settings the site
+# needs; the rewrite rule below must also exist on the service
+# (Dashboard → bhanetwork-site → Redirects/Rewrites).
+#
+# Every route is pre-rendered to its own file (dist/vfarm/index.html, …), so
+# /, /vfarm, /team and /privacy are served directly and a refresh on any of
+# them works without a rule. Render applies rewrite rules only when no file
+# matches the path, so this one catches everything else and serves the 404 page.
+services:
+  - type: web
+    runtime: static
+    name: bhanetwork-site
+    branch: main
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /404.html

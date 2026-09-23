@@ -32,7 +32,20 @@ export interface HomeCopy {
   meta_description: string;
 }
 
+/** One step of "How early access works". */
+export interface EarlyAccessStep {
+  title: string;
+  body: string;
+}
+
+export interface FaqItem {
+  question: string;
+  answer: string;
+}
+
 export interface EarlyAccessCopy {
+  /** Optional in the config; empty when absent. */
+  steps: EarlyAccessStep[];
   headline: string;
   body: string;
   qualifier: string;
@@ -82,6 +95,8 @@ export interface RenderAsset {
   asset_id: string;
   config_hash: string;
   cad_revision: string;
+  /** Optional. Empty when the config gives none. */
+  caption: string;
 }
 
 export interface LandingConfig {
@@ -99,14 +114,18 @@ export interface LandingConfig {
   status_tile: StatusTile;
   /** null until an approved asset exists. */
   render_asset: RenderAsset | null;
+  /** Approved renders for the /vfarm gallery. Optional; empty when absent. */
+  gallery: RenderAsset[];
+  /** The /vfarm FAQ. Optional; empty when absent. */
+  faq: FaqItem[];
   build_feed: BuildFeedItem[];
 }
 
 /** What the pages actually consume. */
 export interface LandingState {
-  /** null until the fetch settles. Components render a quiet skeleton meanwhile. */
+  /** null only when the config could not be read. */
   config: LandingConfig | null;
-  status: 'loading' | 'ready' | 'failed';
+  status: 'ready' | 'failed';
   /**
    * Derived once, here, from claim_state and paid_subscription_url together.
    * No component reads claim_state and decides for itself.

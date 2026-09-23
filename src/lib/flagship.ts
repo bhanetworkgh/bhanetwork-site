@@ -1,20 +1,31 @@
 /**
- * The flagship date.
+ * The vFarm launch countdown target.
  *
  * Fixed by the 10/31 contract, so it lives in code rather than in copy: a
  * countdown somebody can hand-edit is a countdown that can be wrong.
- */
-export const FLAGSHIP_DATE = '2026-10-31';
-
-/**
- * Whole days from today to the flagship date, computed live on every load.
  *
- * Both ends are taken as UTC calendar days so the answer does not change with
- * the reader's clock time, only with their date. Negative once the date has
- * passed, which the caller decides what to do with.
+ * The previous site counted whole UTC calendar days to 2026-10-31, so the
+ * target here is the same date and time zone: 31 October 2026 at 00:00 UTC.
  */
-export function daysToFlagship(now: Date = new Date()): number {
-  const today = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
-  const [y, m, d] = FLAGSHIP_DATE.split('-').map(Number);
-  return Math.round((Date.UTC(y, m - 1, d) - today) / 86_400_000);
+export const FLAGSHIP_AT = Date.UTC(2026, 9, 31, 0, 0, 0);
+
+export interface Remaining {
+  done: boolean;
+  days: number;
+  hours: number;
+  minutes: number;
+  seconds: number;
+}
+
+/** Time left until the target, in whole units. All zero once it has passed. */
+export function remaining(now: number): Remaining {
+  const ms = Math.max(0, FLAGSHIP_AT - now);
+  const s = Math.floor(ms / 1000);
+  return {
+    done: ms === 0,
+    days: Math.floor(s / 86_400),
+    hours: Math.floor((s % 86_400) / 3_600),
+    minutes: Math.floor((s % 3_600) / 60),
+    seconds: s % 60,
+  };
 }
