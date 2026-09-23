@@ -68,6 +68,22 @@ export interface BuildFeedItem {
   sample: boolean;
 }
 
+/**
+ * An approved render of the rig.
+ *
+ * The image slot renders only when every field is present and `approved` is
+ * true: an image must carry the asset it is, the configuration it shows and
+ * the named CAD revision it was drawn from. Until landing-config provides
+ * one, the slot renders nothing — no placeholder art.
+ */
+export interface RenderAsset {
+  src: string;
+  alt: string;
+  asset_id: string;
+  config_hash: string;
+  cad_revision: string;
+}
+
 export interface LandingConfig {
   page_contract_version: string;
   mechanics_contract_version: string;
@@ -81,6 +97,8 @@ export interface LandingConfig {
   supporting_claims: string[];
   what_vfarm_is: WhatVFarmIsItem[];
   status_tile: StatusTile;
+  /** null until an approved asset exists. */
+  render_asset: RenderAsset | null;
   build_feed: BuildFeedItem[];
 }
 
@@ -99,35 +117,21 @@ export interface LandingState {
 }
 
 /**
- * Where a lead came from, captured at submit time.
+ * What the Early Access form POSTs to the n8n intake webhook, which writes it
+ * into Form A's response sheet.
  *
- * Every field is a string and may be empty. Empty means "the URL did not say"
- * — it never means a value was inferred.
+ * One key per Form A question (see src/lib/formA.ts for the full list and
+ * order), plus the four keys below. Nothing else is sent.
  */
-export interface Attribution {
-  utm_source: string;
-  utm_medium: string;
-  utm_campaign: string;
-  asset_id: string;
-  source_channel: string;
-  landing_variant: string;
-  /** Defaults to the config's campaign key when the URL is silent. */
+export type IntakePayload = {
+  [questionKey: string]: string | number | null | Record<string, string>;
+} & {
+  /** Always the config's source_campaign. Never read from the URL. */
   source_campaign: string;
-  /** The mechanics contract this page was built against. */
-  contract_version: string;
-}
-
-/** The page a submission came from. Matches the upstream lead envelope. */
-export type SourcePage = '/' | '/vfarm';
-
-export interface EarlyAccessLead extends Attribution {
-  full_name: string;
-  email: string;
-  organization_name: string;
-  source_surface: 'bhanetwork_site';
-  source_page: SourcePage;
-  page_contract_version: string;
-  mechanics_contract_version: string;
-  claim_state: string;
-  submitted_at: string;
-}
+  /** The path the form was submitted from. */
+  page: string;
+  /** Every utm_* query parameter, as-is. Empty when the URL had none. */
+  utm: Record<string, string>;
+  /** The honeypot, sent as-is. A person never fills it; the webhook decides what a filled one means. */
+  hp: string;
+};

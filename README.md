@@ -83,25 +83,50 @@ will slot in later.
 ## The Early Access form
 
 The site hosts its own form; it does not send anyone away to an external one.
-`src/components/EarlyAccessForm.tsx` is rendered on `/vfarm` only and collects
-exactly three fields — full name (required), email (required, validated) and
-organisation (optional). Those three match the upstream lead envelope, and
-adding a fourth breaks it.
+`src/components/EarlyAccessForm.tsx` is rendered on `/vfarm` only and asks
+every question Hardik's **Form A** asks — the same 23 questions, the same
+answer options in the same order, the same single- or multi-select types and
+the same required flags. They are mirrored, with each Form A entry ID, in
+`src/lib/formA.ts`, one Form A section per step. That file is the one place
+in `src/` that carries question wording, and it copies Form A rather than
+writing anything of its own: if Form A changes, the file changes to match, and
+a question is never added, reworded or dropped here alone.
 
-**Submissions `POST` as JSON to the BHA Engine Dashboard endpoint named in the
-config**, at `early_access_endpoint` — today
-`https://dashboard.bhanetwork.org/api/public/vfarm-early-access`. The site
-therefore depends on the dashboard being reachable for a lead to land: if that
-endpoint is down, the form shows the config's error message, keeps what the
-visitor typed, and lets them retry. If `early_access_endpoint` is removed from
-the config entirely, `/vfarm`'s call to action degrades to a plain link to
-`interest_url`; the home page's links still point at `/vfarm`, so the home page
-is never the thing that dead-ends.
+**Submissions `POST` as JSON to the n8n intake webhook named in the config**,
+at `early_access_endpoint` — today
+`https://bayshorizonnetwork.app.n8n.cloud/webhook/vfarm-website-intake` —
+which writes the row into Form A's response sheet. The body is one key per
+question (`full_name`, `email`, … `heard_about`; a multi-select is the chosen
+options joined with `", "` in form order, the interest scale is the number)
+plus four more:
+
+- `source_campaign` — always the config's `source_campaign`. No URL parameter
+  can override it; the form never looks for one.
+- `page` — the path the form was submitted from.
+- `utm` — an object of every `utm_*` query parameter the visitor arrived with,
+  as-is. Empty when there were none; nothing is inferred.
+- `hp` — the honeypot, a hidden input people never fill. Sent as-is.
+
+Success is shown only when the webhook answers **HTTP 200 with
+`{"ok": true}`**. Anything else — another status, a body that is not JSON,
+`{"ok": false}`, no response at all — shows the config's plain error message
+and keeps every answer on screen so the visitor can retry. If
+`early_access_endpoint` is removed from the config entirely, `/vfarm`'s call
+to action degrades to a plain link to `interest_url` (Form A itself); the home
+page's links still point at `/vfarm`, so the home page is never the thing that
+dead-ends.
 
 The form disables its submit button in flight so a double click cannot create
-two leads, trims and lowercases the email before sending, and carries a
-honeypot field that silently drops bot submissions. It sets no cookies and no
-storage, and tracks nothing about the submitter beyond the request itself.
+two leads. It sets no cookies and no storage, and tracks nothing about the
+submitter beyond the request itself.
+
+## The render, which needs provenance
+
+There is no drawn or placeholder cabinet anywhere on the site. The render slot
+in each hero renders only when the config's `render_asset` is an approved
+asset — `approved: true` plus a non-empty `src`, `alt`, `asset_id`,
+`config_hash` and `cad_revision`. While `render_asset` is `null` (today) the
+slot renders nothing and the hero copy takes the full width.
 
 ## Structure
 

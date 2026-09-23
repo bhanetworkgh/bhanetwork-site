@@ -14,7 +14,7 @@ export function VFarmEarlyAccess({
     <section className="container section" id="early-access">
       <div className="card card-pad-lg early-access">
         <ClaimsList claims={config.supporting_claims} />
-        <EarlyAccessForm config={config} ctaMode={ctaMode} sourcePage="/vfarm" />
+        <EarlyAccessForm config={config} ctaMode={ctaMode} />
         <Qualifier text={config.early_access.qualifier} />
       </div>
     </section>

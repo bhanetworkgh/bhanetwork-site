@@ -3,6 +3,7 @@ import type {
   EarlyAccessCopy,
   HomeCopy,
   LandingConfig,
+  RenderAsset,
   StatusTile,
   WhatVFarmIsItem,
 } from '../types/landing';
@@ -88,6 +89,22 @@ function parseStatusTile(value: unknown): StatusTile {
   };
 }
 
+/**
+ * The approved render, or null. Every field must be a non-empty string and
+ * `approved` must be exactly true — anything short of that is no image.
+ */
+function parseRenderAsset(value: unknown): RenderAsset | null {
+  if (!isRecord(value) || value.approved !== true) return null;
+  const asset: RenderAsset = {
+    src: url(value.src) ?? '',
+    alt: str(value.alt).trim(),
+    asset_id: str(value.asset_id).trim(),
+    config_hash: str(value.config_hash).trim(),
+    cad_revision: str(value.cad_revision).trim(),
+  };
+  return Object.values(asset).every((field) => field !== '') ? asset : null;
+}
+
 function parseWhatVFarmIs(value: unknown): WhatVFarmIsItem[] {
   return list(value)
     .filter(isRecord)
@@ -129,6 +146,7 @@ export function parseLandingConfig(value: unknown): LandingConfig {
       .filter((claim) => claim !== ''),
     what_vfarm_is: parseWhatVFarmIs(value.what_vfarm_is),
     status_tile: parseStatusTile(value.status_tile),
+    render_asset: parseRenderAsset(value.render_asset),
     build_feed: parseBuildFeed(value.build_feed),
   };
 }

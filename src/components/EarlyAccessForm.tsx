@@ -1,16 +1,25 @@
-import { useId, useMemo, useState } from 'react';
-import type { CtaMode, EarlyAccessLead, LandingConfig, SourcePage } from '../types/landing';
-import { readAttribution } from '../lib/attribution';
+import { useId, useMemo, useRef, useState } from 'react';
+import type { CtaMode, IntakePayload, LandingConfig } from '../types/landing';
+import { readUtm } from '../lib/attribution';
+import {
+  emptyAnswers,
+  FORM_A_STEPS,
+  problemWith,
+  serialiseAnswers,
+  type Answers,
+} from '../lib/formA';
+import { FormAField } from './FormAField';
 import { Button, LinkButton } from './Button';
 
 /**
  * The Early Access form.
  *
- * The site hosts this itself — it does not send anyone away to an external
- * form — and posts to the BHA Engine Dashboard endpoint named in the config.
- *
- * Three fields, and only three: they match the upstream lead envelope, and
- * adding a fourth breaks it.
+ * The site hosts this itself and asks every question Hardik's Form A asks —
+ * same wording, same options, same order, same required flags, mirrored in
+ * src/lib/formA.ts — one Form A section per step, so it never reads as one
+ * wall. It POSTs JSON to the n8n intake webhook named in the config at
+ * `early_access_endpoint`, which writes the answers into Form A's response
+ * sheet.
  *
  * A submission means "we received your interest" and nothing else. Nothing
  * here reads, writes, stores or infers payment, subscriber status,
@@ -18,42 +27,27 @@ import { Button, LinkButton } from './Button';
  * There are no cookies and no storage: the request is the only thing that
  * leaves the page.
  *
- * Success is never optimistic: it is shown only after a 2xx whose body says
- * `{"ok": true}`. Anything else keeps what was typed and shows the server's
- * own message where it sent one.
+ * Success is never optimistic: it is shown only after HTTP 200 whose body is
+ * `{"ok": true}`. Anything else — another status, no body, a body that is not
+ * JSON, `{"ok": false}`, no response at all — shows a plain error and keeps
+ * every answer on screen so the person can retry.
  */
 
 type FormState = 'idle' | 'submitting' | 'success' | 'error';
 
-/** Deliberately loose: the endpoint is the authority, this only catches typos. */
-const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-export function EarlyAccessForm({
-  config,
-  ctaMode,
-  sourcePage,
-}: {
-  config: LandingConfig;
-  ctaMode: CtaMode;
-  sourcePage: SourcePage;
-}) {
+export function EarlyAccessForm({ config, ctaMode }: { config: LandingConfig; ctaMode: CtaMode }) {
   const ids = useId();
+  const formRef = useRef<HTMLFormElement>(null);
   /*
    * Read once, at mount, from the URL this visitor actually arrived on — so a
    * later history change cannot rewrite where a lead came from.
    */
-  const attribution = useMemo(
-    () => readAttribution(config, window.location.search),
-    [config],
-  );
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [org, setOrg] = useState('');
+  const utm = useMemo(() => readUtm(window.location.search), []);
+  const [answers, setAnswers] = useState<Answers>(emptyAnswers);
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [step, setStep] = useState(0);
   const [trap, setTrap] = useState('');
   const [state, setState] = useState<FormState>('idle');
-  const [fieldError, setFieldError] = useState<string | null>(null);
-  /** What the server said went wrong, when it said anything. */
-  const [serverMessage, setServerMessage] = useState<string | null>(null);
 
   const copy = config.early_access;
 
@@ -81,155 +75,122 @@ export function EarlyAccessForm({
     );
   }
 
+  const current = FORM_A_STEPS[step];
+  const last = step === FORM_A_STEPS.length - 1;
+  const busy = state === 'submitting';
+
+  /** Check the current step. True when it is complete; otherwise flag it and focus the first gap. */
+  function checkStep(): boolean {
+    const found: Record<string, string> = {};
+    for (const q of current.questions) {
+      const problem = problemWith(q, answers[q.key]);
+      if (problem) found[q.key] = problem;
+    }
+    setErrors(found);
+    if (Object.keys(found).length === 0) return true;
+    requestAnimationFrame(() => {
+      const bad = formRef.current?.querySelector<HTMLElement>('[aria-invalid="true"]');
+      const target = bad?.matches('fieldset') ? bad.querySelector<HTMLElement>('input') : bad;
+      target?.focus();
+    });
+    return false;
+  }
+
+  function goTo(next: number) {
+    setStep(next);
+    setState('idle');
+    requestAnimationFrame(() => {
+      const heading = document.getElementById(`${ids}-step`);
+      heading?.focus({ preventScroll: true });
+      formRef.current?.scrollIntoView({ block: 'start', behavior: 'smooth' });
+    });
+  }
+
   async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (state === 'submitting') return; /* a double click cannot make two leads */
-
-    /* The honeypot is invisible to a person. Filled means a bot: drop it. */
-    if (trap.trim() !== '') {
-      setState('success');
+    if (busy) return; /* a double click cannot make two leads */
+    if (!checkStep()) return;
+    if (!last) {
+      goTo(step + 1);
       return;
     }
 
-    const full_name = name.trim();
-    const cleanEmail = email.trim().toLowerCase();
-
-    if (!full_name) {
-      setFieldError('Enter your full name.');
-      return;
-    }
-    if (!EMAIL.test(cleanEmail)) {
-      setFieldError('Enter a valid email address.');
-      return;
-    }
-    setFieldError(null);
-    setServerMessage(null);
     setState('submitting');
 
-    const lead: EarlyAccessLead = {
-      full_name,
-      email: cleanEmail,
-      organization_name: org.trim(),
-      source_surface: 'bhanetwork_site',
-      source_page: sourcePage,
-      page_contract_version: config.page_contract_version,
-      mechanics_contract_version: config.mechanics_contract_version,
-      claim_state: config.claim_state,
-      submitted_at: new Date().toISOString(),
-      /* utm_*, asset_id, source_channel, landing_variant, source_campaign,
-         contract_version — empty where the URL was silent, never guessed. */
-      ...attribution,
+    const payload: IntakePayload = {
+      ...serialiseAnswers(answers),
+      /* Always the config's key. No URL parameter is consulted for it. */
+      source_campaign: config.source_campaign,
+      page: window.location.pathname,
+      utm,
+      hp: trap,
     };
 
     try {
       const response = await fetch(config.early_access_endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(lead),
+        body: JSON.stringify(payload),
       });
 
-      /*
-       * The endpoint answers 201 {"ok":true} when the lead is stored, and
-       * {"ok":false,"message":"…"} with a 4xx or 5xx when it is not.
-       *
-       * Success is shown only when the status and the body agree. A 2xx with
-       * no body, a body that is not JSON, or {"ok":false} is a failure —
-       * telling somebody they are on the list when no row was written is the
-       * one outcome this form must never produce.
-       */
-      let payload: { ok?: unknown; message?: unknown } = {};
+      let body: { ok?: unknown } = {};
       try {
-        payload = (await response.json()) as typeof payload;
+        body = (await response.json()) as typeof body;
       } catch {
-        /* No body, or not JSON. Handled as a failure below. */
+        /* No body, or not JSON. A failure, below. */
       }
 
-      if (response.ok && payload.ok === true) {
+      /* HTTP 200 and {"ok": true}, both — nothing else is a success. */
+      if (response.status === 200 && body.ok === true) {
         setState('success');
         return;
       }
-
-      /* 403, 429, 5xx: show what the server said, so "too many submissions"
-         does not read as "something went wrong". */
-      const message =
-        typeof payload.message === 'string' && payload.message.trim()
-          ? payload.message.trim()
-          : copy.error_message;
-      console.error(`[bhanetwork] early access refused: HTTP ${response.status}`);
-      setServerMessage(message);
+      console.error(`[bhanetwork] early access not accepted: HTTP ${response.status}`);
       setState('error');
     } catch (error) {
-      /* No response at all — offline, DNS, CORS. There is no server message. */
+      /* No response at all — offline, DNS, CORS. */
       console.error('[bhanetwork] early access submission failed', error);
-      setServerMessage(null);
       setState('error');
     }
-    /* Whatever was typed stays typed, either way. Retrying is one more click. */
+    /* Every answer stays where it was. Retrying is one more click. */
   }
 
-  const busy = state === 'submitting';
-
   return (
-    <form className="form" onSubmit={submit} noValidate>
-      <div className="form-row">
-        <label className="form-field">
-          <span className="t-kicker">Full name</span>
-          <input
-            className="input"
-            id={`${ids}-name`}
-            name="full_name"
-            autoComplete="name"
-            required
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            disabled={busy}
-          />
-        </label>
-        <label className="form-field">
-          <span className="t-kicker">Email</span>
-          <input
-            className="input"
-            id={`${ids}-email`}
-            name="email"
-            type="email"
-            inputMode="email"
-            autoComplete="email"
-            required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            disabled={busy}
-          />
-        </label>
-        <label className="form-field">
-          <span className="t-kicker">Organisation (optional)</span>
-          <input
-            className="input"
-            id={`${ids}-org`}
-            name="organization_name"
-            autoComplete="organization"
-            value={org}
-            onChange={(e) => setOrg(e.target.value)}
-            disabled={busy}
-          />
-        </label>
+    <form className="form" ref={formRef} onSubmit={submit} noValidate>
+      <div className="form-step-head stack">
+        <span className="t-kicker">
+          Step {step + 1} of {FORM_A_STEPS.length}
+        </span>
+        <h2 className="t-title-sm" id={`${ids}-step`} tabIndex={-1}>
+          {current.title}
+        </h2>
+        {current.description && <p className="t-body dim">{current.description}</p>}
+        <p className="t-body dim">
+          <span className="form-required" aria-hidden="true">*</span> Indicates required question
+        </p>
       </div>
 
-      {/*
-        The attribution the visitor arrived with, as real hidden fields. They
-        are submitted in the JSON body above; carrying them on the form too
-        means what was captured is visible to anyone inspecting the page, and
-        that a non-JS fallback would carry them as well.
-      */}
-      {Object.entries(attribution).map(([name, value]) => (
-        <input key={name} type="hidden" name={name} value={value} readOnly />
+      {current.questions.map((q) => (
+        <FormAField
+          key={q.key}
+          q={q}
+          id={`${ids}-${q.key}`}
+          value={answers[q.key]}
+          error={errors[q.key] ?? null}
+          disabled={busy}
+          onChange={(value) => {
+            setAnswers((prev) => ({ ...prev, [q.key]: value }));
+            if (errors[q.key]) setErrors(({ [q.key]: _cleared, ...rest }) => rest);
+          }}
+        />
       ))}
 
-      {/* The honeypot. Hidden from people, offered to bots. */}
+      {/* The honeypot. Hidden from people, offered to bots. Sent as `hp`. */}
       <div className="form-trap" aria-hidden="true">
         <label htmlFor={`${ids}-trap`}>Leave this field empty</label>
         <input
           id={`${ids}-trap`}
-          name="website"
+          name="hp"
           type="text"
           tabIndex={-1}
           autoComplete="off"
@@ -239,20 +200,20 @@ export function EarlyAccessForm({
       </div>
 
       <div className="form-actions">
+        {step > 0 && (
+          <Button type="button" variant="default" disabled={busy} onClick={() => goTo(step - 1)}>
+            Back
+          </Button>
+        )}
         <Button type="submit" variant="primary" disabled={busy}>
-          {busy ? 'Sending…' : copy.cta_label}
+          {last ? (busy ? 'Sending…' : copy.cta_label) : 'Next'}
         </Button>
-        {fieldError && (
-          <p className="form-error t-body" role="alert">
-            {fieldError}
-          </p>
-        )}
-        {state === 'error' && (
-          <p className="form-error t-body" role="alert">
-            {serverMessage ?? copy.error_message}
-          </p>
-        )}
       </div>
+      {state === 'error' && (
+        <p className="form-error t-body" role="alert">
+          {copy.error_message}
+        </p>
+      )}
     </form>
   );
 }

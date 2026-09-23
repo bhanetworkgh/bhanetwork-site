@@ -5,12 +5,12 @@
   "interest_url": "https://docs.google.com/forms/d/e/1FAIpQLSfQkBm4lz4UuyL0TnbuJ7iUeE4PmWfDlfTLrKkDd23WL7gtnQ/viewform?usp=header",
   "paid_subscription_url": null,
   "source_campaign": "vfarm_flagship_1031",
-  "early_access_endpoint": "https://dashboard.bhanetwork.org/api/public/vfarm-early-access",
+  "early_access_endpoint": "https://bayshorizonnetwork.app.n8n.cloud/webhook/vfarm-website-intake",
   "home": {
-    "headline": "Bays Horizon is building the autonomous vFarm in public.",
-    "subhead": "We are wiring a real vertical farm to an AI engine that learns from every harvest. Join Early Access to see the builds, system diagrams, and monthly progress as we move toward a fully automated vFarm twin.",
+    "headline": "Bays Horizon is building the monitored vFarm in public.",
+    "subhead": "We are wiring a real vertical farm to an AI engine that uses data from each growing cycle to inform future improvements. Join Early Access to see the builds, system diagrams, and monthly progress as we move toward a building toward increasingly automated operation vFarm twin.",
     "kicker": "Bays Horizon Network",
-    "meta_description": "We are wiring a real vertical farm to an AI engine that learns from every harvest. Join Early Access to see the builds, system diagrams, and monthly progress."
+    "meta_description": "We are wiring a real vertical farm to an AI engine that uses data from each growing cycle to inform future improvements. Join Early Access to see the builds, system diagrams, and monthly progress."
   },
   "early_access": {
     "headline": "Join vFarm Founding Buyer Early Access",
@@ -30,7 +30,7 @@
     { "title": "A vertical farm rig sized for a spare room.", "body": "Four tiers, roughly the footprint of a bookshelf." },
     { "title": "Base vFarm: frame, trays, lights, pumps.", "body": "Everything the rig needs to grow without a laptop attached." },
     { "title": "Monitoring that reports what it did.", "body": "pH, temperature, flow. It says when something needs you." },
-    { "title": "One flagship rig running unattended by 31 Oct.", "body": "Twenty-four hours, no hands. That is the bar." }
+    { "title": "One flagship rig designed for monitored operation with increasing automation by 31 Oct.", "body": "Twenty-four hours, no hands. That is the bar." }
   ],
   "status_tile": {
     "enabled": true,
@@ -43,6 +43,7 @@
     "last_level_up": "14 Sep",
     "sample": true
   },
+  "render_asset": null,
   "build_feed": [
     {
       "title": "Tray three fits with 4mm to spare",
