@@ -2,9 +2,9 @@
 
 export const hero = {
   eyebrow: 'Bays Horizon Network',
-  headline: "We're building our own engine, not renting someone else's.",
+  headline: 'Bays Horizon is building the monitored vFarm in public.',
   subhead:
-    'A small team of builders creating AI systems that are real, tested and transparent, starting with a vertical farm you can watch us build.',
+    'We are wiring a real vertical farm to an AI engine that uses data from each growing cycle to inform future improvements. Join Early Access to see the builds, system diagrams, and monthly progress as we build toward an increasingly automated vFarm twin.',
   primary: { to: '/vfarm#signup', label: 'Join vFarm early access' },
   secondary: { to: '/#team', label: 'Meet the team' },
   /* The floating cards. Only facts that cannot go stale. The launch card's

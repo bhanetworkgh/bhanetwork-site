@@ -45,7 +45,7 @@ export const meta = {
   home: {
     title: "Bays Horizon Network — building our own engine, not renting someone else's",
     description:
-      'A small team of builders creating AI systems that are real, tested and transparent, starting with a vertical farm you can watch us build.',
+      'We are wiring a real vertical farm to an AI engine that uses data from each growing cycle to inform future improvements.',
   },
   privacy: {
     title: 'Privacy — Bays Horizon Network',
