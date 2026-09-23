@@ -1,10 +1,11 @@
+import type { MouseEvent } from 'react';
 import { Link } from 'react-router-dom';
 import { SITE_NAME } from '../content/site';
 
 /** The BHA mark, gold on black, with the network name beside it. Links home. */
-export function Wordmark() {
+export function Wordmark({ onClick }: { onClick?: (e: MouseEvent) => void }) {
   return (
-    <Link to="/" className="wordmark" aria-label={`${SITE_NAME} — Home`}>
+    <Link to="/" className="wordmark" aria-label={`${SITE_NAME} — Home`} onClick={onClick}>
       <span className="wordmark-mark" aria-hidden="true">
         BHA
       </span>

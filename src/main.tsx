@@ -11,6 +11,13 @@ import { LandingProvider, landingStateFrom } from './config/landingConfig';
  * embedded as window.__LANDING_CONFIG__. Hydrate from exactly that, so the
  * first client render matches the HTML.
  */
+/*
+ * /team became a section of Home. A browser that still arrives at /team or
+ * /team/… (through the 404 fallback) goes straight to /#team before anything
+ * renders, so there is no flash of the 404 page.
+ */
+if (/^\/team(\/|$)/.test(window.location.pathname)) window.location.replace('/#team');
+
 const root = document.getElementById('root')!;
 const app = (raw: unknown) => (
   <StrictMode>

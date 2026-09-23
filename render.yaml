@@ -2,13 +2,18 @@
 #
 # The service was created in the dashboard, not from this Blueprint, so Render
 # does not read this file automatically. It records the settings the site
-# needs; the rewrite rule below must also exist on the service
-# (Dashboard → bhanetwork-site → Redirects/Rewrites).
+# needs; the rules below must also exist on the service
+# (Dashboard → bhanetwork-site → Redirects/Rewrites), in this order.
 #
-# Every route is pre-rendered to its own file (dist/vfarm/index.html, …), so
-# /, /vfarm, /team and /privacy are served directly and a refresh on any of
-# them works without a rule. Render applies rewrite rules only when no file
-# matches the path, so this one catches everything else and serves the 404 page.
+# Every route is pre-rendered to its own file (dist/index.html,
+# dist/vfarm/index.html, dist/privacy/index.html), so a refresh on any of them
+# works without a rule.
+#
+# /team is now a section of Home. The two redirects send old links there with
+# a 301. Until they exist, dist/team/index.html does the same redirect in the
+# browser (Render serves an existing file before it applies a rule, so that
+# file answers /team either way; /team/anything is caught by the 301 or, via
+# the 404 fallback, by the app).
 services:
   - type: web
     runtime: static
@@ -17,6 +22,12 @@ services:
     buildCommand: npm install && npm run build
     staticPublishPath: dist
     routes:
+      - type: redirect
+        source: /team
+        destination: /#team
+      - type: redirect
+        source: /team/*
+        destination: /#team
       - type: rewrite
         source: /*
         destination: /404.html

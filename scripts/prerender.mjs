@@ -62,6 +62,33 @@ for (const [url, file] of targets) {
 await rm(resolve(root, 'dist-ssr'), { recursive: true, force: true });
 
 /*
+ * /team is now a section of Home. The page, its HTML and its OG tags are
+ * gone; what stays at dist/team/index.html is a redirect so a direct visit or
+ * an old bookmark to /team lands on /#team straight away. (render.yaml records
+ * the matching 301.)
+ */
+await mkdir(resolve(dist, 'team'), { recursive: true });
+await writeFile(
+  resolve(dist, 'team/index.html'),
+  `<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="robots" content="noindex" />
+    <link rel="canonical" href="https://bhanetwork.org/#team" />
+    <meta http-equiv="refresh" content="0; url=/#team" />
+    <title>Bays Horizon Network — Meet the team</title>
+    <script>location.replace('/#team');</script>
+  </head>
+  <body>
+    <p><a href="/#team">Meet the team</a></p>
+  </body>
+</html>
+`,
+);
+console.log('[prerender] /team → dist/team/index.html (redirect to /#team)');
+
+/*
  * Ship only the WebP versions from dist/img/. The originals in public/team/
  * and public/renders/ are sources for scripts/images.mjs, not pages to serve
  * (dist/team/index.html, the /team page, is left alone).

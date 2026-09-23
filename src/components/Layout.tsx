@@ -1,4 +1,4 @@
-import { useEffect, type ReactNode } from 'react';
+import { useEffect, useRef, type ReactNode } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useLanding } from '../config/landingConfig';
 import { applyMeta, metaFor } from '../lib/meta';
@@ -10,12 +10,8 @@ const reducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)'
 /**
  * Scroll and head bookkeeping for client-side navigation.
  *
- * - A new page starts at the top.
- * - A hash scrolls smoothly to its section (/vfarm#signup). A hash with no
- *   matching element — /team#<slug> opens a builder panel instead — is left
- *   alone.
- * - The <head> tags follow the route, so the tab title and a copied link
- *   match the page on screen.
+ * Scrolling on navigation (below), and the <head> tags following the route,
+ * so the tab title and a copied link match the page on screen.
  */
 function useRouteEffects(notFound: boolean) {
   const { pathname, hash } = useLocation();
@@ -25,13 +21,30 @@ function useRouteEffects(notFound: boolean) {
     applyMeta(metaFor(notFound ? '*' : pathname, config));
   }, [pathname, notFound, config]);
 
+  /*
+   * - A new page starts at the top.
+   * - A #hash scrolls smoothly to its section, clear of the sticky nav (the
+   *   sections carry scroll-margin-top). Arriving from another page — Team or
+   *   FAQ clicked on /vfarm — the new page starts at the top and then glides
+   *   down to the section.
+   * - Clearing the hash on the same page (Home clicked while on /#faq) glides
+   *   back to the top.
+   * - On first load the browser has already placed the page; leave it.
+   */
+  const lastPath = useRef<string | null>(null);
   useEffect(() => {
+    const firstLoad = lastPath.current === null;
+    const newPage = lastPath.current !== pathname;
+    lastPath.current = pathname;
+    if (firstLoad) return;
+    const behavior: ScrollBehavior = reducedMotion() ? 'auto' : 'smooth';
+    if (newPage) window.scrollTo({ top: 0, left: 0, behavior: 'instant' as ScrollBehavior });
     if (!hash) {
-      window.scrollTo({ top: 0, left: 0, behavior: 'instant' as ScrollBehavior });
+      if (!newPage) window.scrollTo({ top: 0, behavior });
       return;
     }
     const target = document.getElementById(decodeURIComponent(hash.slice(1)));
-    if (target) target.scrollIntoView({ behavior: reducedMotion() ? 'auto' : 'smooth', block: 'start' });
+    if (target) requestAnimationFrame(() => target.scrollIntoView({ behavior, block: 'start' }));
   }, [pathname, hash]);
 
   /* Fade-and-rise on scroll: each .reveal gets .is-in once it is on screen. */
@@ -56,7 +69,13 @@ function useRouteEffects(notFound: boolean) {
   }, [pathname]);
 }
 
-export function Layout({ children, notFound = false }: { children: ReactNode; notFound?: boolean }) {
+export function Layout({
+  children,
+  notFound = false,
+}: {
+  children: ReactNode;
+  notFound?: boolean;
+}) {
   useRouteEffects(notFound);
   return (
     <div className="app aurora">

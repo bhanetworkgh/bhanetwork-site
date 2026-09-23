@@ -18,7 +18,7 @@ export interface PageMeta {
   noindex?: boolean;
 }
 
-export const ROUTES = ['/', '/vfarm', '/team', '/privacy'] as const;
+export const ROUTES = ['/', '/vfarm', '/privacy'] as const;
 
 export function metaFor(path: string, config: LandingConfig | null): PageMeta {
   /* The link-preview image: the manifest's hero render when set, else the brand card. */
@@ -26,8 +26,6 @@ export function metaFor(path: string, config: LandingConfig | null): PageMeta {
   switch (path) {
     case '/':
       return { ...base, ...copy.home };
-    case '/team':
-      return { ...base, ...copy.team };
     case '/privacy':
       return { ...base, ...copy.privacy };
     case '/vfarm': {
