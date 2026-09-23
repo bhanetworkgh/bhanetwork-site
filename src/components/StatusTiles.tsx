@@ -3,10 +3,10 @@ import { daysToFlagship } from '../lib/flagship';
 import { showsConfiguration, showsSpecVersion } from '../lib/provenance';
 
 /**
- * The status tiles.
+ * The status tiles, shown as small stats in each page's hero.
  *
  * A tile renders only when something can prove its value. The rules live in
- * src/lib/provenance.ts; this component asks and renders, and there is no
+ * src/lib/provenance.ts; this file asks and renders, and there is no
  * "Sample" pill any more — a tile with nothing behind it is not shown at all.
  *
  * Days to the flagship is the one tile that always shows, because the page
@@ -40,22 +40,6 @@ export function shownTiles(tile: StatusTile): ShownTile[] {
   }
 
   return tiles;
-}
-
-export function StatusTiles({ tile }: { tile: StatusTile }) {
-  const tiles = shownTiles(tile);
-  if (tiles.length === 0) return null;
-
-  return (
-    <ul className="status-row">
-      {tiles.map((t) => (
-        <li key={t.label} className="card card-pad status-tile">
-          <span className="t-kicker">{t.label}</span>
-          <span className={`t-title-sm ${t.mono ? 'mono' : 'tabular'}`}>{t.value}</span>
-        </li>
-      ))}
-    </ul>
-  );
 }
 
 /**

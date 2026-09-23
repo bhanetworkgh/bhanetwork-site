@@ -570,6 +570,52 @@ a {
   color: var(--dim);
 }
 
+/* With no render beside it, the copy may run wider. */
+.hero-copy-wide .t-title-xl {
+  max-width: none;
+}
+.hero-copy-wide .hero-subhead {
+  max-width: 72ch;
+}
+
+/* A call to action and the qualifier directly under it. */
+.cta-block {
+  gap: var(--sp-5);
+}
+.cta-block .qualifier {
+  margin-top: 0;
+}
+.cta-block .hero-actions {
+  margin-top: 0;
+}
+
+/* The home page's Early Access card: claims on the left, the ask on the right. */
+.ea-home {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+  gap: var(--sp-10);
+  align-items: center;
+}
+.ea-home-ask {
+  gap: var(--sp-8);
+}
+.section-head-tight {
+  gap: var(--sp-4);
+}
+.ea-home .claim-card {
+  background: var(--raised);
+  box-shadow: 0 0 0 1px var(--line) inset;
+}
+@media (max-width: 899px) {
+  .ea-home {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--sp-9);
+  }
+  .ea-home-ask {
+    order: -1;
+  }
+}
+
 /* No approved render: the copy takes the full width. */
 .hero-inner-solo {
   grid-template-columns: 1fr;
@@ -615,40 +661,6 @@ a {
 }
 .render-caption {
   margin-top: var(--sp-4);
-}
-
-/* Status tiles ------------------------------------------------------------- */
-
-.status-row {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: var(--sp-9);
-}
-.status-tile {
-  display: flex;
-  flex-direction: column;
-  gap: var(--sp-5);
-}
-.status-tile-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--sp-4);
-}
-.status-caption {
-  margin-top: var(--sp-6);
-}
-
-@media (max-width: 899px) {
-  .status-row {
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--sp-7);
-  }
-}
-@media (max-width: 479px) {
-  .status-row {
-    grid-template-columns: 1fr;
-  }
 }
 
 /* Cards and section heads -------------------------------------------------- */
@@ -745,10 +757,11 @@ a {
 .what-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: var(--sp-10) var(--sp-9);
+  gap: var(--sp-7);
 }
 .what-item {
   gap: var(--sp-3);
+  padding: var(--sp-8);
 }
 .what-item .t-body-lg {
   max-width: 44ch;
@@ -756,7 +769,7 @@ a {
 @media (max-width: 599px) {
   .what-grid {
     grid-template-columns: 1fr;
-    gap: var(--sp-9);
+    gap: var(--sp-5);
   }
 }
 
@@ -805,9 +818,6 @@ a {
 .qualifier {
   margin-top: var(--sp-6);
   max-width: 78ch;
-}
-.engine-line p {
-  max-width: 62ch;
 }
 
 /* The form ----------------------------------------------------------------- */

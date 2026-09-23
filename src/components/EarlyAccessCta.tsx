@@ -22,14 +22,19 @@ export function EarlyAccessCta({
   config,
   ctaMode,
   size = 'md',
+  className = '',
 }: {
   config: LandingConfig;
   ctaMode: CtaMode;
   size?: 'md' | 'sm';
+  className?: string;
 }) {
   if (ctaMode === 'none') return null;
   return (
-    <a className={`btn btn-primary${size === 'sm' ? ' btn-sm' : ''}`} href={VFARM_PATH}>
+    <a
+      className={`btn btn-primary${size === 'sm' ? ' btn-sm' : ''} ${className}`.trim()}
+      href={VFARM_PATH}
+    >
       {config.early_access.cta_label}
     </a>
   );

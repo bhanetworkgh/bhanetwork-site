@@ -7,8 +7,9 @@ read their content from a file and render it.
 
 It serves exactly two routes:
 
-- **`/`** — the home page: the hero, the engine's status tiles, the build
-  feed, what vFarm is, and the Early Access ask.
+- **`/`** — the home page: the hero with its status stats, the build feed,
+  what vFarm is, and the Early Access ask. Two calls to action (the hero's and
+  the Early Access card's), each with the qualifier directly under it.
 - **`/vfarm`** — the vFarm Early Access page: the hero with its status
   stats, the claims as cards, and the form card — Form A's questions on the
   left, a sticky step list and the qualifier on the right, the qualifier again

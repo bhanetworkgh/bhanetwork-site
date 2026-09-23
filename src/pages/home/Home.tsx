@@ -1,12 +1,9 @@
 import { useLandingConfig } from '../../config/landingConfig';
 import { ConfigLoading, ConfigUnavailable, Shell, useDescription } from '../../components/Shell';
 import { Hero } from './sections/Hero';
-import { StatusRow } from './sections/StatusRow';
 import { BuildFeed } from './sections/BuildFeed';
 import { WhatVFarmIs } from './sections/WhatVFarmIs';
 import { EarlyAccess } from './sections/EarlyAccess';
-import { EngineLine } from './sections/EngineLine';
-import { BuildLog } from './sections/BuildLog';
 import { EarlyAccessCta } from '../../components/EarlyAccessCta';
 
 /**
@@ -46,23 +43,22 @@ export function Home() {
    * Every Early Access call to action on this page is a link to /vfarm. There
    * is no form here and no modal: the funnel cannot be completed without
    * passing the page that carries the claims and the qualifier.
+   *
+   * One call to action per section, two on the page (the hero's and the
+   * Early Access section's), each with the qualifier directly under it. The
+   * top bar carries the same link.
    */
   const navCta =
-    ctaMode === 'none' ? undefined : (
-      <EarlyAccessCta config={config} ctaMode={ctaMode} size="sm" />
-    );
+    ctaMode === 'none' ? undefined : <EarlyAccessCta config={config} ctaMode={ctaMode} size="sm" />;
 
   const heroCta = <EarlyAccessCta config={config} ctaMode={ctaMode} />;
 
   return (
-    <Shell cta={navCta}>
+    <Shell cta={navCta} tight>
       <Hero config={config} ctaMode={ctaMode} onCta={heroCta} />
-      <StatusRow tile={config.status_tile} />
       <BuildFeed items={config.build_feed} />
       <WhatVFarmIs items={config.what_vfarm_is} />
       <EarlyAccess config={config} ctaMode={ctaMode} />
-      <EngineLine />
-      <BuildLog config={config} ctaMode={ctaMode} />
     </Shell>
   );
 }
