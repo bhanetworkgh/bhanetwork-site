@@ -1,6 +1,7 @@
 # bhanetwork-site
 
-The public site for **bhanetwork.org**: Home, vFarm, Team and Privacy, built as
+The public site for **bhanetwork.org**: Home (with its Team and FAQ
+sections), vFarm and Privacy, built as
 one Vite + React + React Router app (React Router v6, as in the BHA Engine
 Dashboard). Clicking between pages swaps them in place — no full reload — and
 every route is also pre-rendered at build time into its own HTML file with its
@@ -17,8 +18,11 @@ publishing `dist/`.
   `claim_state` comes from it. A /vfarm section whose key is missing or empty
   is simply not rendered — nothing is invented to fill it.
 - **Everything else a visitor reads lives in `src/content/*.ts`** (site,
-  home, team, privacy, and the /vfarm section labels), so copy can change
+  home, team, faq, privacy, and the /vfarm section labels), so copy can change
   without touching a component.
+- **Team and FAQ are sections of Home** (`/#team`, `/#faq`). The nav scrolls
+  to them from any page without a reload and follows them with a scrollspy.
+  The old `/team` page is gone: `/team` and `/team/…` redirect to `/#team`.
 - **The vFarm form mirrors Hardik's Form A** (`src/lib/formA.ts`; entry IDs in
   `docs/form-a-entry-ids.md`) and posts JSON to the n8n intake webhook named
   in the config. Success shows only on HTTP 200 with `{"ok": true}`.
@@ -27,7 +31,7 @@ publishing `dist/`.
 - **Images:** vFarm renders come from `public/renders/manifest.json` (see
   below). Team photos go in `public/team/<slug>.<ext>` (jpg, jpeg, png, webp
   or avif) with the slugs in `src/content/team.ts`; a builder with no photo
-  gets a monogram tile.
+  gets a circular monogram.
 
 ## Optional landing-config keys the vFarm page reads
 
@@ -79,18 +83,24 @@ npm run build
   vite build                                     the client → dist/
   vite build --ssr src/entry-server.tsx          a renderer → dist-ssr/
   node scripts/prerender.mjs                     dist/index.html, dist/vfarm/index.html,
-                                                 dist/team/index.html, dist/privacy/index.html,
-                                                 dist/404.html
+                                                 dist/privacy/index.html, dist/404.html,
+                                                 dist/team/index.html (a redirect to /#team)
 ```
 
 The pre-render reads `dist/landing-config.json` (the file exactly as it
 ships), renders each route from it and embeds it in the page, so the browser
 hydrates from the same config the HTML was built from.
 
-Direct visits and refreshes on `/`, `/vfarm`, `/team` and `/privacy` are served
-straight from those files. Anything else needs this rewrite on the Render
-service (also recorded in `render.yaml`): **Source `/*` → Destination
-`/404.html`, Action Rewrite.** Render applies it only when no file matches.
+Direct visits and refreshes on `/`, `/vfarm` and `/privacy` are served
+straight from those files. The Render service also needs these rules, in this
+order (recorded in `render.yaml`):
+
+1. **Redirect (301)** `/team` → `/#team`
+2. **Redirect (301)** `/team/*` → `/#team`
+3. **Rewrite** `/*` → `/404.html`
+
+Until they exist, `dist/team/index.html` redirects `/team` in the browser and
+the app sends `/team/…` to `/#team`.
 
 `public/sitemap.xml` and `public/robots.txt` ship as-is.
 
@@ -111,7 +121,7 @@ scripts/prerender.mjs       writes one HTML file per route
 src/main.tsx                hydrates the app
 src/entry-server.tsx        renders one route for the pre-render
 src/App.tsx                 the routes
-src/pages/                  Home, VFarm, Team, Privacy, NotFound
+src/pages/                  Home, VFarm, Privacy, NotFound
 src/components/             nav, footer, layout, countdown, modal, form…
 src/content/                all non-vFarm copy
 src/config/                 reads and gates landing-config

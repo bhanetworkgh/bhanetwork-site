@@ -1,5 +1,9 @@
 import { Link } from 'react-router-dom';
 import { building, ctaBand, hero, whatWeDo, whyFarm } from '../content/home';
+import { team } from '../content/team';
+import { faq } from '../content/faq';
+import { Accordion } from '../components/Accordion';
+import { Avatar } from '../components/Avatar';
 import { countdown } from '../content/site';
 import { remaining } from '../lib/flagship';
 import { Countdown, useNow } from '../components/Countdown';
@@ -114,6 +118,27 @@ export function Home() {
         </section>
       )}
 
+      <section id="team" className="container section anchor-section">
+        <div className="section-center reveal">
+          <h2 className="section-title">{team.heading}</h2>
+          <p className="lead">{team.sub}</p>
+        </div>
+        <ul className="team-grid">
+          {team.members.map((m) => (
+            <li key={m.slug} className="team-member reveal">
+              <Avatar
+                slug={m.slug}
+                name={m.name}
+                className="member-photo"
+                sizes="(min-width: 1024px) 132px, (min-width: 700px) 112px, 96px"
+              />
+              <span className="member-name">{m.name}</span>
+              <span className="member-role">{m.role}</span>
+            </li>
+          ))}
+        </ul>
+      </section>
+
       <section className="band-dark">
         <div className="container band-grid">
           <div className="band-copy reveal">
@@ -126,6 +151,13 @@ export function Home() {
               {whyFarm.button.label}
             </Link>
           </div>
+        </div>
+      </section>
+
+      <section id="faq" className="container section anchor-section">
+        <h2 className="section-title reveal">{faq.heading}</h2>
+        <div className="reveal">
+          <Accordion items={faq.items} />
         </div>
       </section>
 

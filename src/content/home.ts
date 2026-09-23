@@ -6,7 +6,7 @@ export const hero = {
   subhead:
     'A small team of builders creating AI systems that are real, tested and transparent, starting with a vertical farm you can watch us build.',
   primary: { to: '/vfarm#signup', label: 'Join vFarm early access' },
-  secondary: { to: '/team', label: 'Meet the team' },
+  secondary: { to: '/#team', label: 'Meet the team' },
   /* The floating cards. Only facts that cannot go stale. The launch card's
      number is worked out live from the countdown target. */
   cards: {
@@ -52,7 +52,7 @@ export const building = {
       icon: 'users',
       title: 'The team',
       body: 'Six builders and a founder, building in the open.',
-      to: '/team',
+      to: '/#team',
       linkLabel: 'Meet the team',
     },
   ],

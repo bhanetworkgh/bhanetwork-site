@@ -1043,22 +1043,21 @@ main {
 }
 
 /* ---------------------------------------------------------------------------
-   Team.
+   Home: Meet the team, FAQ.
    --------------------------------------------------------------------------- */
 
-.principles {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--sp-4);
-  margin-top: var(--sp-9);
+/* Sections the nav scrolls to: their headings clear the sticky nav. */
+.anchor-section {
+  scroll-margin-top: calc(var(--nav-h) + 8px);
 }
-.principles li {
-  padding: var(--sp-4) var(--sp-7);
-  border-radius: 999px;
-  font-size: 13px;
-  font-weight: 500;
-  background: var(--glass-bg);
-  box-shadow: inset 0 0 0 1px var(--line-strong);
+.section-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.section-center .section-title {
+  margin-bottom: var(--sp-5);
 }
 
 .avatar {
@@ -1085,129 +1084,148 @@ main {
   box-shadow: inset 0 0 0 1px var(--line);
 }
 
-/* Team profiles: one full-width card each, photo left, text right. */
-.section-tight {
-  padding-block: var(--sp-7) 0;
+
+/*
+ * The team: a centred grid of circular portraits, name and role only.
+ * Four then three on desktop, three a row on tablet, two on mobile with the
+ * last one centred — flex-wrap with centred rows does all three.
+ */
+.team-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--sp-10) var(--sp-7);
+  max-width: 1000px;
+  margin: var(--sp-11) auto 0;
 }
-.team-intro {
+.team-member {
   display: flex;
   flex-direction: column;
-  gap: var(--sp-7);
-  max-width: 75ch;
-  font-size: 17px;
-  line-height: 1.7;
-  color: var(--dim);
+  align-items: center;
+  gap: var(--sp-3);
+  width: calc((100% - var(--sp-7)) / 2);
+  text-align: center;
 }
-.team-intro p:last-child {
-  color: var(--ink);
-  font-weight: 500;
-}
-.profiles {
-  display: flex;
-  flex-direction: column;
-  gap: var(--sp-9);
-}
-.profile {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: var(--sp-8);
-  align-items: start;
-  padding: var(--sp-8);
+.member-photo {
+  width: 96px;
+  height: 96px;
+  aspect-ratio: 1;
+  margin-bottom: var(--sp-5);
+  border-radius: 50%;
   border: 1px solid var(--line-strong);
-  border-radius: var(--radius-xl);
-  background: var(--panel);
-  box-shadow: var(--shadow-card);
-  /* Deep links land below the sticky nav, not under it. */
-  scroll-margin-top: calc(var(--nav-h) + 20px);
+  object-fit: cover;
+  object-position: center 25%;
   transition:
-    border-color 400ms ease,
-    box-shadow 400ms ease;
+    box-shadow 200ms ease,
+    border-color 200ms ease;
 }
-.profile.is-highlighted {
+.member-photo.avatar-monogram {
+  font-size: 28px;
+}
+.team-member:hover .member-photo {
   border-color: var(--gold);
-  box-shadow:
-    0 0 0 4px var(--gold-soft),
-    var(--shadow-pop);
+  box-shadow: 0 0 0 4px var(--gold-soft), 0 8px 24px -8px rgba(212, 169, 58, 0.55);
 }
-.profile-photo {
-  width: 120px;
-  border-radius: var(--radius-lg);
-}
-.profile-photo.avatar-monogram {
-  font-size: 32px;
-}
-.profile-text {
-  display: flex;
-  flex-direction: column;
-  gap: var(--sp-6);
-  max-width: 75ch;
-  min-width: 0;
-}
-.profile-name {
-  font-size: clamp(24px, 3vw, 30px);
-  line-height: 1.15;
-}
-.profile-role {
-  margin-top: calc(-1 * var(--sp-3));
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  color: var(--gold-ink);
-}
-.profile-bio {
+.member-name {
   font-size: 16px;
-  line-height: 1.7;
-  color: var(--dim);
+  font-weight: 500;
+  letter-spacing: -0.01em;
 }
-.profile-subhead {
-  margin-top: var(--sp-4);
+.member-role {
+  max-width: 22ch;
   font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--ink);
-}
-.profile-list {
-  display: flex;
-  flex-direction: column;
-  gap: var(--sp-5);
-  padding-left: 1.15em;
-  list-style: disc;
-  font-size: 15px;
-  line-height: 1.65;
+  line-height: 1.4;
   color: var(--dim);
-}
-.profile-list li::marker {
-  color: var(--gold);
 }
 @media (min-width: 700px) {
-  .profile {
-    grid-template-columns: 150px minmax(0, 1fr);
-    gap: var(--sp-10);
-    padding: var(--sp-10);
+  .team-member {
+    width: calc((100% - 2 * var(--sp-9)) / 3);
   }
-  .profile-photo {
-    width: 150px;
+  .team-grid {
+    gap: var(--sp-11) var(--sp-9);
+  }
+  .member-photo {
+    width: 112px;
+    height: 112px;
   }
 }
 @media (min-width: 1024px) {
-  .profiles {
-    gap: var(--sp-10);
+  .team-member {
+    width: calc((100% - 3 * var(--sp-9)) / 4);
   }
-  .profile {
-    grid-template-columns: 180px minmax(0, 1fr);
-    gap: var(--sp-11);
-    padding: var(--sp-11);
+  .member-photo {
+    width: 132px;
+    height: 132px;
   }
-  .profile-photo {
-    width: 180px;
+  .member-photo.avatar-monogram {
+    font-size: 36px;
   }
-  .profile-founder {
-    grid-template-columns: 220px minmax(0, 1fr);
+}
+
+/* The FAQ accordion. */
+.accordion {
+  display: grid;
+  gap: var(--sp-5);
+  align-items: start;
+}
+.accordion-col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-5);
+}
+@media (min-width: 900px) {
+  .accordion {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--sp-7);
   }
-  .profile-founder .profile-photo {
-    width: 220px;
-  }
+}
+.accordion-item {
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-lg);
+  background: var(--panel);
+  box-shadow: var(--shadow-card);
+  transition: border-color 200ms ease;
+}
+.accordion-item.is-open {
+  border-color: var(--gold);
+}
+.accordion-heading {
+  font-size: inherit;
+  letter-spacing: normal;
+  text-wrap: wrap;
+}
+.accordion-q {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-7);
+  width: 100%;
+  padding: var(--sp-8) var(--sp-9);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.4;
+  text-align: left;
+  border-radius: var(--radius-lg);
+}
+.accordion-icon {
+  flex: none;
+  display: inline-grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  background: var(--gold-soft);
+  color: var(--gold-ink);
+  transition: transform 200ms ease;
+}
+.accordion-item.is-open .accordion-icon {
+  transform: rotate(45deg);
+}
+.accordion-a {
+  padding: 0 var(--sp-9) var(--sp-8);
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--dim);
 }
 
 /* The gallery lightbox. */

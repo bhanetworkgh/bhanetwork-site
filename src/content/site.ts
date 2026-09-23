@@ -14,10 +14,12 @@ export const SITE_NAME = 'Bays Horizon Network';
 export const OG_IMAGE = `${SITE_URL}/og.png`;
 
 export const nav = {
+  /* Team and FAQ are sections of Home; the nav scrolls to them. */
   links: [
-    { to: '/', label: 'Home' },
-    { to: '/vfarm', label: 'vFarm' },
-    { to: '/team', label: 'Team' },
+    { id: 'home', to: '/', label: 'Home' },
+    { id: 'vfarm', to: '/vfarm', label: 'vFarm' },
+    { id: 'team', to: '/#team', label: 'Team' },
+    { id: 'faq', to: '/#faq', label: 'FAQ' },
   ],
   cta: { to: '/vfarm#signup', label: 'Join vFarm early access' },
   menuLabel: 'Menu',
@@ -29,7 +31,7 @@ export const footer = {
   links: [
     { to: '/', label: 'Home' },
     { to: '/vfarm', label: 'vFarm' },
-    { to: '/team', label: 'Team' },
+    { to: '/#team', label: 'Team' },
     { to: '/privacy', label: 'Privacy' },
   ],
   contactLabel: 'Contact',
@@ -44,11 +46,6 @@ export const meta = {
     title: "Bays Horizon Network — building our own engine, not renting someone else's",
     description:
       'A small team of builders creating AI systems that are real, tested and transparent, starting with a vertical farm you can watch us build.',
-  },
-  team: {
-    title: 'Founding Builders — Bays Horizon Network',
-    description:
-      'The engineers and systems thinkers building the Bays Horizon engine, one real system at a time.',
   },
   privacy: {
     title: 'Privacy — Bays Horizon Network',
