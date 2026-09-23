@@ -18,12 +18,12 @@ export function Hero({
   ctaMode: CtaMode;
   onCta: React.ReactNode;
 }) {
-  const { home, status_tile } = config;
+  const { home, status_tile, render_asset } = config;
 
   return (
     <section className="hero">
       <div className="wash" aria-hidden="true" />
-      <div className="container hero-inner">
+      <div className={`container hero-inner${render_asset ? '' : ' hero-inner-solo'}`}>
         <div className="hero-copy stack">
           {home.kicker && <span className="t-kicker">{home.kicker}</span>}
           <h1 className="t-title-xl">{home.headline}</h1>
@@ -42,9 +42,12 @@ export function Hero({
             </>
           )}
         </div>
-        <div className="hero-render">
-          <RenderPanel tile={status_tile} />
-        </div>
+        {/* Only an approved asset renders; with none, the column is not there. */}
+        {render_asset && (
+          <div className="hero-render">
+            <RenderPanel asset={render_asset} tile={status_tile} />
+          </div>
+        )}
       </div>
     </section>
   );
