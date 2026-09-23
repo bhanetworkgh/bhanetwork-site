@@ -442,7 +442,7 @@ main {
   color: var(--faint);
 }
 .input:focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--gold-ink);
   outline-offset: 1px;
 }
 
@@ -1023,6 +1023,10 @@ main {
 
 .signup {
   scroll-margin-top: calc(var(--nav-h) + 12px);
+}
+/* The form is gold throughout, focus rings included. */
+.signup :focus-visible {
+  outline-color: var(--gold-ink);
 }
 .signup .claims-grid {
   margin-bottom: var(--sp-9);
