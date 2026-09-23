@@ -41,7 +41,7 @@
   height: 5px;
   margin-top: 8px;
   border-radius: 999px;
-  background: var(--accent);
+  background: var(--gold);
 }
 .qualifier {
   margin-top: var(--sp-6);
@@ -147,11 +147,11 @@
   background: var(--hover);
 }
 .form-choice.is-selected {
-  background: var(--accent-soft);
-  box-shadow: 0 0 0 1.5px var(--accent) inset;
+  background: var(--gold-soft);
+  box-shadow: 0 0 0 1.5px var(--gold) inset;
 }
 .form-choice:has(input:focus-visible) {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--gold-ink);
   outline-offset: 2px;
 }
 .form-choice input:focus-visible {
@@ -165,7 +165,7 @@
   width: 16px;
   height: 16px;
   margin-top: 2px;
-  accent-color: var(--accent);
+  accent-color: var(--gold);
 }
 .form-scale {
   display: grid;
@@ -217,7 +217,7 @@
   display: block;
   height: 100%;
   border-radius: inherit;
-  background: var(--accent);
+  background: var(--gold);
   transition: width 240ms ease;
 }
 
@@ -295,13 +295,13 @@ button.step-list-row:hover:not(:disabled) {
   box-shadow: 0 0 0 1px var(--line-strong) inset;
 }
 .step-list-item.is-current .step-list-row {
-  background: var(--accent-soft);
+  background: var(--gold-soft);
   color: var(--ink);
   font-weight: 500;
 }
 .step-list-item.is-current .step-list-mark {
-  background: var(--accent);
-  color: var(--accent-on);
+  background: var(--gold);
+  color: var(--gold-on);
   box-shadow: none;
 }
 .step-list-item.is-done .step-list-row {
