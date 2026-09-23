@@ -1,44 +1,40 @@
-import type { RenderAsset, StatusTile } from '../types/landing';
-import { showsCadRevision, showsRigStatus } from '../lib/provenance';
+import type { RenderAsset } from '../types/landing';
 
 /**
- * The vFarm render.
+ * An approved vFarm render.
  *
- * It renders only an approved asset from landing-config — one that carries
- * its `asset_id`, the `config_hash` it shows and the `cad_revision` it was
- * drawn from (parsed and checked in parseLandingConfig). With no such asset
- * it renders nothing at all: no drawn cabinet, no gradient, no placeholder
- * art. A picture of the rig is a claim about the rig, so it needs provenance
- * like any other.
- *
- * The asset's identity rides on the <figure> as data attributes, so anyone
- * inspecting the page can see which approved asset they are looking at. The
- * rig status line and the caption keep their own provenance gates.
+ * Only an asset that landing-config marks approved and that carries its
+ * `asset_id`, `config_hash` and `cad_revision` ever reaches here (checked in
+ * parseLandingConfig). With none, callers render nothing: no drawn cabinet,
+ * no placeholder art. The asset's identity rides on the <figure> as data
+ * attributes, so anyone inspecting the page can see which approved asset it is.
  */
-export function RenderPanel({ asset, tile }: { asset: RenderAsset | null; tile: StatusTile }) {
-  if (!asset) return null;
-
-  const status = showsRigStatus(tile);
-  const revision = showsCadRevision(tile);
-
+export function RenderPanel({
+  asset,
+  className = '',
+  eager = false,
+  showCaption = true,
+}: {
+  asset: RenderAsset;
+  className?: string;
+  eager?: boolean;
+  showCaption?: boolean;
+}) {
   return (
     <figure
-      className="render"
+      className={`render ${className}`.trim()}
       data-asset-id={asset.asset_id}
       data-config-hash={asset.config_hash}
       data-cad-revision={asset.cad_revision}
     >
-      <div className="render-ground">
-        <img className="render-img" src={asset.src} alt={asset.alt} />
-        {status && (
-          <div className="frost render-strip">
-            <span className="t-body ink">{tile.render_status}</span>
-          </div>
-        )}
-      </div>
-      {revision && (
-        <figcaption className="t-kicker render-caption">{tile.render_label}</figcaption>
-      )}
+      <img
+        className="render-img"
+        src={asset.src}
+        alt={asset.alt}
+        loading={eager ? 'eager' : 'lazy'}
+        decoding="async"
+      />
+      {showCaption && asset.caption && <figcaption className="render-caption">{asset.caption}</figcaption>}
     </figure>
   );
 }

@@ -1,22 +1,34 @@
-import type { ReactNode } from 'react';
+import { Link } from 'react-router-dom';
+import { footer } from '../content/site';
 import { Wordmark } from './Wordmark';
 
-export function Footer({ note }: { note?: ReactNode }) {
+export function Footer() {
   return (
     <footer className="footer">
       <div className="container footer-inner">
-        <div className="stack" style={{ gap: 'var(--sp-2)' }}>
+        <div className="footer-brand">
           <Wordmark />
-          <span className="t-body dim">bhanetwork.org</span>
+          <p className="t-body dim">
+            {footer.contactLabel}:{' '}
+            <a className="link" href={`mailto:${footer.email}`}>
+              {footer.email}
+            </a>
+          </p>
         </div>
-        <nav className="footer-nav" aria-label="Footer">
-          <a href="/vfarm">vFarm</a>
-          <a href="/#the-build">The build</a>
-          <a href="/#the-engine">The engine</a>
-          <a href="mailto:hello@bhanetwork.org">Contact</a>
+        <nav className="footer-links" aria-label="Footer">
+          {footer.links.map((l) => (
+            <Link key={l.to} to={l.to}>
+              {l.label}
+            </Link>
+          ))}
         </nav>
       </div>
-      {note && <div className="container footer-note">{note}</div>}
+      <div className="container footer-base">
+        <span>{footer.copyright}</span>
+        <a href={footer.teamLogin.href} className="footer-login">
+          {footer.teamLogin.label}
+        </a>
+      </div>
     </footer>
   );
 }

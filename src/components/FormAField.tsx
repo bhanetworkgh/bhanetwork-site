@@ -111,6 +111,8 @@ export function FormAField({
   return (
     <fieldset
       className="form-field form-group"
+      /* A single-choice group is a radiogroup, the role aria-required belongs to. */
+      role={multi ? undefined : 'radiogroup'}
       aria-invalid={error ? true : undefined}
       aria-describedby={describedBy}
       aria-required={q.required && !multi ? true : undefined}

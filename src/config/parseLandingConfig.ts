@@ -1,6 +1,8 @@
 import type {
   BuildFeedItem,
   EarlyAccessCopy,
+  EarlyAccessStep,
+  FaqItem,
   HomeCopy,
   LandingConfig,
   RenderAsset,
@@ -45,7 +47,9 @@ function url(value: unknown): string | null {
   const trimmed = value.trim();
   if (!trimmed) return null;
   try {
-    const parsed = new URL(trimmed, window.location.origin);
+    /* Relative paths resolve against the site; the pre-render has no window. */
+    const base = typeof window === 'undefined' ? 'https://bhanetwork.org' : window.location.origin;
+    const parsed = new URL(trimmed, base);
     return parsed.protocol === 'https:' || parsed.protocol === 'http:' ? trimmed : null;
   } catch {
     return null;
@@ -62,9 +66,28 @@ function parseHome(value: unknown): HomeCopy {
   };
 }
 
+/**
+ * "How early access works". Optional: an absent or empty list means the
+ * section is not rendered.
+ */
+function parseSteps(value: unknown): EarlyAccessStep[] {
+  return list(value)
+    .filter(isRecord)
+    .map((raw) => ({ title: str(raw.title).trim(), body: str(raw.body).trim() }))
+    .filter((step) => step.title !== '' || step.body !== '');
+}
+
+function parseFaq(value: unknown): FaqItem[] {
+  return list(value)
+    .filter(isRecord)
+    .map((raw) => ({ question: str(raw.question).trim(), answer: str(raw.answer).trim() }))
+    .filter((item) => item.question !== '' && item.answer !== '');
+}
+
 function parseEarlyAccess(value: unknown): EarlyAccessCopy {
   const raw = isRecord(value) ? value : {};
   return {
+    steps: parseSteps(raw.steps),
     headline: str(raw.headline),
     body: str(raw.body),
     qualifier: str(raw.qualifier),
@@ -95,14 +118,23 @@ function parseStatusTile(value: unknown): StatusTile {
  */
 function parseRenderAsset(value: unknown): RenderAsset | null {
   if (!isRecord(value) || value.approved !== true) return null;
-  const asset: RenderAsset = {
+  const asset = {
     src: url(value.src) ?? '',
     alt: str(value.alt).trim(),
     asset_id: str(value.asset_id).trim(),
     config_hash: str(value.config_hash).trim(),
     cad_revision: str(value.cad_revision).trim(),
   };
-  return Object.values(asset).every((field) => field !== '') ? asset : null;
+  if (!Object.values(asset).every((field) => field !== '')) return null;
+  /* The caption is optional and never required for approval. */
+  return { ...asset, caption: str(value.caption).trim() };
+}
+
+/** Approved renders for the /vfarm gallery. Each must pass the same test as render_asset. */
+function parseGallery(value: unknown): RenderAsset[] {
+  return list(value)
+    .map(parseRenderAsset)
+    .filter((asset): asset is RenderAsset => asset !== null);
 }
 
 function parseWhatVFarmIs(value: unknown): WhatVFarmIsItem[] {
@@ -147,6 +179,8 @@ export function parseLandingConfig(value: unknown): LandingConfig {
     what_vfarm_is: parseWhatVFarmIs(value.what_vfarm_is),
     status_tile: parseStatusTile(value.status_tile),
     render_asset: parseRenderAsset(value.render_asset),
+    gallery: parseGallery(value.gallery),
+    faq: parseFaq(value.faq),
     build_feed: parseBuildFeed(value.build_feed),
   };
 }

@@ -44,7 +44,11 @@ export function EarlyAccessForm({ config, ctaMode }: { config: LandingConfig; ct
    * Read once, at mount, from the URL this visitor actually arrived on — so a
    * later history change cannot rewrite where a lead came from.
    */
-  const utm = useMemo(() => readUtm(window.location.search), []);
+  const utm = useMemo(
+    /* The pre-render has no window; the browser reads the real URL on hydration. */
+    () => (typeof window === 'undefined' ? {} : readUtm(window.location.search)),
+    [],
+  );
   const [answers, setAnswers] = useState<Answers>(emptyAnswers);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [step, setStep] = useState(0);

@@ -1,24 +1,7 @@
 /**
- * The supporting claims, exactly as the config states them.
- *
- * This component writes nothing. If a claim is not in
- * `supporting_claims`, this site does not say it.
+ * The supporting claims, exactly as the config states them. This file writes
+ * nothing: if a claim is not in `supporting_claims`, this site does not say it.
  */
-export function ClaimsList({ claims }: { claims: string[] }) {
-  if (claims.length === 0) return null;
-  return (
-    <ul className="claims">
-      {claims.map((claim) => (
-        <li key={claim} className="claim t-body-lg dim">
-          <span className="claim-dot" aria-hidden="true" />
-          <span>{claim}</span>
-        </li>
-      ))}
-    </ul>
-  );
-}
-
-/** The same claims, same words, as a grid of small cards. */
 export function ClaimsGrid({ claims }: { claims: string[] }) {
   if (claims.length === 0) return null;
   return (
