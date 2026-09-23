@@ -560,7 +560,7 @@ main {
   }
 }
 
-/* The BHA wordmark: gold on black. */
+/* The logo: the BHA mark (the favicon) and the network name. */
 .wordmark {
   display: inline-flex;
   align-items: center;
@@ -568,19 +568,12 @@ main {
   flex: none;
 }
 .wordmark-mark {
-  display: inline-grid;
-  place-items: center;
-  height: 30px;
-  padding: 0 9px;
-  border-radius: 9px;
-  background: #0b0b0c;
-  color: #d9b04a;
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  box-shadow:
-    inset 0 0 0 1px rgba(217, 176, 74, 0.35),
-    0 2px 6px rgba(0, 0, 0, 0.18);
+  display: block;
+  flex: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
 }
 .wordmark-text {
   display: none;
