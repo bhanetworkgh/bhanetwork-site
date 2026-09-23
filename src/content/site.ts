@@ -43,7 +43,7 @@ export const footer = {
 /** Per-page <head> copy. /vfarm's comes from landing-config (see src/lib/meta.ts). */
 export const meta = {
   home: {
-    title: "Bays Horizon Network — building our own engine, not renting someone else's",
+    title: 'Bays Horizon Network — building the monitored vFarm in public',
     description:
       'We are wiring a real vertical farm to an AI engine that uses data from each growing cycle to inform future improvements.',
   },
