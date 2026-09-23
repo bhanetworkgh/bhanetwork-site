@@ -1085,99 +1085,132 @@ main {
   box-shadow: inset 0 0 0 1px var(--line);
 }
 
-.founder {
-  display: grid;
-  gap: var(--sp-9);
-  padding: var(--sp-8);
+/* Team profiles: one full-width card each, photo left, text right. */
+.section-tight {
+  padding-block: var(--sp-7) 0;
 }
-.founder-photo {
-  max-width: 320px;
-}
-.founder-copy {
+.team-intro {
   display: flex;
   flex-direction: column;
-  gap: var(--sp-6);
-}
-.founder-copy .card-body + .card-body {
-  margin-top: var(--sp-2);
-}
-@media (min-width: 800px) {
-  .founder {
-    grid-template-columns: minmax(0, 300px) minmax(0, 1fr);
-    gap: var(--sp-11);
-    padding: var(--sp-10);
-    align-items: start;
-  }
-}
-.builder-role {
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--gold-ink);
-}
-
-.builder-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--sp-7);
+  max-width: 75ch;
+  font-size: 17px;
+  line-height: 1.7;
+  color: var(--dim);
 }
-@media (min-width: 900px) {
-  .builder-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: var(--sp-9);
-  }
+.team-intro p:last-child {
+  color: var(--ink);
+  font-weight: 500;
 }
-.builder-grid > li {
+.profiles {
   display: flex;
-  min-width: 0;
-}
-/*
- * A real 1px border, all the way round. The tiles used to draw their edge
- * with a white inset highlight, which vanished against the light page along
- * the top of each card, so the second row read as clipped. They sit on a
- * flat part of the page, so they need no backdrop blur either.
- */
-.builder-tile {
-  display: flex;
-  flex: 1;
   flex-direction: column;
-  gap: var(--sp-2);
-  padding: var(--sp-5);
+  gap: var(--sp-9);
+}
+.profile {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--sp-8);
+  align-items: start;
+  padding: var(--sp-8);
   border: 1px solid var(--line-strong);
   border-radius: var(--radius-xl);
   background: var(--panel);
   box-shadow: var(--shadow-card);
+  /* Deep links land below the sticky nav, not under it. */
+  scroll-margin-top: calc(var(--nav-h) + 20px);
   transition:
-    transform 200ms ease,
-    box-shadow 200ms ease,
-    border-color 200ms ease;
+    border-color 400ms ease,
+    box-shadow 400ms ease;
 }
-.builder-tile:hover {
-  transform: translateY(-3px);
+.profile.is-highlighted {
   border-color: var(--gold);
-  box-shadow: var(--shadow-pop);
+  box-shadow:
+    0 0 0 4px var(--gold-soft),
+    var(--shadow-pop);
 }
-.tile-photo {
-  margin-bottom: var(--sp-5);
+.profile-photo {
+  width: 120px;
+  border-radius: var(--radius-lg);
 }
-.tile-name {
-  padding-inline: var(--sp-3);
-  font-size: 16px;
-  font-weight: 600;
-  letter-spacing: -0.01em;
+.profile-photo.avatar-monogram {
+  font-size: 32px;
 }
-.tile-role {
-  padding: 0 var(--sp-3) var(--sp-4);
+.profile-text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-6);
+  max-width: 75ch;
+  min-width: 0;
+}
+.profile-name {
+  font-size: clamp(24px, 3vw, 30px);
+  line-height: 1.15;
+}
+.profile-role {
+  margin-top: calc(-1 * var(--sp-3));
   font-size: 13px;
-  line-height: 1.4;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--gold-ink);
+}
+.profile-bio {
+  font-size: 16px;
+  line-height: 1.7;
   color: var(--dim);
 }
+.profile-subhead {
+  margin-top: var(--sp-4);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+.profile-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-5);
+  padding-left: 1.15em;
+  list-style: disc;
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--dim);
+}
+.profile-list li::marker {
+  color: var(--gold);
+}
 @media (min-width: 700px) {
-  .builder-tile {
-    padding: var(--sp-6);
+  .profile {
+    grid-template-columns: 150px minmax(0, 1fr);
+    gap: var(--sp-10);
+    padding: var(--sp-10);
+  }
+  .profile-photo {
+    width: 150px;
+  }
+}
+@media (min-width: 1024px) {
+  .profiles {
+    gap: var(--sp-10);
+  }
+  .profile {
+    grid-template-columns: 180px minmax(0, 1fr);
+    gap: var(--sp-11);
+    padding: var(--sp-11);
+  }
+  .profile-photo {
+    width: 180px;
+  }
+  .profile-founder {
+    grid-template-columns: 220px minmax(0, 1fr);
+  }
+  .profile-founder .profile-photo {
+    width: 220px;
   }
 }
 
-/* The builder panel and the gallery lightbox. */
+/* The gallery lightbox. */
 .modal-backdrop {
   position: fixed;
   inset: 0;
@@ -1222,52 +1255,6 @@ main {
   position: absolute;
   top: var(--sp-6);
   right: var(--sp-6);
-}
-.builder-modal {
-  display: flex;
-  flex-direction: column;
-  gap: var(--sp-8);
-}
-.builder-head {
-  display: flex;
-  align-items: center;
-  gap: var(--sp-8);
-  padding-right: var(--sp-10);
-}
-.avatar-md {
-  width: 88px;
-  flex: none;
-  aspect-ratio: 1;
-  font-size: 28px;
-}
-.builder-subhead {
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--dim);
-}
-.builder-list {
-  display: flex;
-  flex-direction: column;
-  gap: var(--sp-6);
-  margin-top: calc(-1 * var(--sp-3));
-}
-.builder-list li {
-  display: flex;
-  gap: var(--sp-5);
-  line-height: 1.55;
-}
-.builder-check {
-  flex: none;
-  display: inline-grid;
-  place-items: center;
-  width: 22px;
-  height: 22px;
-  margin-top: 1px;
-  border-radius: 999px;
-  background: var(--gold-soft);
-  color: var(--gold-ink);
 }
 @keyframes fade {
   from {
