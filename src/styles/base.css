@@ -498,6 +498,18 @@ a {
   font-size: 13px;
   font-weight: 500;
   letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+/* On the narrowest phones the name would crowd the button: keep the mark, and
+   keep the name for screen readers. */
+@media (max-width: 359px) {
+  .wordmark-text {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
 }
 
 /* Hero --------------------------------------------------------------------- */
@@ -606,7 +618,8 @@ a {
   background: var(--raised);
   box-shadow: 0 0 0 1px var(--line) inset;
 }
-@media (max-width: 899px) {
+/* Below this the claim cards would be squeezed beside the ask: stack them. */
+@media (max-width: 1099px) {
   .ea-home {
     grid-template-columns: minmax(0, 1fr);
     gap: var(--sp-9);
