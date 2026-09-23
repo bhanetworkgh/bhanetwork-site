@@ -1,5 +1,6 @@
 import type { LandingConfig } from '../types/landing';
 import { meta as copy, OG_IMAGE, SITE_NAME, SITE_URL } from '../content/site';
+import { images } from './images';
 
 /**
  * Each route's <head>: title, description, canonical, Open Graph and Twitter.
@@ -20,7 +21,8 @@ export interface PageMeta {
 export const ROUTES = ['/', '/vfarm', '/team', '/privacy'] as const;
 
 export function metaFor(path: string, config: LandingConfig | null): PageMeta {
-  const base = { path, image: OG_IMAGE };
+  /* The link-preview image: the manifest's hero render when set, else the brand card. */
+  const base = { path, image: images.og ? SITE_URL + images.og : OG_IMAGE };
   switch (path) {
     case '/':
       return { ...base, ...copy.home };

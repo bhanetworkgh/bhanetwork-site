@@ -24,11 +24,10 @@ publishing `dist/`.
   in the config. Success shows only on HTTP 200 with `{"ok": true}`.
   `source_campaign` is always the config's value — no URL parameter can
   change it — and `utm_*` parameters travel separately in `utm`.
-- **Images:** vFarm images only from approved renders in the config
-  (`render_asset`, `gallery`), each carrying `asset_id`, `config_hash` and
-  `cad_revision`. With none, nothing is drawn. Team photos go in
-  `public/team/<slug>.<ext>` (jpg, jpeg, png, webp or avif) with the slugs in
-  `src/content/team.ts`; a builder with no photo gets a monogram tile.
+- **Images:** vFarm renders come from `public/renders/manifest.json` (see
+  below). Team photos go in `public/team/<slug>.<ext>` (jpg, jpeg, png, webp
+  or avif) with the slugs in `src/content/team.ts`; a builder with no photo
+  gets a monogram tile.
 
 ## Optional landing-config keys the vFarm page reads
 
@@ -36,15 +35,46 @@ These render only when present:
 
 | Key | Shape | Section |
 | --- | --- | --- |
-| `render_asset.caption` | string | caption under the Home visual strip |
-| `gallery` | array of approved assets (same shape as `render_asset`) | /vfarm gallery + lightbox |
 | `early_access.steps` | array of `{ title, body }` (first three used) | /vfarm "How early access works" |
 | `faq` | array of `{ question, answer }` | /vfarm FAQ accordion |
+
+## vFarm renders
+
+To add renders, put the files in public/renders/ and list them in
+manifest.json. Only images from the Approved vFarm renders Drive folder.
+
+```json
+{
+  "hero": { "file": "rack-front.webp", "alt": "…", "caption": "…" },
+  "strip": null,
+  "gallery": []
+}
+```
+
+- `hero` — the image beside the /vfarm headline, and the link-preview (Open
+  Graph / Twitter) image for every page. Without it the headline runs full
+  width and pages share the default `public/og.png`.
+- `strip` — the wide image on Home.
+- `gallery` — the /vfarm gallery; a click opens a lightbox.
+
+An empty slot renders nothing: no placeholder, no gap. `alt` is required;
+`caption` is optional. At build time `scripts/images.mjs` converts every
+listed file to WebP in responsive widths (640–2400px, never upscaled);
+everything below the fold loads lazily. A listed file that does not exist
+fails the build.
+
+## Team photos
+
+Name them `<slug>.<ext>` in `public/team/`: `jason-bays`, `destiny-arupi`,
+`jeganathan`, `kaiqi-yang`, `ahad`, `hardik-bhatt`, `kavin-g-n`. The build
+crops each to a 4:5 portrait from the centre-top (so faces stay in frame) and
+converts it to WebP. Files with any other name are ignored, with a warning.
 
 ## How the build works
 
 ```
 npm run build
+  node scripts/images.mjs                        photos and renders → public/img/*.webp
   tsc -b                                         typecheck
   vite build                                     the client → dist/
   vite build --ssr src/entry-server.tsx          a renderer → dist-ssr/
@@ -87,7 +117,8 @@ src/content/                all non-vFarm copy
 src/config/                 reads and gates landing-config
 src/lib/                    Form A, attribution, meta tags, countdown target
 src/styles/                 tokens.css, app.css, forms.css
-public/                     landing-config.json, icons, og.png, sitemap, robots, team/
+public/                     landing-config.json, icons, og.png, sitemap, robots, team/, renders/
+scripts/images.mjs          builds public/img/ and src/generated/images.json (not committed)
 ```
 
 ## Running it

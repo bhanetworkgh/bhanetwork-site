@@ -5,3 +5,5 @@ dist/
 .vite/
 *.tsbuildinfo
 dist-ssr/
+public/img/
+src/generated/

@@ -1,12 +1,12 @@
 import { Link } from 'react-router-dom';
 import { building, ctaBand, hero, whatWeDo, whyFarm } from '../content/home';
 import { countdown } from '../content/site';
-import { useLanding } from '../config/landingConfig';
 import { remaining } from '../lib/flagship';
 import { Countdown, useNow } from '../components/Countdown';
 import { CtaBand } from '../components/CtaBand';
 import { Icon } from '../components/Icon';
 import { RenderPanel } from '../components/RenderPanel';
+import { images } from '../lib/images';
 
 /** The floating glass cards beside the hero. Facts that cannot go stale. */
 function HeroCards() {
@@ -49,9 +49,8 @@ function HeroCards() {
 }
 
 export function Home() {
-  const { config } = useLanding();
-  /* The visual strip: one wide approved render, or nothing. */
-  const strip = config?.render_asset ?? null;
+  /* The visual strip: the manifest's "strip" render, or nothing at all. */
+  const strip = images.renders.strip;
 
   return (
     <>
@@ -111,7 +110,7 @@ export function Home() {
 
       {strip && (
         <section className="container section reveal">
-          <RenderPanel asset={strip} className="strip" />
+          <RenderPanel render={strip} className="strip" sizes="(min-width: 1200px) 1136px, 100vw" />
         </section>
       )}
 

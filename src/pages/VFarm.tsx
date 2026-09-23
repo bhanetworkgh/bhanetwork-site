@@ -8,6 +8,7 @@ import { Faq } from '../components/Faq';
 import { Gallery } from '../components/Gallery';
 import { Icon, type IconName } from '../components/Icon';
 import { RenderPanel } from '../components/RenderPanel';
+import { images } from '../lib/images';
 import { ConfigUnavailable } from './ConfigUnavailable';
 
 const WHAT_ICONS: IconName[] = ['cube', 'layers', 'activity', 'grid', 'leaf', 'eye'];
@@ -23,7 +24,8 @@ export function VFarm() {
 
   const ea = config.early_access;
   const what = config.what_vfarm_is.slice(0, 6);
-  const hero = config.render_asset;
+  /* Renders come from public/renders/manifest.json; an empty slot renders nothing. */
+  const { hero, gallery } = images.renders;
 
   return (
     <>
@@ -43,7 +45,14 @@ export function VFarm() {
               </div>
             )}
           </div>
-          {hero && <RenderPanel asset={hero} eager className="hero-render" />}
+          {hero && (
+            <RenderPanel
+              render={hero}
+              className="hero-render"
+              sizes="(min-width: 960px) 520px, 100vw"
+              priority
+            />
+          )}
         </div>
       </section>
 
@@ -64,10 +73,10 @@ export function VFarm() {
         </section>
       )}
 
-      {config.gallery.length > 0 && (
+      {gallery.length > 0 && (
         <section className="container section reveal">
           <h2 className="section-title">{vfarmLabels.gallery}</h2>
-          <Gallery items={config.gallery} closeLabel={vfarmLabels.closeLabel} />
+          <Gallery items={gallery} closeLabel={vfarmLabels.closeLabel} />
         </section>
       )}
 

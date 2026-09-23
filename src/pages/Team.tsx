@@ -24,7 +24,7 @@ function BuilderPanel({ b, onClose }: { b: Builder; onClose: () => void }) {
   return (
     <Modal label={b.name} closeLabel={closeLabel} onClose={onClose} className="builder-modal">
       <div className="builder-head">
-        <Avatar slug={b.slug} name={b.name} className="avatar-md" eager />
+        <Avatar slug={b.slug} name={b.name} className="avatar-md" sizes="88px" eager />
         <div>
           <h2 className="card-title-lg">{b.name}</h2>
           <p className="builder-role">{b.role}</p>
@@ -80,7 +80,13 @@ export function Team() {
 
       <section className="container section">
         <article className="frost founder reveal">
-          <Avatar slug={founder.slug} name={founder.name} className="founder-photo" eager />
+          <Avatar
+            slug={founder.slug}
+            name={founder.name}
+            className="founder-photo"
+            sizes="(min-width: 800px) 300px, 90vw"
+            eager
+          />
           <div className="founder-copy">
             <p className="eyebrow">{founder.eyebrow}</p>
             <h2 className="card-title-lg">{founder.name}</h2>
