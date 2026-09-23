@@ -2,7 +2,7 @@ import { useLandingConfig } from '../../config/landingConfig';
 import { ConfigLoading, ConfigUnavailable, Shell, useDescription } from '../../components/Shell';
 import { VFarmHero } from './sections/VFarmHero';
 import { VFarmEarlyAccess } from './sections/VFarmEarlyAccess';
-import { VFarmStatus } from './sections/VFarmStatus';
+import { VFarmClaims } from './sections/VFarmClaims';
 import { ContractVersions } from '../../components/ContractVersions';
 
 /**
@@ -13,10 +13,11 @@ import { ContractVersions } from '../../components/ContractVersions';
  *
  *   1. early_access.headline, as the h1                   VFarmHero
  *   2. early_access.body, as the lead paragraph           VFarmHero
- *   3. every entry in supporting_claims, as a list        VFarmEarlyAccess
- *   4. the Early Access form                              VFarmEarlyAccess
- *   5. early_access.qualifier, directly beneath the form  VFarmEarlyAccess
- *   6. the four status tiles, Sample tags intact          VFarmStatus
+ *   3. the status tiles that can be proven, as stats      VFarmHero
+ *   4. every entry in supporting_claims, as cards         VFarmClaims
+ *   5. the Early Access form, with a step panel           VFarmEarlyAccess
+ *   6. early_access.qualifier, beside the button on every
+ *      step and in the step panel                         EarlyAccessForm
  *
  * Nothing is collapsed, deferred behind a link or shown on a tab. The order is
  * fixed here and nowhere else, so it cannot drift section by section.
@@ -53,10 +54,10 @@ export function VFarm() {
     );
 
   return (
-    <Shell cta={navCta} footerNote={<ContractVersions config={config} />}>
+    <Shell cta={navCta} footerNote={<ContractVersions config={config} />} tight>
       <VFarmHero config={config} />
+      <VFarmClaims claims={config.supporting_claims} />
       <VFarmEarlyAccess config={config} ctaMode={ctaMode} />
-      <VFarmStatus tile={config.status_tile} />
     </Shell>
   );
 }

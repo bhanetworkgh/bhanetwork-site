@@ -13,12 +13,19 @@ import { showsConfiguration, showsSpecVersion } from '../lib/provenance';
  * works it out from the fixed 31 Oct date on every load rather than reading a
  * number somebody typed.
  */
-export function StatusTiles({ tile }: { tile: StatusTile }) {
-  if (!tile.enabled) return null;
+export interface ShownTile {
+  label: string;
+  value: string;
+  mono?: boolean;
+}
+
+/** The tiles that may show right now, in order. Empty when none may. */
+export function shownTiles(tile: StatusTile): ShownTile[] {
+  if (!tile.enabled) return [];
 
   const days = daysToFlagship();
 
-  const tiles: { label: string; value: string; mono?: boolean }[] = [];
+  const tiles: ShownTile[] = [];
 
   /* Past the date the count stops rather than going negative. */
   if (days >= 0) {
@@ -32,6 +39,11 @@ export function StatusTiles({ tile }: { tile: StatusTile }) {
     tiles.push({ label: 'Last level-up', value: tile.last_level_up });
   }
 
+  return tiles;
+}
+
+export function StatusTiles({ tile }: { tile: StatusTile }) {
+  const tiles = shownTiles(tile);
   if (tiles.length === 0) return null;
 
   return (
@@ -40,6 +52,26 @@ export function StatusTiles({ tile }: { tile: StatusTile }) {
         <li key={t.label} className="card card-pad status-tile">
           <span className="t-kicker">{t.label}</span>
           <span className={`t-title-sm ${t.mono ? 'mono' : 'tabular'}`}>{t.value}</span>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+/**
+ * The same tiles as small stats, for a hero. Same provenance rules, same
+ * labels — only the size changes.
+ */
+export function HeroStats({ tile }: { tile: StatusTile }) {
+  const tiles = shownTiles(tile);
+  if (tiles.length === 0) return null;
+
+  return (
+    <ul className="hero-stats">
+      {tiles.map((t) => (
+        <li key={t.label} className="hero-stat">
+          <span className={`hero-stat-value ${t.mono ? 'mono' : 'tabular'}`}>{t.value}</span>
+          <span className="t-kicker">{t.label}</span>
         </li>
       ))}
     </ul>

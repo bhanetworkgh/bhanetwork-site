@@ -9,8 +9,10 @@ It serves exactly two routes:
 
 - **`/`** — the home page: the hero, the engine's status tiles, the build
   feed, what vFarm is, and the Early Access ask.
-- **`/vfarm`** — the vFarm Early Access page: the render, the claims, the
-  form, the qualifier, the status tiles. Short and honest, nothing more.
+- **`/vfarm`** — the vFarm Early Access page: the hero with its status
+  stats, the claims as cards, and the form card — Form A's questions on the
+  left, a sticky step list and the qualifier on the right, the qualifier again
+  under the button on every step. Short and honest, nothing more.
 
 **Leads are taken on `/vfarm` and nowhere else.** The home page has no form in
 it at all; every Early Access call to action there is a plain link to
@@ -90,7 +92,8 @@ the same required flags. They are mirrored, with each Form A entry ID, in
 `src/lib/formA.ts`, one Form A section per step. That file is the one place
 in `src/` that carries question wording, and it copies Form A rather than
 writing anything of its own: if Form A changes, the file changes to match, and
-a question is never added, reworded or dropped here alone.
+a question is never added, reworded or dropped here alone. Form A's entry
+IDs, sections and pageHistory are recorded in `docs/form-a-entry-ids.md`.
 
 **Submissions `POST` as JSON to the n8n intake webhook named in the config**,
 at `early_access_endpoint` — today

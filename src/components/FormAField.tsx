@@ -34,14 +34,16 @@ export function FormAField({
 }) {
   const errorId = `${id}-error`;
   const helpId = `${id}-help`;
-  const describedBy = [q.help ? helpId : '', error ? errorId : ''].filter(Boolean).join(' ') || undefined;
+  const describedBy =
+    [q.help ? helpId : '', error ? errorId : ''].filter(Boolean).join(' ') || undefined;
 
   const title = (
     <>
       {q.title}
       {q.required && (
         <span className="form-required" aria-hidden="true">
-          {' '}*
+          {' '}
+          *
         </span>
       )}
     </>
@@ -99,6 +101,10 @@ export function FormAField({
   /* Radio, checkbox and scale: a group of choices under one legend. */
   const multi = q.type === 'checkbox';
   const chosen = multi ? (Array.isArray(value) ? value : []) : [];
+  const options = q.options ?? [];
+  /* More than five options split into two columns on a wide screen. */
+  const layout =
+    q.type === 'scale' ? 'form-scale' : `form-choices${options.length > 5 ? ' is-two-col' : ''}`;
   const toggle = (option: string) =>
     onChange(chosen.includes(option) ? chosen.filter((o) => o !== option) : [...chosen, option]);
 
@@ -117,25 +123,28 @@ export function FormAField({
           <span>5 = {q.scaleLabels[1]}</span>
         </span>
       )}
-      <div className={q.type === 'scale' ? 'form-scale' : 'form-choices'}>
-        {(q.options ?? []).map((option, i) => (
-          <label key={option} className="form-choice t-body">
-            <input
-              type={multi ? 'checkbox' : 'radio'}
-              name={q.key}
-              value={option}
-              checked={multi ? chosen.includes(option) : value === option}
-              disabled={disabled}
-              onChange={() => (multi ? toggle(option) : onChange(option))}
-              aria-label={
-                q.type === 'scale' && q.scaleLabels && (i === 0 || i === 4)
-                  ? `${option} — ${q.scaleLabels[i === 0 ? 0 : 1]}`
-                  : undefined
-              }
-            />
-            <span>{option}</span>
-          </label>
-        ))}
+      <div className={layout}>
+        {options.map((option, i) => {
+          const checked = multi ? chosen.includes(option) : value === option;
+          return (
+            <label key={option} className={`form-choice t-body${checked ? ' is-selected' : ''}`}>
+              <input
+                type={multi ? 'checkbox' : 'radio'}
+                name={q.key}
+                value={option}
+                checked={checked}
+                disabled={disabled}
+                onChange={() => (multi ? toggle(option) : onChange(option))}
+                aria-label={
+                  q.type === 'scale' && q.scaleLabels && (i === 0 || i === 4)
+                    ? `${option} — ${q.scaleLabels[i === 0 ? 0 : 1]}`
+                    : undefined
+                }
+              />
+              <span>{option}</span>
+            </label>
+          );
+        })}
       </div>
       {problem}
     </fieldset>

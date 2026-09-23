@@ -6,10 +6,13 @@ import { Footer } from './Footer';
 export function Shell({
   cta,
   footerNote,
+  tight = false,
   children,
 }: {
   cta?: ReactNode;
   footerNote?: ReactNode;
+  /** A shorter page rhythm, for a page that is one task rather than a scroll. */
+  tight?: boolean;
   children: ReactNode;
 }) {
   return (
@@ -18,7 +21,9 @@ export function Shell({
         Skip to content
       </a>
       <TopBar cta={cta} />
-      <main id="main">{children}</main>
+      <main id="main" className={tight ? 'main-tight' : undefined}>
+        {children}
+      </main>
       <Footer note={footerNote} />
     </>
   );

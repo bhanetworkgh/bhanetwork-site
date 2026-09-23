@@ -9,6 +9,8 @@ import {
   type Answers,
 } from '../lib/formA';
 import { FormAField } from './FormAField';
+import { StepList, StepProgress } from './FormSteps';
+import { Qualifier } from './ClaimsList';
 import { Button, LinkButton } from './Button';
 
 /**
@@ -46,6 +48,8 @@ export function EarlyAccessForm({ config, ctaMode }: { config: LandingConfig; ct
   const [answers, setAnswers] = useState<Answers>(emptyAnswers);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [step, setStep] = useState(0);
+  /** The furthest section reached. Every section before it has passed its checks. */
+  const [reached, setReached] = useState(0);
   const [trap, setTrap] = useState('');
   const [state, setState] = useState<FormState>('idle');
 
@@ -61,17 +65,23 @@ export function EarlyAccessForm({ config, ctaMode }: { config: LandingConfig; ct
   if (!config.early_access_endpoint) {
     if (!config.interest_url) return null;
     return (
-      <LinkButton href={config.interest_url} variant="primary">
-        {copy.cta_label}
-      </LinkButton>
+      <div className="stack">
+        <LinkButton href={config.interest_url} variant="primary" className="btn-fit">
+          {copy.cta_label}
+        </LinkButton>
+        <Qualifier text={copy.qualifier} />
+      </div>
     );
   }
 
   if (state === 'success') {
     return (
-      <p className="form-success t-body-lg" role="status">
-        {copy.success_message}
-      </p>
+      <div className="stack">
+        <p className="form-success t-body-lg" role="status">
+          {copy.success_message}
+        </p>
+        <Qualifier text={copy.qualifier} />
+      </div>
     );
   }
 
@@ -79,25 +89,36 @@ export function EarlyAccessForm({ config, ctaMode }: { config: LandingConfig; ct
   const last = step === FORM_A_STEPS.length - 1;
   const busy = state === 'submitting';
 
-  /** Check the current step. True when it is complete; otherwise flag it and focus the first gap. */
-  function checkStep(): boolean {
+  /** The problems in one section, keyed by question. Empty when it is complete. */
+  function problemsIn(index: number): Record<string, string> {
     const found: Record<string, string> = {};
-    for (const q of current.questions) {
+    for (const q of FORM_A_STEPS[index].questions) {
       const problem = problemWith(q, answers[q.key]);
       if (problem) found[q.key] = problem;
     }
-    setErrors(found);
-    if (Object.keys(found).length === 0) return true;
+    return found;
+  }
+
+  function focusFirstProblem() {
     requestAnimationFrame(() => {
       const bad = formRef.current?.querySelector<HTMLElement>('[aria-invalid="true"]');
       const target = bad?.matches('fieldset') ? bad.querySelector<HTMLElement>('input') : bad;
       target?.focus();
     });
+  }
+
+  /** Check the current step. True when it is complete; otherwise flag it and focus the first gap. */
+  function checkStep(): boolean {
+    const found = problemsIn(step);
+    setErrors(found);
+    if (Object.keys(found).length === 0) return true;
+    focusFirstProblem();
     return false;
   }
 
   function goTo(next: number) {
     setStep(next);
+    setReached((r) => Math.max(r, next));
     setState('idle');
     requestAnimationFrame(() => {
       const heading = document.getElementById(`${ids}-step`);
@@ -112,6 +133,18 @@ export function EarlyAccessForm({ config, ctaMode }: { config: LandingConfig; ct
     if (!checkStep()) return;
     if (!last) {
       goTo(step + 1);
+      return;
+    }
+
+    /*
+     * The step list lets a visitor go back and change an earlier answer, so
+     * the whole form is checked again before anything is sent.
+     */
+    const firstBad = FORM_A_STEPS.findIndex((_, i) => Object.keys(problemsIn(i)).length > 0);
+    if (firstBad !== -1) {
+      goTo(firstBad);
+      setErrors(problemsIn(firstBad));
+      focusFirstProblem();
       return;
     }
 
@@ -155,65 +188,91 @@ export function EarlyAccessForm({ config, ctaMode }: { config: LandingConfig; ct
     /* Every answer stays where it was. Retrying is one more click. */
   }
 
+  /** Back is free; forward through the list only past a complete section. */
+  function selectStep(index: number) {
+    if (index > step && !checkStep()) return;
+    setErrors({});
+    goTo(index);
+  }
+
   return (
-    <form className="form" ref={formRef} onSubmit={submit} noValidate>
-      <div className="form-step-head stack">
-        <span className="t-kicker">
-          Step {step + 1} of {FORM_A_STEPS.length}
-        </span>
-        <h2 className="t-title-sm" id={`${ids}-step`} tabIndex={-1}>
-          {current.title}
-        </h2>
-        {current.description && <p className="t-body dim">{current.description}</p>}
-        <p className="t-body dim">
-          <span className="form-required" aria-hidden="true">*</span> Indicates required question
-        </p>
-      </div>
+    <div className="ea-layout">
+      <form className="form ea-main" ref={formRef} onSubmit={submit} noValidate>
+        <StepProgress step={step} />
+        <div className="form-step-head stack">
+          <h2 className="t-title-sm" id={`${ids}-step`} tabIndex={-1}>
+            {current.title}
+          </h2>
+          {current.description && <p className="t-body dim">{current.description}</p>}
+          <p className="t-body dim">
+            <span className="form-required" aria-hidden="true">
+              *
+            </span>{' '}
+            Indicates required question
+          </p>
+        </div>
 
-      {current.questions.map((q) => (
-        <FormAField
-          key={q.key}
-          q={q}
-          id={`${ids}-${q.key}`}
-          value={answers[q.key]}
-          error={errors[q.key] ?? null}
-          disabled={busy}
-          onChange={(value) => {
-            setAnswers((prev) => ({ ...prev, [q.key]: value }));
-            if (errors[q.key]) setErrors(({ [q.key]: _cleared, ...rest }) => rest);
-          }}
-        />
-      ))}
+        {current.questions.map((q) => (
+          <FormAField
+            key={q.key}
+            q={q}
+            id={`${ids}-${q.key}`}
+            value={answers[q.key]}
+            error={errors[q.key] ?? null}
+            disabled={busy}
+            onChange={(value) => {
+              setAnswers((prev) => ({ ...prev, [q.key]: value }));
+              if (errors[q.key]) setErrors(({ [q.key]: _cleared, ...rest }) => rest);
+            }}
+          />
+        ))}
 
-      {/* The honeypot. Hidden from people, offered to bots. Sent as `hp`. */}
-      <div className="form-trap" aria-hidden="true">
-        <label htmlFor={`${ids}-trap`}>Leave this field empty</label>
-        <input
-          id={`${ids}-trap`}
-          name="hp"
-          type="text"
-          tabIndex={-1}
-          autoComplete="off"
-          value={trap}
-          onChange={(e) => setTrap(e.target.value)}
-        />
-      </div>
+        {/* The honeypot. Hidden from people, offered to bots. Sent as `hp`. */}
+        <div className="form-trap" aria-hidden="true">
+          <label htmlFor={`${ids}-trap`}>Leave this field empty</label>
+          <input
+            id={`${ids}-trap`}
+            name="hp"
+            type="text"
+            tabIndex={-1}
+            autoComplete="off"
+            value={trap}
+            onChange={(e) => setTrap(e.target.value)}
+          />
+        </div>
 
-      <div className="form-actions">
-        {step > 0 && (
-          <Button type="button" variant="default" disabled={busy} onClick={() => goTo(step - 1)}>
-            Back
-          </Button>
-        )}
-        <Button type="submit" variant="primary" disabled={busy}>
-          {last ? (busy ? 'Sending…' : copy.cta_label) : 'Next'}
-        </Button>
-      </div>
-      {state === 'error' && (
-        <p className="form-error t-body" role="alert">
-          {copy.error_message}
-        </p>
-      )}
-    </form>
+        <div className="form-footer">
+          <div className="form-actions">
+            {step > 0 && (
+              <Button
+                type="button"
+                variant="default"
+                disabled={busy}
+                onClick={() => goTo(step - 1)}
+              >
+                Back
+              </Button>
+            )}
+            <Button type="submit" variant="primary" disabled={busy}>
+              {last ? (busy ? 'Sending…' : copy.cta_label) : 'Next'}
+            </Button>
+          </div>
+          {state === 'error' && (
+            <p className="form-error t-body" role="alert">
+              {copy.error_message}
+            </p>
+          )}
+          {/* Beside the button on every step, whatever the screen. */}
+          <Qualifier text={copy.qualifier} className="qualifier-inline" />
+        </div>
+      </form>
+
+      <aside className="ea-side">
+        <div className="ea-side-inner">
+          <StepList step={step} reached={reached} disabled={busy} onSelect={selectStep} />
+          <Qualifier text={copy.qualifier} className="qualifier-side" />
+        </div>
+      </aside>
+    </div>
   );
 }
