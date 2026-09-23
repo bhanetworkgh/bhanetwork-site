@@ -1,68 +1,88 @@
-import { useCallback, useEffect, useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import {
   builders,
   buildingHeading,
-  closeLabel,
   cta,
   founder,
   hero,
+  intro,
   principles,
-  type Builder,
+  type Person,
 } from '../content/team';
 import { Avatar } from '../components/Avatar';
 import { CtaBand } from '../components/CtaBand';
-import { Icon } from '../components/Icon';
-import { Modal } from '../components/Modal';
 
-/** Opened from a tile, so closing can step back rather than add history. */
-interface OpenedHere {
-  fromTile?: boolean;
-}
-
-function BuilderPanel({ b, onClose }: { b: Builder; onClose: () => void }) {
+/**
+ * One full profile: photo left, text right (photo on top on a phone).
+ * The card's id is the builder's slug, so /team#<slug> lands on it.
+ */
+function Profile({
+  person,
+  isFounder = false,
+  highlighted,
+}: {
+  person: Person;
+  isFounder?: boolean;
+  highlighted: boolean;
+}) {
   return (
-    <Modal label={b.name} closeLabel={closeLabel} onClose={onClose} className="builder-modal">
-      <div className="builder-head">
-        <Avatar slug={b.slug} name={b.name} className="avatar-md" sizes="88px" eager />
-        <div>
-          <h2 className="card-title-lg">{b.name}</h2>
-          <p className="builder-role">{b.role}</p>
-        </div>
-      </div>
-      <p className="card-body">{b.bio}</p>
-      <h3 className="builder-subhead">{buildingHeading}</h3>
-      <ul className="builder-list">
-        {b.building.map((item) => (
-          <li key={item}>
-            <span className="builder-check">
-              <Icon name="check" size={14} />
-            </span>
-            {item}
-          </li>
+    <article
+      id={person.slug}
+      className={`profile${isFounder ? ' profile-founder' : ''}${highlighted ? ' is-highlighted' : ''}`}
+      aria-labelledby={`${person.slug}-name`}
+    >
+      <Avatar
+        slug={person.slug}
+        name={person.name}
+        className="profile-photo"
+        sizes={
+          isFounder
+            ? '(min-width: 1024px) 220px, (min-width: 700px) 150px, 120px'
+            : '(min-width: 1024px) 180px, (min-width: 700px) 150px, 120px'
+        }
+        eager={isFounder}
+      />
+      <div className="profile-text">
+        <h2 className="profile-name" id={`${person.slug}-name`}>
+          {person.name}
+        </h2>
+        <p className="profile-role">{person.role}</p>
+        {person.bio.map((p) => (
+          <p key={p.slice(0, 32)} className="profile-bio">
+            {p}
+          </p>
         ))}
-      </ul>
-    </Modal>
+        {person.building.length > 0 && (
+          <>
+            <h3 className="profile-subhead">{buildingHeading}</h3>
+            <ul className="profile-list">
+              {person.building.map((item) => (
+                <li key={item.slice(0, 32)}>{item}</li>
+              ))}
+            </ul>
+          </>
+        )}
+      </div>
+    </article>
   );
 }
 
 export function Team() {
-  const { hash, state } = useLocation();
-  const navigate = useNavigate();
+  const { hash } = useLocation();
   /*
-   * The pre-rendered HTML cannot know the #hash, so the panel opens only once
-   * the page has hydrated; a direct link to /team#<slug> opens it a moment
-   * after load.
+   * /team#<slug>: the layout scrolls to the card (its scroll-margin clears the
+   * sticky nav); here the card's border lights up briefly so the eye finds it.
+   * Only after hydration — the pre-rendered HTML cannot know the hash.
    */
-  const [hydrated, setHydrated] = useState(false);
-  useEffect(() => setHydrated(true), []);
-  const slug = decodeURIComponent(hash.slice(1));
-  const open = hydrated ? (builders.find((b) => b.slug === slug) ?? null) : null;
-
-  const close = useCallback(() => {
-    if ((state as OpenedHere | null)?.fromTile) navigate(-1);
-    else navigate({ pathname: '/team', hash: '' }, { replace: true });
-  }, [navigate, state]);
+  const [highlight, setHighlight] = useState<string | null>(null);
+  useEffect(() => {
+    const slug = decodeURIComponent(hash.slice(1));
+    if (!slug) return;
+    setHighlight(slug);
+    const t = window.setTimeout(() => setHighlight(null), 2200);
+    return () => window.clearTimeout(t);
+  }, [hash]);
 
   return (
     <>
@@ -78,49 +98,24 @@ export function Team() {
         </div>
       </section>
 
-      <section className="container section">
-        <article className="frost founder reveal">
-          <Avatar
-            slug={founder.slug}
-            name={founder.name}
-            className="founder-photo"
-            sizes="(min-width: 800px) 300px, 90vw"
-            eager
-          />
-          <div className="founder-copy">
-            <p className="eyebrow">{founder.eyebrow}</p>
-            <h2 className="card-title-lg">{founder.name}</h2>
-            <p className="builder-role">{founder.role}</p>
-            {founder.paragraphs.map((p) => (
-              <p key={p.slice(0, 24)} className="card-body">
-                {p}
-              </p>
-            ))}
-          </div>
-        </article>
+      <section className="container section-tight">
+        <div className="team-intro">
+          {intro.map((p) => (
+            <p key={p.slice(0, 32)}>{p}</p>
+          ))}
+        </div>
       </section>
 
       <section className="container section">
-        <ul className="builder-grid">
+        <div className="profiles">
+          <Profile person={founder} isFounder highlighted={highlight === founder.slug} />
           {builders.map((b) => (
-            <li key={b.slug} className="reveal">
-              <Link
-                to={{ pathname: '/team', hash: b.slug }}
-                state={{ fromTile: true } satisfies OpenedHere}
-                className="builder-tile"
-              >
-                <Avatar slug={b.slug} name={b.name} className="tile-photo" />
-                <span className="tile-name">{b.name}</span>
-                <span className="tile-role">{b.role}</span>
-              </Link>
-            </li>
+            <Profile key={b.slug} person={b} highlighted={highlight === b.slug} />
           ))}
-        </ul>
+        </div>
       </section>
 
       <CtaBand heading={cta.heading} to={cta.button.to} label={cta.button.label} />
-
-      {open && <BuilderPanel b={open} onClose={close} />}
     </>
   );
 }
