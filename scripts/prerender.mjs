@@ -60,3 +60,19 @@ for (const [url, file] of targets) {
 }
 
 await rm(resolve(root, 'dist-ssr'), { recursive: true, force: true });
+
+/*
+ * Ship only the WebP versions from dist/img/. The originals in public/team/
+ * and public/renders/ are sources for scripts/images.mjs, not pages to serve
+ * (dist/team/index.html, the /team page, is left alone).
+ */
+const IMAGE = /\.(jpe?g|png|webp|avif)$/i;
+for (const dir of ['team', 'renders']) {
+  let files = [];
+  try {
+    files = await readdir(resolve(dist, dir));
+  } catch {
+    continue;
+  }
+  for (const f of files) if (IMAGE.test(f)) await rm(resolve(dist, dir, f));
+}

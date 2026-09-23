@@ -81,24 +81,6 @@ export interface BuildFeedItem {
   sample: boolean;
 }
 
-/**
- * An approved render of the rig.
- *
- * The image slot renders only when every field is present and `approved` is
- * true: an image must carry the asset it is, the configuration it shows and
- * the named CAD revision it was drawn from. Until landing-config provides
- * one, the slot renders nothing — no placeholder art.
- */
-export interface RenderAsset {
-  src: string;
-  alt: string;
-  asset_id: string;
-  config_hash: string;
-  cad_revision: string;
-  /** Optional. Empty when the config gives none. */
-  caption: string;
-}
-
 export interface LandingConfig {
   page_contract_version: string;
   mechanics_contract_version: string;
@@ -112,10 +94,6 @@ export interface LandingConfig {
   supporting_claims: string[];
   what_vfarm_is: WhatVFarmIsItem[];
   status_tile: StatusTile;
-  /** null until an approved asset exists. */
-  render_asset: RenderAsset | null;
-  /** Approved renders for the /vfarm gallery. Optional; empty when absent. */
-  gallery: RenderAsset[];
   /** The /vfarm FAQ. Optional; empty when absent. */
   faq: FaqItem[];
   build_feed: BuildFeedItem[];

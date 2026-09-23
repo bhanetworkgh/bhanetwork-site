@@ -1,4 +1,4 @@
-import photos from 'virtual:team-photos';
+import { images } from '../lib/images';
 
 /** "Kavin G N" → "KG", "Ahad" → "A". */
 function initials(name: string): string {
@@ -11,26 +11,33 @@ function initials(name: string): string {
 }
 
 /**
- * A builder's photo from public/team/<slug>.<ext>, or — when there is no
- * photo yet — a neutral monogram tile. Never a stock image.
+ * A builder's photo — public/team/<slug>.<ext>, turned into a 4:5 WebP
+ * portrait at build time — or, when there is no photo, a neutral monogram
+ * tile. Never a stock image.
  */
 export function Avatar({
   slug,
   name,
   className = '',
+  sizes = '(min-width: 900px) 360px, 50vw',
   eager = false,
 }: {
   slug: string;
   name: string;
   className?: string;
+  sizes?: string;
   eager?: boolean;
 }) {
-  const src = photos[slug];
-  if (src) {
+  const photo = images.team[slug];
+  if (photo) {
     return (
       <img
         className={`avatar ${className}`.trim()}
-        src={src}
+        src={photo.src}
+        srcSet={photo.srcset}
+        sizes={sizes}
+        width={photo.width}
+        height={photo.height}
         alt={name}
         loading={eager ? 'eager' : 'lazy'}
         decoding="async"

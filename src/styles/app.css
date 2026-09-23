@@ -775,6 +775,9 @@ main {
   width: 100%;
   height: auto;
 }
+.hero-render {
+  align-self: center;
+}
 .strip .render-img {
   aspect-ratio: 21 / 9;
   object-fit: cover;
@@ -1061,8 +1064,11 @@ main {
 .avatar {
   display: block;
   width: 100%;
+  height: auto;
   aspect-ratio: 4 / 5;
   object-fit: cover;
+  /* Photos are cropped centre-top at build time; keep faces in frame here too. */
+  object-position: center top;
   border-radius: var(--radius-lg);
   background: var(--raised);
 }
@@ -1120,30 +1126,35 @@ main {
     gap: var(--sp-9);
   }
 }
+.builder-grid > li {
+  display: flex;
+  min-width: 0;
+}
+/*
+ * A real 1px border, all the way round. The tiles used to draw their edge
+ * with a white inset highlight, which vanished against the light page along
+ * the top of each card, so the second row read as clipped. They sit on a
+ * flat part of the page, so they need no backdrop blur either.
+ */
 .builder-tile {
   display: flex;
+  flex: 1;
   flex-direction: column;
   gap: var(--sp-2);
-  height: 100%;
   padding: var(--sp-5);
+  border: 1px solid var(--line-strong);
   border-radius: var(--radius-xl);
-  background: var(--frost-card);
-  -webkit-backdrop-filter: blur(22px) saturate(1.5);
-  backdrop-filter: blur(22px) saturate(1.5);
-  box-shadow:
-    inset 0 1px 0 var(--gloss),
-    inset 0 0 0 1px var(--glass-edge),
-    var(--shadow-card);
+  background: var(--panel);
+  box-shadow: var(--shadow-card);
   transition:
     transform 200ms ease,
-    box-shadow 200ms ease;
+    box-shadow 200ms ease,
+    border-color 200ms ease;
 }
 .builder-tile:hover {
   transform: translateY(-3px);
-  box-shadow:
-    inset 0 1px 0 var(--gloss),
-    inset 0 0 0 1px var(--glass-edge),
-    var(--shadow-pop);
+  border-color: var(--gold);
+  box-shadow: var(--shadow-pop);
 }
 .tile-photo {
   margin-bottom: var(--sp-5);
@@ -1331,12 +1342,20 @@ main {
   font-size: 14px;
   font-weight: 500;
 }
-.footer-links a {
+.footer-links a,
+.footer-email,
+.footer-login {
   color: var(--dim);
+  text-decoration: none;
+  transition: color 150ms ease;
+}
+.footer-links a {
   padding-block: var(--sp-3);
 }
-.footer-links a:hover {
-  color: var(--ink);
+.footer-links a:hover,
+.footer-email:hover,
+.footer-login:hover {
+  color: var(--gold-ink);
 }
 .footer-base {
   display: flex;
@@ -1347,13 +1366,7 @@ main {
   font-size: 13px;
   color: var(--dim);
 }
-.footer-login {
-  text-decoration: underline;
-  text-underline-offset: 2px;
-}
-.footer-login:hover {
-  color: var(--ink);
-}
+
 
 /* ---------------------------------------------------------------------------
    Motion: fade and rise on scroll, only once scripts run and only when the

@@ -5,7 +5,6 @@ import type {
   FaqItem,
   HomeCopy,
   LandingConfig,
-  RenderAsset,
   StatusTile,
   WhatVFarmIsItem,
 } from '../types/landing';
@@ -112,31 +111,6 @@ function parseStatusTile(value: unknown): StatusTile {
   };
 }
 
-/**
- * The approved render, or null. Every field must be a non-empty string and
- * `approved` must be exactly true — anything short of that is no image.
- */
-function parseRenderAsset(value: unknown): RenderAsset | null {
-  if (!isRecord(value) || value.approved !== true) return null;
-  const asset = {
-    src: url(value.src) ?? '',
-    alt: str(value.alt).trim(),
-    asset_id: str(value.asset_id).trim(),
-    config_hash: str(value.config_hash).trim(),
-    cad_revision: str(value.cad_revision).trim(),
-  };
-  if (!Object.values(asset).every((field) => field !== '')) return null;
-  /* The caption is optional and never required for approval. */
-  return { ...asset, caption: str(value.caption).trim() };
-}
-
-/** Approved renders for the /vfarm gallery. Each must pass the same test as render_asset. */
-function parseGallery(value: unknown): RenderAsset[] {
-  return list(value)
-    .map(parseRenderAsset)
-    .filter((asset): asset is RenderAsset => asset !== null);
-}
-
 function parseWhatVFarmIs(value: unknown): WhatVFarmIsItem[] {
   return list(value)
     .filter(isRecord)
@@ -178,8 +152,6 @@ export function parseLandingConfig(value: unknown): LandingConfig {
       .filter((claim) => claim !== ''),
     what_vfarm_is: parseWhatVFarmIs(value.what_vfarm_is),
     status_tile: parseStatusTile(value.status_tile),
-    render_asset: parseRenderAsset(value.render_asset),
-    gallery: parseGallery(value.gallery),
     faq: parseFaq(value.faq),
     build_feed: parseBuildFeed(value.build_feed),
   };

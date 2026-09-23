@@ -5,9 +5,10 @@
   "type": "module",
   "description": "The public front door for bhanetwork.org.",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build && vite build --ssr src/entry-server.tsx --outDir dist-ssr && node scripts/prerender.mjs",
-    "typecheck": "tsc -b",
+    "images": "node scripts/images.mjs",
+    "dev": "node scripts/images.mjs && vite",
+    "build": "node scripts/images.mjs && tsc -b && vite build && vite build --ssr src/entry-server.tsx --outDir dist-ssr && node scripts/prerender.mjs",
+    "typecheck": "node scripts/images.mjs && tsc -b",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -21,6 +22,7 @@
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "@vitejs/plugin-react": "^6.1.1",
+    "sharp": "^0.35.4",
     "typescript": "^7.0.2",
     "vite": "^8.3.0"
   },

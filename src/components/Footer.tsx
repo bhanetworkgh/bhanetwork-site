@@ -10,7 +10,7 @@ export function Footer() {
           <Wordmark />
           <p className="t-body dim">
             {footer.contactLabel}:{' '}
-            <a className="link" href={`mailto:${footer.email}`}>
+            <a className="footer-email" href={`mailto:${footer.email}`}>
               {footer.email}
             </a>
           </p>

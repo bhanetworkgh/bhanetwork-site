@@ -1,40 +1,41 @@
-import type { RenderAsset } from '../types/landing';
+import type { Render } from '../lib/images';
 
 /**
- * An approved vFarm render.
- *
- * Only an asset that landing-config marks approved and that carries its
- * `asset_id`, `config_hash` and `cad_revision` ever reaches here (checked in
- * parseLandingConfig). With none, callers render nothing: no drawn cabinet,
- * no placeholder art. The asset's identity rides on the <figure> as data
- * attributes, so anyone inspecting the page can see which approved asset it is.
+ * A vFarm render from public/renders/manifest.json — only files from the
+ * Approved vFarm renders Drive folder go there. An empty slot never reaches
+ * this component: callers render nothing, with no placeholder and no gap.
+ * Below-the-fold renders load lazily; `priority` is for the one above it.
  */
 export function RenderPanel({
-  asset,
+  render,
+  sizes,
   className = '',
-  eager = false,
+  priority = false,
   showCaption = true,
 }: {
-  asset: RenderAsset;
+  render: Render;
+  sizes: string;
   className?: string;
-  eager?: boolean;
+  priority?: boolean;
   showCaption?: boolean;
 }) {
   return (
-    <figure
-      className={`render ${className}`.trim()}
-      data-asset-id={asset.asset_id}
-      data-config-hash={asset.config_hash}
-      data-cad-revision={asset.cad_revision}
-    >
+    <figure className={`render ${className}`.trim()}>
       <img
         className="render-img"
-        src={asset.src}
-        alt={asset.alt}
-        loading={eager ? 'eager' : 'lazy'}
+        src={render.src}
+        srcSet={render.srcset}
+        sizes={sizes}
+        width={render.width}
+        height={render.height}
+        alt={render.alt}
+        loading={priority ? 'eager' : 'lazy'}
+        fetchPriority={priority ? 'high' : 'auto'}
         decoding="async"
       />
-      {showCaption && asset.caption && <figcaption className="render-caption">{asset.caption}</figcaption>}
+      {showCaption && render.caption && (
+        <figcaption className="render-caption">{render.caption}</figcaption>
+      )}
     </figure>
   );
 }
