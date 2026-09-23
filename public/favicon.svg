@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Bays Horizon Network">
-  <!-- The BHA mark: gold on black, the same in a light or a dark tab. -->
+  <!-- The BHA mark: gold letters on black, drawn as outlines so it looks the same on every system. -->
   <rect width="64" height="64" rx="14" fill="#0b0b0c"/>
-  <rect x="1" y="1" width="62" height="62" rx="13" fill="none" stroke="#d9b04a" stroke-opacity=".4" stroke-width="2"/>
-  <text x="32" y="41" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-weight="700" font-size="22" letter-spacing="1" fill="#d9b04a">BHA</text>
+  <rect x="1.5" y="1.5" width="61" height="61" rx="12.5" fill="none" stroke="#d9b04a" stroke-opacity=".45" stroke-width="3"/>
+  <path transform="translate(8.63 39.03) scale(0.2043)" fill="#d9b04a" d="M67.68-19.63L67.68-19.63Q67.68-10.25 60.64-5.13Q53.61 0 41.11 0L41.11 0L6.69 0L6.69-68.80L38.18-68.80Q50.78-68.80 57.25-64.43Q63.72-60.06 63.72-51.51L63.72-51.51Q63.72-45.65 60.47-41.63Q57.23-37.60 50.59-36.18L50.59-36.18Q58.94-35.21 63.31-30.93Q67.68-26.66 67.68-19.63ZM49.22-49.56L49.22-49.56Q49.22-54.20 46.26-56.15Q43.31-58.11 37.50-58.11L37.50-58.11L21.09-58.11L21.09-41.06L37.60-41.06Q43.70-41.06 46.46-43.19Q49.22-45.31 49.22-49.56ZM53.22-20.75L53.22-20.75Q53.22-30.42 39.36-30.42L39.36-30.42L21.09-30.42L21.09-10.69L39.89-10.69Q46.83-10.69 50.02-13.21Q53.22-15.72 53.22-20.75ZM141.70 0L127.29 0L127.29-29.49L97.31-29.49L97.31 0L82.91 0L82.91-68.80L97.31-68.80L97.31-41.41L127.29-41.41L127.29-68.80L141.70-68.80L141.70 0ZM222.01 0L207.76 0L201.65-17.58L175.43-17.58L169.33 0L154.92 0L180.02-68.80L197.01-68.80L222.01 0ZM189.54-54.83L188.52-58.20L188.22-57.13Q187.74-55.37 187.05-53.13Q186.37-50.88 178.65-28.42L178.65-28.42L198.43-28.42L191.64-48.19L189.54-54.83Z"/>
 </svg>
