@@ -2,7 +2,6 @@ import { useEffect, useState, type MouseEvent } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { nav } from '../content/site';
 import { Wordmark } from './Wordmark';
-import { ThemeToggle } from './ThemeToggle';
 import { Icon } from './Icon';
 
 type Spy = 'home' | 'team' | 'faq';
@@ -45,7 +44,7 @@ function useScrollSpy(active: boolean): Spy {
 
 /**
  * The sticky nav: wordmark left; Home · vFarm · Team · FAQ in the middle;
- * the theme toggle and the gold call to action right. Team and FAQ are
+ * the gold call to action right. Team and FAQ are
  * sections of Home: from any page they switch to Home without a reload and
  * scroll to the section. On a phone the links and the gold button fold into
  * a menu that closes after a tap. The bar is forest on every page.
@@ -103,7 +102,6 @@ export function Nav() {
           {nav.links.map((l) => link(l, 'nav-link'))}
         </nav>
         <div className="nav-actions">
-          <ThemeToggle />
           <Link
             to={nav.cta.to}
             className="btn btn-gold btn-sm nav-cta"

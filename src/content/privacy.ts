@@ -6,7 +6,7 @@
 
 export const privacy = {
   heading: 'Privacy',
-  updated: 'Last updated 23 September 2026',
+  updated: 'Last updated 27 September 2026',
   intro:
     'This site collects personal information in one place only: the vFarm early-access form on the vFarm page. This page explains what that form collects and what happens to it.',
   sections: {
@@ -22,7 +22,7 @@ export const privacy = {
     },
     where: {
       heading: 'Where it goes',
-      body: "When you submit, your answers go to our intake workflow (run on n8n), which writes them into the vFarm team's lead tracking — the response sheet behind our early-access intake form. Only the Bays Horizon team can see it.",
+      body: "When you submit, your answers go to our intake workflow (run on n8n), which writes them into the vFarm team's lead tracking: the response sheet behind our early-access intake form. Only the Bays Horizon team can see it.",
     },
     sold: {
       heading: 'We never sell it',
@@ -40,7 +40,7 @@ export const privacy = {
     },
     browser: {
       heading: 'What this site stores in your browser',
-      body: 'Only your light or dark theme choice, if you use the toggle in the menu bar, saved in your browser\'s local storage so the site remembers it. There are no tracking cookies, no analytics and no advertising scripts on this site.',
+      body: 'Nothing. This site stores nothing in your browser: no cookies, no local storage, no tracking, no analytics and no advertising scripts.',
     },
   },
   contactEmail: 'admin@bhanetwork.org',

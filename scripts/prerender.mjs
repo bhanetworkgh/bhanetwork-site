@@ -83,7 +83,7 @@ await writeFile(
     <meta name="robots" content="noindex" />
     <link rel="canonical" href="https://bhanetwork.org/#team" />
     <meta http-equiv="refresh" content="0; url=/#team" />
-    <title>Bays Horizon Network — Meet the team</title>
+    <title>Meet the team | Bays Horizon Network</title>
     <script>location.replace('/#team');</script>
   </head>
   <body>

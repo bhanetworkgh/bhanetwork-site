@@ -86,7 +86,6 @@ export const buildLog = {
 };
 
 export const launchBar = {
-  daysTo: (n: number) => `${n} ${n === 1 ? 'day' : 'days'} to the vFarm launch`,
   /* The phone dock has room for less. */
   daysToShort: (n: number) => `${n} ${n === 1 ? 'day' : 'days'} to Oct 31`,
 };

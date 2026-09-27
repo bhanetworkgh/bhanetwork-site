@@ -50,14 +50,7 @@ button.step-list-row:hover {
   background: var(--forest-raised);
   color: var(--on-forest);
 }
-:root[data-theme="dark"] .step-list-item.is-current .step-list-row {
-  background: #1b2d23;
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .step-list-item.is-current .step-list-row {
-    background: #1b2d23;
-  }
-}
+
 .step-list-item.is-done .step-list-row {
   color: var(--on-forest-dim);
 }
@@ -126,14 +119,6 @@ button.step-list-row:hover {
   border-radius: var(--r-pill);
   background: var(--forest);
   transition: width 0.3s ease;
-}
-:root[data-theme="dark"] .step-progress-fill {
-  background: var(--lime);
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .step-progress-fill {
-    background: var(--lime);
-  }
 }
 
 .ea-head {
@@ -270,22 +255,7 @@ fieldset > .form-label {
 .form-choice.is-selected input {
   accent-color: var(--lime);
 }
-:root[data-theme="dark"] .form-choice.is-selected {
-  background: var(--lime);
-  color: #13170f;
-}
-:root[data-theme="dark"] .form-choice.is-selected input {
-  accent-color: #0f2419;
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .form-choice.is-selected {
-    background: var(--lime);
-    color: #13170f;
-  }
-  :root:not([data-theme="light"]) .form-choice.is-selected input {
-    accent-color: #0f2419;
-  }
-}
+
 .form-choice:has(input:focus-visible) {
   outline: 2px solid var(--focus);
   outline-offset: 2px;

@@ -6,11 +6,8 @@
    Forest and paper for calm. Lime only for live data and the italic half of
    a headline. Gold only for the one action: Join Early Access.
 
-   Theme: the device setting by default. The nav toggle stamps
-   <html data-theme="light|dark"> and remembers it in localStorage; an inline
-   script in index.html applies that before first paint, so there is no flash
-   of the wrong theme. The dark block is written twice on purpose: once for
-   "device says dark and nobody overrode it", once for "toggled to dark".
+   One theme, light, on every device (27 Sep: dark mode removed). The forest
+   bands carry the dark in the design.
    --------------------------------------------------------------------------- */
 
 /* Self-hosted, Latin subset. No request leaves the site for a font. */
@@ -99,52 +96,6 @@
   /* Skeleton shimmer. */
   --skel-a: #e4dfd1;
   --skel-b: #efeadf;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    color-scheme: dark;
-    --paper: #0b1510;
-    --card: #13221a;
-    --tile: #1b2d23;
-    --track: #22382c;
-    --forest: #07100b;
-    --forest-raised: #13221a;
-    --forest-deep: #050c08;
-    --ink: #edebe3;
-    --moss: #a9b5aa;
-    --gold-ink: #e7c766;
-    --line: rgba(237, 235, 227, 0.14);
-    --focus: #c6f36b;
-    --ok: #5cc98c;
-    --failing: #ff7a6e;
-    --failing-soft: #3d1d1a;
-    --shadow-tile: 0 30px 80px rgba(0, 0, 0, 0.35);
-    --skel-a: #1b2d23;
-    --skel-b: #22382c;
-  }
-}
-
-:root[data-theme="dark"] {
-  color-scheme: dark;
-  --paper: #0b1510;
-  --card: #13221a;
-  --tile: #1b2d23;
-  --track: #22382c;
-  --forest: #07100b;
-  --forest-raised: #13221a;
-  --forest-deep: #050c08;
-  --ink: #edebe3;
-  --moss: #a9b5aa;
-  --gold-ink: #e7c766;
-  --line: rgba(237, 235, 227, 0.14);
-  --focus: #c6f36b;
-  --ok: #5cc98c;
-  --failing: #ff7a6e;
-  --failing-soft: #3d1d1a;
-  --shadow-tile: 0 30px 80px rgba(0, 0, 0, 0.35);
-  --skel-a: #1b2d23;
-  --skel-b: #22382c;
 }
 
 @media (max-width: 899px) {

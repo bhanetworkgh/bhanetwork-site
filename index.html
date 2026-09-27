@@ -3,24 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="color-scheme" content="light dark" />
-    <meta name="theme-color" content="#0f2419" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#07100b" media="(prefers-color-scheme: dark)" />
-    <!--
-      Runs before any CSS or paint: applies a remembered theme choice (the
-      nav toggle writes it) so there is never a flash of the wrong theme, and
-      marks the page as scripted so below-the-fold sections may fade in.
-      Nothing else is stored; see /privacy.
-    -->
+    <meta name="color-scheme" content="light" />
+    <meta name="theme-color" content="#0f2419" />
+    <!-- Marks the page as scripted, so below-the-fold sections may animate in. Nothing is stored. -->
     <script>
-      (function () {
-        var d = document.documentElement;
-        d.classList.add('js');
-        try {
-          var t = localStorage.getItem('bha.theme');
-          if (t === 'light' || t === 'dark') d.dataset.theme = t;
-        } catch (e) {}
-      })();
+      document.documentElement.classList.add('js');
     </script>
     <!--app-head-->
     <!-- ?v= makes browsers fetch the icons again when they change; bump it with them. -->

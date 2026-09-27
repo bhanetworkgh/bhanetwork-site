@@ -16,7 +16,7 @@ publishing `dist/`.
 The "Field lab" direction Jason approved: forest and paper, Instrument Serif
 headings, Geist for text, Geist Mono for data. Gold is only ever the Join
 Early Access action; lime only marks live data and the italic half of a
-headline. Tokens live in `src/styles/tokens.css`, light and dark. The three
+headline. Tokens live in `src/styles/tokens.css`. One light theme (dark mode removed 27 Sep). No em dashes anywhere on the site: config text shows each one as a comma. The three
 fonts are self-hosted Latin subsets in `src/fonts/` (OFL), so no request
 leaves the site for a font.
 

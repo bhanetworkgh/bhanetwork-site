@@ -8,7 +8,7 @@ import { SITE_NAME } from '../content/site';
  */
 export function Wordmark({ onClick }: { onClick?: (e: MouseEvent) => void }) {
   return (
-    <Link to="/" className="wordmark" aria-label={`${SITE_NAME} — Home`} onClick={onClick}>
+    <Link to="/" className="wordmark" aria-label={`${SITE_NAME}, Home`} onClick={onClick}>
       <img className="wordmark-mark" src="/favicon.svg?v=3" width={36} height={36} alt="" />
       <span className="wordmark-text" aria-hidden="true">
         {SITE_NAME}

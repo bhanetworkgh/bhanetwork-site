@@ -25,9 +25,18 @@ function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
 
+/**
+ * The site never shows an em dash (house style, 27 Sep 2026). Config text is
+ * shown as written except that each em dash reads as a comma. The config
+ * file itself is never edited here.
+ */
+function noEmDash(text: string): string {
+  return text.replace(/\s*\u2014\s*/g, ', ');
+}
+
 /** A string, trimmed, or the fallback. Never null, never a number, never NaN. */
 function str(value: unknown, fallback = ''): string {
-  if (typeof value === 'string') return value;
+  if (typeof value === 'string') return noEmDash(value);
   if (typeof value === 'number' && Number.isFinite(value)) return String(value);
   return fallback;
 }

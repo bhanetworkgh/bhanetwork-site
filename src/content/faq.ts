@@ -14,7 +14,7 @@ export interface FaqEntry {
 }
 
 export const faq: { heading: string; items: FaqEntry[] } = {
-  heading: 'Questions, answered.',
+  heading: 'FAQ',
   items: [
     {
       q: 'What is Bays Horizon Network?',

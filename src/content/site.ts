@@ -34,8 +34,6 @@ export const nav = {
   cta: { to: '/vfarm#signup', label: 'Join vFarm early access' },
   menuLabel: 'Menu',
   closeMenuLabel: 'Close menu',
-  themeToLight: 'Switch to light theme',
-  themeToDark: 'Switch to dark theme',
 };
 
 export const footer = {
@@ -57,7 +55,6 @@ export const footer = {
   ],
   contactLabel: 'Contact',
   email: 'admin@bhanetwork.org',
-  teamLogin: { href: 'https://dashboard.bhanetwork.org', label: 'Team login' },
   copyright: '© 2026 Bays Horizon Network',
   launch: 'vFarm launch · Oct 31',
   watermark: 'Bays Horizon',
@@ -66,18 +63,18 @@ export const footer = {
 /** Per-page <head> copy. /vfarm's comes from landing-config (see src/lib/meta.ts). */
 export const meta = {
   home: {
-    title: 'Bays Horizon Network — building the monitored vFarm in public',
+    title: 'Bays Horizon Network | Building the monitored vFarm in public',
     description:
       'We are wiring a real vertical farm to an AI engine that uses data from each growing cycle to inform future improvements.',
   },
   privacy: {
-    title: 'Privacy — Bays Horizon Network',
+    title: 'Privacy | Bays Horizon Network',
     description:
       'What the vFarm early-access form collects, why, where it goes, how long it is kept and how to have it removed.',
   },
-  vfarmFallbackTitle: 'vFarm — Bays Horizon Network',
+  vfarmFallbackTitle: 'vFarm | Bays Horizon Network',
   notFound: {
-    title: 'Page not found — Bays Horizon Network',
+    title: 'Page not found | Bays Horizon Network',
     description: 'That page does not exist.',
   },
 };
