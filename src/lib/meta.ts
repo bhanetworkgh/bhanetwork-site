@@ -1,5 +1,5 @@
 import type { LandingConfig } from '../types/landing';
-import { meta as copy, OG_IMAGE, SITE_NAME, SITE_URL } from '../content/site';
+import { meta as copy, OG_IMAGE, ORGANIZATION, SITE_NAME, SITE_URL } from '../content/site';
 import { images } from './images';
 
 /**
@@ -49,6 +49,43 @@ function escapeAttr(value: string): string {
     .replace(/>/g, '&gt;');
 }
 
+/**
+ * Structured data (schema.org JSON-LD): tells search engines this page belongs
+ * to one organisation, what the site is, and what this page is. Home carries
+ * the Organization and WebSite; every indexed page carries its WebPage.
+ */
+function structuredData(m: PageMeta, url: string): string {
+  const org = {
+    '@type': 'Organization',
+    '@id': `${SITE_URL}/#organization`,
+    name: ORGANIZATION.name,
+    url: ORGANIZATION.url,
+    logo: ORGANIZATION.logo,
+    email: ORGANIZATION.email,
+    description: ORGANIZATION.description,
+  };
+  const site = {
+    '@type': 'WebSite',
+    '@id': `${SITE_URL}/#website`,
+    name: SITE_NAME,
+    url: `${SITE_URL}/`,
+    publisher: { '@id': `${SITE_URL}/#organization` },
+  };
+  const page = {
+    '@type': 'WebPage',
+    '@id': `${url}#webpage`,
+    url,
+    name: m.title,
+    description: m.description || undefined,
+    isPartOf: { '@id': `${SITE_URL}/#website` },
+    about: { '@id': `${SITE_URL}/#organization` },
+  };
+  const graph = m.path === '/' ? [org, site, page] : [page];
+  /* Safe inside <script>: nothing in the JSON can close the tag. */
+  const json = JSON.stringify({ '@context': 'https://schema.org', '@graph': graph }).replace(/</g, '\\u003c');
+  return `<script type="application/ld+json">${json}</script>`;
+}
+
 /** The tags as HTML, for the pre-render. */
 export function headHtml(m: PageMeta): string {
   const url = SITE_URL + (m.path === '/' ? '/' : m.path);
@@ -70,6 +107,7 @@ export function headHtml(m: PageMeta): string {
     `<meta name="twitter:title" content="${t}" />`,
     m.description && `<meta name="twitter:description" content="${d}" />`,
     `<meta name="twitter:image" content="${m.image}" />`,
+    !m.noindex && structuredData(m, url),
   ];
   return tags.filter(Boolean).join('\n    ');
 }

@@ -37,6 +37,24 @@ services:
       - path: /*
         name: Cache-Control
         value: public, max-age=0, must-revalidate
+      # Security (27 Sep). HSTS deliberately leaves out subdomains: the
+      # builders' hostnames (api.vfarm, cst, ...) get their TLS on their own
+      # servers, and this site must not be able to break them.
+      - path: /*
+        name: Strict-Transport-Security
+        value: max-age=31536000
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff
+      - path: /*
+        name: X-Frame-Options
+        value: DENY
+      - path: /*
+        name: Referrer-Policy
+        value: strict-origin-when-cross-origin
+      - path: /*
+        name: Permissions-Policy
+        value: camera=(), microphone=(), geolocation=(), payment=()
     routes:
       - type: redirect
         source: /team

@@ -13,6 +13,16 @@ export const SITE_NAME = 'Bays Horizon Network';
 /** The Open Graph / Twitter image every page shares. A brand card, not a vFarm image. */
 export const OG_IMAGE = `${SITE_URL}/og.png`;
 
+/** Who we are, for search engines (schema.org Organization). Only facts we can stand behind. */
+export const ORGANIZATION = {
+  name: SITE_NAME,
+  url: `${SITE_URL}/`,
+  logo: `${SITE_URL}/icon-512.png`,
+  email: 'admin@bhanetwork.org',
+  description:
+    'The building side of Bays Horizon: the team, the experiments and the AI engine behind the monitored vFarm.',
+};
+
 export const nav = {
   /* Team and FAQ are sections of Home; the nav scrolls to them. */
   links: [
