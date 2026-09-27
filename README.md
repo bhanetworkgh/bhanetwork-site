@@ -22,7 +22,11 @@ leaves the site for a font.
 
 - **Skeletons, not spinners.** Team photos and renders sit on a grey shimmer
   until they load; countdown numbers are skeleton bars until the clock starts.
-- **Tooltips** on every icon button (theme, menu, lightbox close).
+- **Tooltips** on every icon button (menu, lightbox close).
+- **Icons** are Phosphor (MIT), regular weight, vendored in `src/components/Icon.tsx`.
+- **Scroll motion** is GSAP with ScrollTrigger (`src/lib/motion.ts`): sections
+  rise in, the hero panel drifts (parallax), the principles band grows in, the
+  footer mark rises. Loaded after first paint; off for reduced motion.
 - **Caching.** Built files carry a content hash and are cached for a year;
   images for a day; pages always revalidate. The headers are in
   `render.yaml` and must also be set on the Render service (Headers tab).

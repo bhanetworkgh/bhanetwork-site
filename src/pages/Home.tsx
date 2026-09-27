@@ -137,7 +137,7 @@ export function Home() {
       )}
 
       <section className="container section-tight">
-        <div className="band-card reveal">
+        <div className="band-card">
           <h2 className="h-section">{whatWeDo.line}</h2>
           <ol className="principles">
             {whatWeDo.cards.map((c, i) => (
