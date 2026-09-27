@@ -1,11 +1,12 @@
 import type { ButtonHTMLAttributes, ReactNode } from 'react';
 
-type Variant = 'primary' | 'default' | 'ghost';
+type Variant = 'primary' | 'default' | 'ghost' | 'forest';
 
 const CLASS: Record<Variant, string> = {
-  primary: 'btn btn-primary',
+  primary: 'btn btn-gold',
   default: 'btn',
   ghost: 'btn btn-ghost',
+  forest: 'btn btn-forest',
 };
 
 export function Button({

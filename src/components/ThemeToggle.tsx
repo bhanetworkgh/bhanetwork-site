@@ -10,7 +10,8 @@ import { Icon } from './Icon';
  * so there is never a flash of the wrong theme.
  *
  * Both icons are always rendered and CSS shows the right one, so the server
- * and the browser render identical markup whatever the theme.
+ * and the browser render identical markup whatever the theme. Each carries its
+ * own tooltip, so hovering or focusing the button says what a click will do.
  */
 export const THEME_KEY = 'bha.theme';
 
@@ -36,10 +37,16 @@ export function ThemeToggle() {
       <span className="theme-icon-sun">
         <Icon name="sun" size={18} />
         <span className="sr-only">{nav.themeToLight}</span>
+        <span className="tip" aria-hidden="true">
+          {nav.themeToLight}
+        </span>
       </span>
       <span className="theme-icon-moon">
         <Icon name="moon" size={18} />
         <span className="sr-only">{nav.themeToDark}</span>
+        <span className="tip" aria-hidden="true">
+          {nav.themeToDark}
+        </span>
       </span>
     </button>
   );

@@ -21,6 +21,22 @@ services:
     branch: main
     buildCommand: npm install && npm run build
     staticPublishPath: dist
+    # Caching (27 Sep): the build's own files carry a content hash in their
+    # names, so browsers keep them for a year and never ask again; a new build
+    # makes new names. Images keep a day and refresh in the background. Pages
+    # themselves are always revalidated, so a deploy shows up on the next load.
+    # Like the routes, these must also exist on the service
+    # (Dashboard → bhanetwork-site → Headers).
+    headers:
+      - path: /assets/*
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
+      - path: /img/*
+        name: Cache-Control
+        value: public, max-age=86400, stale-while-revalidate=604800
+      - path: /*
+        name: Cache-Control
+        value: public, max-age=0, must-revalidate
     routes:
       - type: redirect
         source: /team

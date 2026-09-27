@@ -1,10 +1,12 @@
 import type { Render } from '../lib/images';
+import { useImageLoaded } from '../lib/useImageLoaded';
 
 /**
  * A vFarm render from public/renders/manifest.json — only files from the
  * Approved vFarm renders Drive folder go there. An empty slot never reaches
  * this component: callers render nothing, with no placeholder and no gap.
  * Below-the-fold renders load lazily; `priority` is for the one above it.
+ * A grey skeleton holds the render's shape until the image arrives.
  */
 export function RenderPanel({
   render,
@@ -19,9 +21,13 @@ export function RenderPanel({
   priority?: boolean;
   showCaption?: boolean;
 }) {
+  const { ref, loaded, onLoad, onError } = useImageLoaded();
   return (
-    <figure className={`render ${className}`.trim()}>
+    <figure className={`render skeleton${loaded ? ' is-loaded' : ''} ${className}`.trim()}>
       <img
+        ref={ref}
+        onLoad={onLoad}
+        onError={onError}
         className="render-img"
         src={render.src}
         srcSet={render.srcset}

@@ -78,7 +78,7 @@ export function Layout({
 }) {
   useRouteEffects(notFound);
   return (
-    <div className="app aurora">
+    <div className="app">
       <a className="skip-link" href="#main">
         Skip to content
       </a>

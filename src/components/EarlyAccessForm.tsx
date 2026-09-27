@@ -1,4 +1,4 @@
-import { useId, useMemo, useRef, useState } from 'react';
+import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import type { CtaMode, IntakePayload, LandingConfig } from '../types/landing';
 import { readUtm } from '../lib/attribution';
 import {
@@ -9,7 +9,7 @@ import {
   type Answers,
 } from '../lib/formA';
 import { FormAField } from './FormAField';
-import { StepList, StepProgress } from './FormSteps';
+import { StepList, StepProgress, TOTAL_QUESTIONS, questionNumber } from './FormSteps';
 import { Qualifier } from './ClaimsList';
 import { Button, LinkButton } from './Button';
 
@@ -29,6 +29,9 @@ import { Button, LinkButton } from './Button';
  * There are no cookies and no storage: the request is the only thing that
  * leaves the page.
  *
+ * On a phone the form asks one question per screen, so nobody faces a wall of
+ * fields on a small screen; the answers, checks and payload are identical.
+ *
  * Success is never optimistic: it is shown only after HTTP 200 whose body is
  * `{"ok": true}`. Anything else — another status, no body, a body that is not
  * JSON, `{"ok": false}`, no response at all — shows a plain error and keeps
@@ -36,6 +39,24 @@ import { Button, LinkButton } from './Button';
  */
 
 type FormState = 'idle' | 'submitting' | 'success' | 'error';
+
+const PHONE = '(max-width: 699px)';
+
+/**
+ * True on a phone-width screen. False on the server and on the first client
+ * render, so hydration matches the pre-rendered HTML; it flips a moment later.
+ */
+function usePhone(): boolean {
+  const [phone, setPhone] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia(PHONE);
+    const update = () => setPhone(mq.matches);
+    update();
+    mq.addEventListener('change', update);
+    return () => mq.removeEventListener('change', update);
+  }, []);
+  return phone;
+}
 
 export function EarlyAccessForm({ config, ctaMode }: { config: LandingConfig; ctaMode: CtaMode }) {
   const ids = useId();
@@ -52,6 +73,9 @@ export function EarlyAccessForm({ config, ctaMode }: { config: LandingConfig; ct
   const [answers, setAnswers] = useState<Answers>(emptyAnswers);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [step, setStep] = useState(0);
+  /** On a phone, which question of the current section is on screen. */
+  const [qi, setQi] = useState(0);
+  const phone = usePhone();
   /** The furthest section reached. Every section before it has passed its checks. */
   const [reached, setReached] = useState(0);
   const [trap, setTrap] = useState('');
@@ -90,15 +114,20 @@ export function EarlyAccessForm({ config, ctaMode }: { config: LandingConfig; ct
   }
 
   const current = FORM_A_STEPS[step];
-  const last = step === FORM_A_STEPS.length - 1;
+  const lastStep = step === FORM_A_STEPS.length - 1;
+  /* On a phone only one question shows; qi is kept in range if the screen widens. */
+  const q = Math.min(qi, current.questions.length - 1);
+  const lastQuestion = !phone || q === current.questions.length - 1;
+  const last = lastStep && lastQuestion;
+  const shown = phone ? [current.questions[q]!] : current.questions;
   const busy = state === 'submitting';
 
   /** The problems in one section, keyed by question. Empty when it is complete. */
   function problemsIn(index: number): Record<string, string> {
     const found: Record<string, string> = {};
-    for (const q of FORM_A_STEPS[index].questions) {
-      const problem = problemWith(q, answers[q.key]);
-      if (problem) found[q.key] = problem;
+    for (const question of FORM_A_STEPS[index].questions) {
+      const problem = problemWith(question, answers[question.key]);
+      if (problem) found[question.key] = problem;
     }
     return found;
   }
@@ -111,17 +140,36 @@ export function EarlyAccessForm({ config, ctaMode }: { config: LandingConfig; ct
     });
   }
 
-  /** Check the current step. True when it is complete; otherwise flag it and focus the first gap. */
-  function checkStep(): boolean {
-    const found = problemsIn(step);
+  /** Check what is on screen. True when it is complete; otherwise flag it and focus the first gap. */
+  function checkShown(): boolean {
+    const found: Record<string, string> = {};
+    for (const question of shown) {
+      const problem = problemWith(question, answers[question.key]);
+      if (problem) found[question.key] = problem;
+    }
     setErrors(found);
     if (Object.keys(found).length === 0) return true;
     focusFirstProblem();
     return false;
   }
 
-  function goTo(next: number) {
+  /** Check a whole section, wherever it is shown. */
+  function checkStep(): boolean {
+    const found = problemsIn(step);
+    setErrors(found);
+    if (Object.keys(found).length === 0) return true;
+    /* On a phone, jump to the first unanswered question in the section. */
+    if (phone) {
+      const firstBad = current.questions.findIndex((question) => found[question.key]);
+      if (firstBad !== -1) setQi(firstBad);
+    }
+    focusFirstProblem();
+    return false;
+  }
+
+  function goTo(next: number, question = 0) {
     setStep(next);
+    setQi(question);
     setReached((r) => Math.max(r, next));
     setState('idle');
     requestAnimationFrame(() => {
@@ -134,6 +182,13 @@ export function EarlyAccessForm({ config, ctaMode }: { config: LandingConfig; ct
   async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (busy) return; /* a double click cannot make two leads */
+    if (!checkShown()) return;
+    if (!lastQuestion) {
+      setQi(q + 1);
+      setErrors({});
+      requestAnimationFrame(() => formRef.current?.scrollIntoView({ block: 'start', behavior: 'smooth' }));
+      return;
+    }
     if (!checkStep()) return;
     if (!last) {
       goTo(step + 1);
@@ -146,8 +201,9 @@ export function EarlyAccessForm({ config, ctaMode }: { config: LandingConfig; ct
      */
     const firstBad = FORM_A_STEPS.findIndex((_, i) => Object.keys(problemsIn(i)).length > 0);
     if (firstBad !== -1) {
-      goTo(firstBad);
-      setErrors(problemsIn(firstBad));
+      const found = problemsIn(firstBad);
+      goTo(firstBad, Math.max(0, FORM_A_STEPS[firstBad].questions.findIndex((question) => found[question.key])));
+      setErrors(found);
       focusFirstProblem();
       return;
     }
@@ -192,6 +248,17 @@ export function EarlyAccessForm({ config, ctaMode }: { config: LandingConfig; ct
     /* Every answer stays where it was. Retrying is one more click. */
   }
 
+  /** Back one screen: the previous question on a phone, the previous section otherwise. */
+  function back() {
+    setErrors({});
+    if (phone && q > 0) {
+      setQi(q - 1);
+      return;
+    }
+    const prev = step - 1;
+    goTo(prev, phone ? FORM_A_STEPS[prev].questions.length - 1 : 0);
+  }
+
   /** Back is free; forward through the list only past a complete section. */
   function selectStep(index: number) {
     if (index > step && !checkStep()) return;
@@ -199,34 +266,42 @@ export function EarlyAccessForm({ config, ctaMode }: { config: LandingConfig; ct
     goTo(index);
   }
 
+  const canGoBack = step > 0 || (phone && q > 0);
+
   return (
-    <div className="ea-layout">
-      <form className="form ea-main" ref={formRef} onSubmit={submit} noValidate>
-        <StepProgress step={step} />
-        <div className="form-step-head stack">
-          <h2 className="t-title-sm" id={`${ids}-step`} tabIndex={-1}>
+    <div className="ea-card">
+      <aside className="ea-steps" aria-label="Sections">
+        <StepList step={step} reached={reached} disabled={busy} onSelect={selectStep} />
+      </aside>
+      <form className="ea-main" ref={formRef} onSubmit={submit} noValidate>
+        <div className="ea-progress-row">
+          <StepProgress
+            step={step}
+            question={phone ? questionNumber(step, q) : null}
+            totalQuestions={TOTAL_QUESTIONS}
+          />
+          <span className="ea-required mono">
+            <span aria-hidden="true">*</span> Required
+          </span>
+        </div>
+        <div className="ea-head">
+          <h3 className="ea-title" id={`${ids}-step`} tabIndex={-1}>
             {current.title}
-          </h2>
-          {current.description && <p className="t-body dim">{current.description}</p>}
-          <p className="t-body dim">
-            <span className="form-required" aria-hidden="true">
-              *
-            </span>{' '}
-            Indicates required question
-          </p>
+          </h3>
+          {current.description && (!phone || q === 0) && <p className="ea-desc">{current.description}</p>}
         </div>
 
-        {current.questions.map((q) => (
+        {shown.map((question) => (
           <FormAField
-            key={q.key}
-            q={q}
-            id={`${ids}-${q.key}`}
-            value={answers[q.key]}
-            error={errors[q.key] ?? null}
+            key={question.key}
+            q={question}
+            id={`${ids}-${question.key}`}
+            value={answers[question.key]}
+            error={errors[question.key] ?? null}
             disabled={busy}
             onChange={(value) => {
-              setAnswers((prev) => ({ ...prev, [q.key]: value }));
-              if (errors[q.key]) setErrors(({ [q.key]: _cleared, ...rest }) => rest);
+              setAnswers((prev) => ({ ...prev, [question.key]: value }));
+              if (errors[question.key]) setErrors(({ [question.key]: _cleared, ...rest }) => rest);
             }}
           />
         ))}
@@ -245,38 +320,31 @@ export function EarlyAccessForm({ config, ctaMode }: { config: LandingConfig; ct
           />
         </div>
 
-        <div className="form-footer">
-          <div className="form-actions">
-            {step > 0 && (
-              <Button
-                type="button"
-                variant="default"
-                disabled={busy}
-                onClick={() => goTo(step - 1)}
-              >
-                Back
-              </Button>
-            )}
-            <Button type="submit" variant="primary" disabled={busy}>
-              {last ? (busy ? 'Sending…' : copy.cta_label) : 'Next'}
+        <div className="ea-actions">
+          {canGoBack && (
+            <Button type="button" variant="ghost" disabled={busy} onClick={back}>
+              Back
             </Button>
-          </div>
-          {state === 'error' && (
-            <p className="form-error t-body" role="alert">
-              {copy.error_message}
-            </p>
           )}
-          {/* Beside the button on every step, whatever the screen. */}
-          <Qualifier text={copy.qualifier} className="qualifier-inline" />
+          <span className="ea-actions-gap" />
+          {last ? (
+            <Button type="submit" variant="primary" className="btn-lg" disabled={busy} aria-busy={busy}>
+              {busy ? 'Sending…' : copy.cta_label}
+            </Button>
+          ) : (
+            <Button type="submit" variant="forest">
+              Continue
+            </Button>
+          )}
         </div>
+        {state === 'error' && (
+          <p className="form-error ea-error" role="alert">
+            {copy.error_message}
+          </p>
+        )}
+        {/* Beside the button on every step, whatever the screen. */}
+        <Qualifier text={copy.qualifier} className="ea-qualifier" />
       </form>
-
-      <aside className="ea-side">
-        <div className="ea-side-inner">
-          <StepList step={step} reached={reached} disabled={busy} onSelect={selectStep} />
-          <Qualifier text={copy.qualifier} className="qualifier-side" />
-        </div>
-      </aside>
     </div>
   );
 }

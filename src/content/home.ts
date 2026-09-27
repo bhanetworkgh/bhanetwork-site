@@ -2,13 +2,15 @@
 
 export const hero = {
   eyebrow: 'Bays Horizon Network',
-  headline: 'Bays Horizon is building the monitored vFarm in public.',
+  /* The headline is set in two halves: the lead, then an italic lime accent. */
+  headlineLead: 'Bays Horizon is building the monitored vFarm',
+  headlineAccent: 'in public.',
   subhead:
     'We are wiring a real vertical farm to an AI engine that uses data from each growing cycle to inform future improvements. Join Early Access to see the builds, system diagrams, and monthly progress as we build toward an increasingly automated vFarm twin.',
   primary: { to: '/vfarm#signup', label: 'Join vFarm early access' },
   secondary: { to: '/#team', label: 'Meet the team' },
-  /* The floating cards. Only facts that cannot go stale. The launch card's
-     number is worked out live from the countdown target. */
+  /* The facts panel beside the headline. Only facts that cannot go stale.
+     The launch number is worked out live from the countdown target. */
   cards: {
     launch: { label: 'vFarm launch' },
     builders: { label: 'Founding builders', value: '6' },
@@ -67,4 +69,23 @@ export const whyFarm = {
 export const ctaBand = {
   heading: 'Follow the build.',
   button: { to: '/vfarm#signup', label: 'Join vFarm early access' },
+};
+
+/** The /vfarm facts on Home come from landing-config; these are only their headings. */
+export const whatVfarm = {
+  heading: 'What vFarm is,',
+  accentFour: 'in four lines.',
+  link: { to: '/vfarm', label: 'See vFarm' },
+};
+
+/** Shown only once landing-config's build_feed holds real (non-sample) entries. */
+export const buildLog = {
+  heading: 'The build log',
+  body: 'Every entry is a real clip from the build. What worked, what broke, what fixed itself.',
+};
+
+export const launchBar = {
+  daysTo: (n: number) => `${n} ${n === 1 ? 'day' : 'days'} to the vFarm launch`,
+  /* The phone dock has room for less. */
+  daysToShort: (n: number) => `${n} ${n === 1 ? 'day' : 'days'} to Oct 31`,
 };

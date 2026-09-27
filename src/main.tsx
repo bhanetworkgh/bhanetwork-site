@@ -1,7 +1,6 @@
 import { StrictMode } from 'react';
 import { createRoot, hydrateRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
-import '@fontsource-variable/inter/wght.css';
 import './styles/app.css';
 import { App } from './App';
 import { LandingProvider, landingStateFrom } from './config/landingConfig';

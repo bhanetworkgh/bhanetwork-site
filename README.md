@@ -11,6 +11,28 @@ Deployed as the Render static site **bhanetwork-site**
 (`srv-dao309oae00c73aj4uhg`) from `main`: `npm install && npm run build`,
 publishing `dist/`.
 
+## The look (27 Sep 2026)
+
+The "Field lab" direction Jason approved: forest and paper, Instrument Serif
+headings, Geist for text, Geist Mono for data. Gold is only ever the Join
+Early Access action; lime only marks live data and the italic half of a
+headline. Tokens live in `src/styles/tokens.css`, light and dark. The three
+fonts are self-hosted Latin subsets in `src/fonts/` (OFL), so no request
+leaves the site for a font.
+
+- **Skeletons, not spinners.** Team photos and renders sit on a grey shimmer
+  until they load; countdown numbers are skeleton bars until the clock starts.
+- **Tooltips** on every icon button (theme, menu, lightbox close).
+- **Caching.** Built files carry a content hash and are cached for a year;
+  images for a day; pages always revalidate. The headers are in
+  `render.yaml` and must also be set on the Render service (Headers tab).
+- **No optimistic success.** The form still shows success only after the
+  intake answers HTTP 200 with `{"ok": true}` — on purpose.
+- **On a phone** the form asks one question per screen; the answers, checks
+  and payload are the same as on desktop.
+- Sections marked `sample: true` in landing-config (the build feed, the
+  status tile) stay off the page until real entries replace them.
+
 ## Who owns what
 
 - **`public/landing-config.json` is Hardik's file. This repo never edits it.**

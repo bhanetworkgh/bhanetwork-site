@@ -8,23 +8,45 @@ import { FORM_A_STEPS } from '../lib/formA';
  * and can be revisited; nothing past `reached` can be jumped to.
  */
 
-/** The bar and its label, above the section heading. */
-export function StepProgress({ step }: { step: number }) {
+/** How many questions Form A asks in all. */
+export const TOTAL_QUESTIONS = FORM_A_STEPS.reduce((n, s) => n + s.questions.length, 0);
+
+/** The 1-based number of question `q` in section `step`, across the whole form. */
+export function questionNumber(step: number, q: number): number {
+  return FORM_A_STEPS.slice(0, step).reduce((n, s) => n + s.questions.length, 0) + q + 1;
+}
+
+/**
+ * The bar and its label, above the section heading. On a phone, where one
+ * question shows at a time, it counts questions as well as sections.
+ */
+export function StepProgress({
+  step,
+  question = null,
+  totalQuestions = TOTAL_QUESTIONS,
+}: {
+  step: number;
+  question?: number | null;
+  totalQuestions?: number;
+}) {
   const total = FORM_A_STEPS.length;
+  const label =
+    question === null
+      ? `Step ${step + 1} of ${total}`
+      : `Step ${step + 1} of ${total} · question ${question} of ${totalQuestions}`;
+  const fill = question === null ? (step + 1) / total : question / totalQuestions;
   return (
     <div className="step-progress">
-      <span className="t-kicker tabular step-progress-label">
-        Step {step + 1} of {total}
-      </span>
+      <span className="step-progress-label mono tabular">{label}</span>
       <div
         className="step-progress-track"
         role="progressbar"
-        aria-label={`Step ${step + 1} of ${total}`}
-        aria-valuemin={1}
-        aria-valuemax={total}
-        aria-valuenow={step + 1}
+        aria-label={label}
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-valuenow={Math.round(fill * 100)}
       >
-        <span className="step-progress-fill" style={{ width: `${((step + 1) / total) * 100}%` }} />
+        <span className="step-progress-fill" style={{ width: `${fill * 100}%` }} />
       </div>
     </div>
   );

@@ -69,6 +69,9 @@ export function Modal({
         <button type="button" className="icon-btn modal-close" onClick={onClose}>
           <Icon name="close" size={18} />
           <span className="sr-only">{closeLabel}</span>
+          <span className="tip" aria-hidden="true">
+            {closeLabel}
+          </span>
         </button>
         {children}
       </div>

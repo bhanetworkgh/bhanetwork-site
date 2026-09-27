@@ -47,8 +47,8 @@ function useScrollSpy(active: boolean): Spy {
  * The sticky nav: wordmark left; Home · vFarm · Team · FAQ in the middle;
  * the theme toggle and the gold call to action right. Team and FAQ are
  * sections of Home: from any page they switch to Home without a reload and
- * scroll to the section. On a phone the links fold into a menu that closes
- * after a tap; the gold button stays visible.
+ * scroll to the section. On a phone the links and the gold button fold into
+ * a menu that closes after a tap. The bar is forest on every page.
  */
 export function Nav() {
   const [open, setOpen] = useState(false);
@@ -118,8 +118,11 @@ export function Nav() {
             aria-controls="nav-menu"
             onClick={() => setOpen((o) => !o)}
           >
-            <Icon name={open ? 'close' : 'menu'} size={18} />
+            <Icon name={open ? 'close' : 'menu'} size={20} />
             <span className="sr-only">{nav.menuLabel}</span>
+            <span className="tip" aria-hidden="true">
+              {open ? nav.closeMenuLabel : nav.menuLabel}
+            </span>
           </button>
         </div>
       </div>
@@ -130,6 +133,13 @@ export function Nav() {
         hidden={!open}
       >
         {nav.links.map((l) => link(l, 'nav-menu-link'))}
+        <Link
+          to={nav.cta.to}
+          className="btn btn-gold btn-lg nav-menu-cta"
+          onClick={(e) => onNavClick(e, nav.cta.to)}
+        >
+          {nav.cta.label}
+        </Link>
       </nav>
     </header>
   );

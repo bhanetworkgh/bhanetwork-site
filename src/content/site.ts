@@ -23,21 +23,34 @@ export const nav = {
   ],
   cta: { to: '/vfarm#signup', label: 'Join vFarm early access' },
   menuLabel: 'Menu',
+  closeMenuLabel: 'Close menu',
   themeToLight: 'Switch to light theme',
   themeToDark: 'Switch to dark theme',
 };
 
 export const footer = {
-  links: [
-    { to: '/', label: 'Home' },
-    { to: '/vfarm', label: 'vFarm' },
-    { to: '/#team', label: 'Team' },
-    { to: '/privacy', label: 'Privacy' },
+  line: 'Building the monitored vFarm in public.',
+  groups: [
+    {
+      label: 'Site',
+      links: [
+        { to: '/', label: 'Home' },
+        { to: '/vfarm', label: 'vFarm' },
+        { to: '/#team', label: 'Team' },
+        { to: '/#faq', label: 'FAQ' },
+      ],
+    },
+    {
+      label: 'Company',
+      links: [{ to: '/privacy', label: 'Privacy' }],
+    },
   ],
   contactLabel: 'Contact',
   email: 'admin@bhanetwork.org',
   teamLogin: { href: 'https://dashboard.bhanetwork.org', label: 'Team login' },
   copyright: '© 2026 Bays Horizon Network',
+  launch: 'vFarm launch · Oct 31',
+  watermark: 'Bays Horizon',
 };
 
 /** Per-page <head> copy. /vfarm's comes from landing-config (see src/lib/meta.ts). */
