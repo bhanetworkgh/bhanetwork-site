@@ -38,11 +38,17 @@ const configScript = `<script>window.__LANDING_CONFIG__=${JSON.stringify(rawConf
   .replace(/\u2028/g, '\\u2028')
   .replace(/\u2029/g, '\\u2029')}</script>`;
 
-/* Preload the Latin face of the site font, so the headline paints in it sooner. */
-const latin = (await readdir(resolve(dist, 'assets'))).find((f) => /^inter-latin-wght-normal-.*\.woff2$/.test(f));
-const fontPreload = latin
-  ? `<link rel="preload" href="/assets/${latin}" as="font" type="font/woff2" crossorigin />`
-  : '';
+/*
+ * Preload the two faces the first screen paints in — the body sans and the
+ * headline serif — so the hero does not reflow when they arrive.
+ */
+const assets = await readdir(resolve(dist, 'assets'));
+const firstPaint = [/^geist-latin-.*\.woff$/, /^instrument-serif-latin-.*\.woff$/];
+const fontPreload = firstPaint
+  .map((re) => assets.find((f) => re.test(f)))
+  .filter(Boolean)
+  .map((f) => `<link rel="preload" href="/assets/${f}" as="font" type="font/woff" crossorigin />`)
+  .join('\n    ');
 
 const targets = [...ROUTES.map((r) => [r, r === '/' ? 'index.html' : `${r.slice(1)}/index.html`]), ['/404', '404.html']];
 

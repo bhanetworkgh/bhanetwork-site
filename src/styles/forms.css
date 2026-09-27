@@ -1,92 +1,318 @@
-/* The Early Access form and its step panel, carried over from the previous
-   site unchanged apart from the colours it now reads from the tokens. */
+/* ---------------------------------------------------------------------------
+   The Early Access form: a white card with the seven Form A sections on a
+   forest rail at the left and the questions on the right. On a phone the rail
+   goes and one question shows at a time.
+   --------------------------------------------------------------------------- */
 
-/* Claims, qualifier, the engine line --------------------------------------- */
-
-/* The claims as a grid of small cards, on /vfarm. */
-.claims-grid {
+.ea-card {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--sp-7);
-  list-style: none;
-  margin: 0;
-  padding: 0;
+  grid-template-columns: 320px minmax(0, 1fr);
+  border-radius: var(--r-band);
+  background: var(--card);
+  overflow: hidden;
+  box-shadow: var(--shadow-tile);
 }
-.claim-card {
+
+/* The section rail. */
+.ea-steps {
+  background: var(--forest);
+  color: var(--on-forest);
+  padding: 40px 24px;
+}
+.step-list {
   display: flex;
-  gap: var(--sp-5);
-  padding: var(--sp-7) var(--sp-8);
+  flex-direction: column;
+  gap: 4px;
 }
-@media (max-width: 699px) {
-  .claims-grid {
-    grid-template-columns: minmax(0, 1fr);
-    gap: var(--sp-5);
+.step-list-row {
+  width: 100%;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: var(--r-sm);
+  background: transparent;
+  color: var(--on-forest-faint);
+  font: inherit;
+  font-size: 15px;
+  text-align: left;
+}
+button.step-list-row {
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+button.step-list-row:hover {
+  background: rgba(237, 235, 227, 0.06);
+}
+.step-list-item.is-current .step-list-row {
+  background: var(--forest-raised);
+  color: var(--on-forest);
+}
+:root[data-theme="dark"] .step-list-item.is-current .step-list-row {
+  background: #1b2d23;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .step-list-item.is-current .step-list-row {
+    background: #1b2d23;
+  }
+}
+.step-list-item.is-done .step-list-row {
+  color: var(--on-forest-dim);
+}
+.step-list-mark {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  border-radius: var(--r-pill);
+  display: grid;
+  place-items: center;
+  font-size: 12px;
+  font-weight: 600;
+  background: rgba(237, 235, 227, 0.12);
+}
+.step-list-item.is-current .step-list-mark,
+.step-list-item.is-done .step-list-mark {
+  background: var(--lime);
+  color: var(--forest);
+}
+.step-list-item.is-todo .step-list-row {
+  cursor: default;
+}
+
+/* The questions. */
+.ea-main {
+  padding: 48px 56px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  min-width: 0;
+  /* Moving between steps scrolls the form's top into view, clear of the bar. */
+  scroll-margin-top: calc(var(--nav-h) + 16px);
+}
+
+.ea-progress-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.step-progress {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-width: 0;
+}
+.step-progress-label,
+.ea-required {
+  font-size: 13px;
+  color: var(--moss);
+  white-space: nowrap;
+}
+.ea-required {
+  font-size: 12px;
+}
+.step-progress-track {
+  flex: 1;
+  height: 4px;
+  border-radius: var(--r-pill);
+  background: var(--track);
+  overflow: hidden;
+}
+.step-progress-fill {
+  display: block;
+  height: 100%;
+  border-radius: var(--r-pill);
+  background: var(--forest);
+  transition: width 0.3s ease;
+}
+:root[data-theme="dark"] .step-progress-fill {
+  background: var(--lime);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .step-progress-fill {
+    background: var(--lime);
   }
 }
 
-.claims {
+.ea-head {
   display: flex;
   flex-direction: column;
-  gap: var(--sp-6);
-  margin-bottom: var(--sp-10);
-  max-width: 78ch;
+  gap: 8px;
 }
-.claim {
-  display: flex;
-  gap: var(--sp-5);
+.ea-title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(30px, 3.6vw, 52px);
+  line-height: 1;
 }
-.claim-dot {
-  flex: none;
-  width: 5px;
-  height: 5px;
-  margin-top: 8px;
-  border-radius: 999px;
-  background: var(--gold);
+.ea-title:focus {
+  outline: none;
 }
-.qualifier {
-  margin-top: var(--sp-6);
-  max-width: 78ch;
+.ea-desc {
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--moss);
 }
 
-/* The form ----------------------------------------------------------------- */
-
-.form {
-  display: flex;
-  flex-direction: column;
-  gap: var(--sp-7);
-  /* Moving between steps scrolls the form's top into view, clear of the top bar. */
-  scroll-margin-top: 72px;
-}
-.form-row {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--sp-7);
-}
+/* One question. */
 .form-field {
   display: flex;
   flex-direction: column;
-  gap: var(--sp-3);
+  gap: 12px;
+  min-width: 0;
 }
-/* Field labels are functional, so they take --dim rather than --faint. */
-.form-field .t-kicker {
-  color: var(--dim);
+.form-group {
+  margin: 0;
+  padding: 0;
+  border: 0;
 }
-.form-actions {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--sp-6);
+.form-label {
+  padding: 0;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--ink);
 }
-.form-error {
+fieldset > .form-label {
+  padding-bottom: 12px;
+}
+.form-required {
   color: var(--failing);
 }
-.form-success {
-  padding: var(--sp-7) var(--sp-8);
-  border-radius: var(--radius-md);
-  background: var(--raised);
-  max-width: 62ch;
+.form-help {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--moss);
 }
-/* The honeypot: out of sight, out of the tab order, still reachable to a bot. */
+
+.input {
+  width: 100%;
+  min-height: 56px;
+  padding: 0 4px;
+  border: 0;
+  border-bottom: 2px solid var(--ink);
+  border-radius: 0;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  font-size: 22px;
+  transition: border-color 0.15s ease;
+}
+.input:focus {
+  outline: none;
+  border-bottom-color: var(--gold);
+}
+.input:focus-visible {
+  outline: none;
+  box-shadow: 0 2px 0 0 var(--gold);
+}
+.input[aria-invalid="true"] {
+  border-bottom-color: var(--failing);
+}
+.textarea {
+  min-height: 120px;
+  padding: 16px;
+  border: 0;
+  border-radius: var(--r-inner);
+  background: var(--paper);
+  font-size: 17px;
+  line-height: 1.5;
+  resize: vertical;
+}
+.textarea:focus {
+  box-shadow: inset 0 0 0 2px var(--gold);
+}
+.textarea[aria-invalid="true"] {
+  box-shadow: inset 0 0 0 2px var(--failing);
+}
+
+/* Choices are pills. */
+.form-choices,
+.form-scale {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.form-scale .form-choice {
+  min-width: 64px;
+  justify-content: center;
+}
+.form-choice {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 10px 18px;
+  border-radius: var(--r-pill);
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 1.3;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+.form-choice:hover {
+  background: var(--track);
+}
+.form-choice input {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  flex-shrink: 0;
+  accent-color: var(--forest);
+}
+.form-choice.is-selected {
+  background: var(--forest);
+  color: var(--on-forest);
+}
+.form-choice.is-selected input {
+  accent-color: var(--lime);
+}
+:root[data-theme="dark"] .form-choice.is-selected {
+  background: var(--lime);
+  color: #13170f;
+}
+:root[data-theme="dark"] .form-choice.is-selected input {
+  accent-color: #0f2419;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .form-choice.is-selected {
+    background: var(--lime);
+    color: #13170f;
+  }
+  :root:not([data-theme="light"]) .form-choice.is-selected input {
+    accent-color: #0f2419;
+  }
+}
+.form-choice:has(input:focus-visible) {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+.form-group[aria-invalid="true"] .form-choice {
+  box-shadow: inset 0 0 0 1px var(--failing);
+}
+.form-scale-ends {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  max-width: 460px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--moss);
+}
+
+.form-error {
+  font-size: 14px;
+  color: var(--failing);
+}
+.ea-error {
+  padding: 12px 16px;
+  border-radius: var(--r-sm);
+  background: var(--failing-soft);
+}
+
 .form-trap {
   position: absolute;
   left: -9999px;
@@ -95,244 +321,122 @@
   overflow: hidden;
 }
 
-/* Form A's questions. A label is the question itself, so it reads at body size in ink. */
-.form-label {
-  color: var(--ink);
-  font-weight: 500;
-  padding: 0;
-}
-.form-help {
-  margin-top: calc(-1 * var(--sp-1));
-}
-.form-required {
-  color: var(--failing);
-}
-.form-group {
-  border: 0;
-  margin: 0;
-  padding: 0;
-  min-width: 0;
-}
-.form-group > legend {
-  margin-bottom: var(--sp-3);
-}
-.form-choices {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: var(--sp-3);
-}
-/* More than five options: two columns wherever the form column is wide enough. */
-@media (min-width: 700px) {
-  .form-choices.is-two-col {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-/* Each option is a full-width row: the whole row is the target, not the dot. */
-.form-choice {
-  display: flex;
-  align-items: flex-start;
-  gap: var(--sp-5);
-  min-height: 44px;
-  padding: var(--sp-5) var(--sp-6);
-  border-radius: var(--radius-md);
-  background: var(--raised);
-  box-shadow: 0 0 0 1px var(--line) inset;
-  color: var(--ink);
-  cursor: pointer;
-  transition:
-    background-color 120ms ease,
-    box-shadow 120ms ease;
-}
-.form-choice:hover {
-  background: var(--hover);
-}
-.form-choice.is-selected {
-  background: var(--gold-soft);
-  box-shadow: 0 0 0 1.5px var(--gold) inset;
-}
-.form-choice:has(input:focus-visible) {
-  outline: 2px solid var(--gold-ink);
-  outline-offset: 2px;
-}
-.form-choice input:focus-visible {
-  outline: none;
-}
-/* The reset strips appearance from every input; a radio or a checkbox needs its own back. */
-.form-choice input {
-  -webkit-appearance: auto;
-  appearance: auto;
-  flex: none;
-  width: 16px;
-  height: 16px;
-  margin-top: 2px;
-  accent-color: var(--gold);
-}
-.form-scale {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: var(--sp-3);
-  max-width: 420px;
-}
-.form-scale .form-choice {
-  flex-direction: column;
-  align-items: center;
-  gap: var(--sp-2);
-  padding: var(--sp-4) 0;
-}
-.form-scale-ends {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: var(--sp-2) var(--sp-7);
-  max-width: 420px;
-}
-.textarea {
-  height: auto;
-  min-height: 96px;
-  padding-block: var(--sp-5);
-  line-height: 1.5;
-  resize: vertical;
-}
-.form-step-head {
-  gap: var(--sp-3);
-}
-.form-step-head h2:focus {
-  outline: none;
-}
-
-/* The progress bar above each section. */
-.step-progress {
-  display: flex;
-  flex-direction: column;
-  gap: var(--sp-3);
-}
-.step-progress-track {
-  height: 6px;
-  border-radius: 999px;
-  background: var(--raised);
-  box-shadow: 0 0 0 1px var(--line) inset;
-  overflow: hidden;
-}
-.step-progress-fill {
-  display: block;
-  height: 100%;
-  border-radius: inherit;
-  background: var(--gold);
-  transition: width 240ms ease;
-}
-
-/* The buttons, any error, and the qualifier, together at the foot of every step. */
-.form-footer {
-  display: flex;
-  flex-direction: column;
-  gap: var(--sp-5);
-  padding-top: var(--sp-7);
-  border-top: 1px solid var(--line);
-}
-.form-footer .qualifier {
-  margin-top: 0;
-}
-
-/* The form card: the questions on the left, the step panel on the right. */
-.ea-layout {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 272px;
-  gap: var(--sp-11);
-  align-items: start;
-}
-.ea-side {
-  align-self: stretch;
-  border-left: 1px solid var(--line);
-  padding-left: var(--sp-10);
-}
-.ea-side-inner {
-  position: sticky;
-  top: 80px;
-  display: flex;
-  flex-direction: column;
-  gap: var(--sp-8);
-}
-.qualifier-side {
-  margin-top: 0;
-  padding-top: var(--sp-7);
-  border-top: 1px solid var(--line);
-}
-.step-list {
-  display: flex;
-  flex-direction: column;
-  gap: var(--sp-1);
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-.step-list-row {
+.ea-actions {
   display: flex;
   align-items: center;
-  gap: var(--sp-5);
-  width: 100%;
-  min-height: 36px;
-  padding: var(--sp-3) var(--sp-4);
-  border-radius: var(--radius-sm);
+  gap: 12px;
+  padding-top: 8px;
+}
+.ea-actions-gap {
+  flex: 1;
+}
+.ea-qualifier {
   font-size: 13px;
-  line-height: 1.35;
-  text-align: left;
-  color: var(--dim);
 }
-button.step-list-row:hover:not(:disabled) {
-  background: var(--hover);
-  color: var(--ink);
+
+/* After a confirmed submission. */
+.form-success {
+  padding: 24px 28px;
+  border-radius: var(--r-inner);
+  background: var(--forest);
+  color: var(--on-forest);
+  font-family: var(--font-display);
+  font-size: 30px;
+  line-height: 1.15;
 }
-.step-list-mark {
-  flex: none;
-  display: inline-grid;
-  place-items: center;
-  width: 22px;
-  height: 22px;
-  border-radius: 999px;
-  font-size: 11px;
-  font-weight: 500;
-  font-variant-numeric: tabular-nums;
-  box-shadow: 0 0 0 1px var(--line-strong) inset;
+.signup > .stack {
+  padding: 40px;
+  border-radius: var(--r-band);
+  background: var(--card);
 }
-.step-list-item.is-current .step-list-row {
-  background: var(--gold-soft);
-  color: var(--ink);
-  font-weight: 500;
-}
-.step-list-item.is-current .step-list-mark {
-  background: var(--gold);
-  color: var(--gold-on);
-  box-shadow: none;
-}
-.step-list-item.is-done .step-list-row {
-  color: var(--ink);
-}
-.step-list-item.is-done .step-list-mark {
-  background: var(--ok-soft);
-  color: var(--ok);
-  box-shadow: none;
+
+@media (max-width: 1099px) {
+  .ea-card {
+    grid-template-columns: 260px minmax(0, 1fr);
+  }
+  .ea-main {
+    padding: 40px 36px;
+  }
 }
 
 @media (max-width: 899px) {
-  /* One column: the progress bar carries the position and the qualifier sits under the button. */
-  .ea-layout {
+  .ea-card {
     grid-template-columns: minmax(0, 1fr);
   }
-  .ea-side {
+  .ea-steps {
+    padding: 16px;
+  }
+  .step-list {
+    flex-direction: row;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .step-list::-webkit-scrollbar {
     display: none;
   }
+  .step-list-row {
+    white-space: nowrap;
+  }
 }
 
-@media (max-width: 767px) {
-  .form-row {
-    grid-template-columns: 1fr;
+@media (max-width: 699px) {
+  .ea-card {
+    border-radius: 28px;
+    box-shadow: 0 20px 50px rgba(19, 23, 15, 0.08);
   }
-  /* 16px stops iOS zooming the page when a field takes focus. */
-  .input {
+  /* One question per screen: the rail would only repeat the progress line. */
+  .ea-steps {
+    display: none;
+  }
+  .ea-main {
+    padding: 24px 18px;
+    gap: 24px;
+  }
+  .ea-progress-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+  .step-progress {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+  .ea-required {
+    display: none;
+  }
+  .form-label {
     font-size: 16px;
   }
-  .form-actions .btn {
-    flex: 1 1 0;
+  .input {
+    min-height: 52px;
+    font-size: 18px;
+  }
+  .textarea {
+    font-size: 16px;
+  }
+  .form-choice {
+    padding: 10px 16px;
+  }
+  .ea-actions {
+    flex-direction: column-reverse;
+    align-items: stretch;
+    gap: 10px;
+  }
+  .ea-actions .btn {
+    width: 100%;
+  }
+  .ea-actions-gap {
+    display: none;
+  }
+  .ea-qualifier {
+    font-size: 12px;
+  }
+  .form-success {
+    font-size: 24px;
+  }
+  .signup > .stack {
+    padding: 24px 18px;
+    border-radius: 28px;
   }
 }
-

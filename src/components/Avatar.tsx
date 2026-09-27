@@ -1,4 +1,5 @@
 import { images } from '../lib/images';
+import { useImageLoaded } from '../lib/useImageLoaded';
 
 /** "Kavin G N" → "KG", "Ahad" → "A". */
 function initials(name: string): string {
@@ -29,19 +30,26 @@ export function Avatar({
   eager?: boolean;
 }) {
   const photo = images.team[slug];
+  const { ref, loaded, onLoad, onError } = useImageLoaded();
   if (photo) {
+    /* A grey skeleton sits behind the photo until it has loaded. */
     return (
-      <img
-        className={`avatar ${className}`.trim()}
-        src={photo.src}
-        srcSet={photo.srcset}
-        sizes={sizes}
-        width={photo.width}
-        height={photo.height}
-        alt={name}
-        loading={eager ? 'eager' : 'lazy'}
-        decoding="async"
-      />
+      <span className={`avatar-frame skeleton${loaded ? ' is-loaded' : ''} ${className}`.trim()}>
+        <img
+          ref={ref}
+          className="avatar"
+          src={photo.src}
+          srcSet={photo.srcset}
+          sizes={sizes}
+          width={photo.width}
+          height={photo.height}
+          alt={name}
+          loading={eager ? 'eager' : 'lazy'}
+          decoding="async"
+          onLoad={onLoad}
+          onError={onError}
+        />
+      </span>
     );
   }
   return (

@@ -4,7 +4,10 @@
  * public/landing-config.json, never from here.
  */
 export const vfarmLabels = {
-  whatItIs: 'What it is',
+  kicker: 'vFarm · founding buyer early access',
+  whatItIs: 'What it is,',
+  whatItIsAccent: 'so far.',
+  signupSteps: 'Seven short steps.',
   gallery: 'Gallery',
   howItWorks: 'How early access works',
   faq: 'Questions',

@@ -1,33 +1,45 @@
 import { Link } from 'react-router-dom';
 import { footer } from '../content/site';
-import { Wordmark } from './Wordmark';
 
+/**
+ * The forest footer: one line about what we're doing, the contact address,
+ * the site links, and the network's name set large as a watermark.
+ */
 export function Footer() {
   return (
     <footer className="footer">
-      <div className="container footer-inner">
+      <div className="container footer-top">
         <div className="footer-brand">
-          <Wordmark />
-          <p className="t-body dim">
-            {footer.contactLabel}:{' '}
+          <p className="footer-line">{footer.line}</p>
+          <p className="footer-contact">
+            {footer.contactLabel}{' '}
             <a className="footer-email" href={`mailto:${footer.email}`}>
               {footer.email}
             </a>
           </p>
         </div>
-        <nav className="footer-links" aria-label="Footer">
-          {footer.links.map((l) => (
-            <Link key={l.to} to={l.to}>
-              {l.label}
-            </Link>
-          ))}
-        </nav>
+        {footer.groups.map((g) => (
+          <nav key={g.label} className="footer-group" aria-label={g.label}>
+            <span className="footer-group-label">{g.label}</span>
+            {g.links.map((l) => (
+              <Link key={l.to} to={l.to} className="footer-link">
+                {l.label}
+              </Link>
+            ))}
+            {g.label === 'Company' && (
+              <a href={footer.teamLogin.href} className="footer-link">
+                {footer.teamLogin.label}
+              </a>
+            )}
+          </nav>
+        ))}
       </div>
       <div className="container footer-base">
         <span>{footer.copyright}</span>
-        <a href={footer.teamLogin.href} className="footer-login">
-          {footer.teamLogin.label}
-        </a>
+        <span>{footer.launch}</span>
+      </div>
+      <div className="container footer-mark" aria-hidden="true">
+        {footer.watermark}
       </div>
     </footer>
   );

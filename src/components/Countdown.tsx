@@ -23,11 +23,12 @@ const pad = (n: number) => String(n).padStart(2, '0');
 export function Countdown({ tone = 'light' }: { tone?: 'light' | 'dark' }) {
   const now = useNow();
   const r = now === null ? null : remaining(now);
-  const cells: [string, string][] = [
-    [countdown.units.days, r ? String(r.days) : '–'],
-    [countdown.units.hours, r ? pad(r.hours) : '–'],
-    [countdown.units.minutes, r ? pad(r.minutes) : '–'],
-    [countdown.units.seconds, r ? pad(r.seconds) : '–'],
+  /* Before hydration there is no clock yet: each number is a skeleton bar. */
+  const cells: [string, string | null][] = [
+    [countdown.units.days, r ? String(r.days) : null],
+    [countdown.units.hours, r ? pad(r.hours) : null],
+    [countdown.units.minutes, r ? pad(r.minutes) : null],
+    [countdown.units.seconds, r ? pad(r.seconds) : null],
   ];
   return (
     <div className={`countdown countdown-${tone}`}>
@@ -39,7 +40,11 @@ export function Countdown({ tone = 'light' }: { tone?: 'light' | 'dark' }) {
       <div className="countdown-cells" aria-hidden="true">
         {cells.map(([unit, value]) => (
           <div key={unit} className="countdown-cell">
-            <span className="countdown-value tabular">{value}</span>
+            {value === null ? (
+              <span className="countdown-value skeleton skeleton-num" />
+            ) : (
+              <span className="countdown-value tabular">{value}</span>
+            )}
             <span className="countdown-unit">{unit}</span>
           </div>
         ))}
