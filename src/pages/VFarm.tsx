@@ -66,6 +66,9 @@ export function VFarm() {
                 {item.body && <dd>{item.body}</dd>}
               </div>
             ))}
+            <div className="spec-row spec-pending">
+              <dt>{vfarmLabels.specsPending}</dt>
+            </div>
           </dl>
         </section>
       )}

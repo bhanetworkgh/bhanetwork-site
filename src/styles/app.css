@@ -1832,3 +1832,10 @@ main:focus {
 .dock .launch-bar-text {
   white-space: nowrap;
 }
+
+/* The honest placeholder for figures not yet confirmed. */
+.spec-pending dt {
+  font-size: 15px;
+  color: var(--moss);
+  font-style: italic;
+}

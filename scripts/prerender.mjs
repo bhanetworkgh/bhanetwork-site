@@ -109,3 +109,16 @@ for (const dir of ['team', 'renders']) {
   }
   for (const f of files) if (IMAGE.test(f)) await rm(resolve(dist, dir, f));
 }
+
+/*
+ * The sitemap, written from the same route list so it can never drift from
+ * the pages that exist, with the build date as each page's last change.
+ */
+const today = new Date().toISOString().slice(0, 10);
+const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${ROUTES.map((r) => `  <url><loc>https://bhanetwork.org${r}</loc><lastmod>${today}</lastmod></url>`).join('\n')}
+</urlset>
+`;
+await writeFile(resolve(dist, 'sitemap.xml'), sitemap);
+console.log('[prerender] sitemap.xml → dist/sitemap.xml');

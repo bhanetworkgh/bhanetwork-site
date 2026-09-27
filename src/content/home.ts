@@ -3,8 +3,9 @@
 export const hero = {
   eyebrow: 'Bays Horizon Network',
   /* The headline is set in two halves: the lead, then an italic lime accent. */
-  headlineLead: 'Bays Horizon is building the monitored vFarm',
-  headlineAccent: 'in public.',
+  /* Jason's approved line, 27 Sep 2026. */
+  headlineLead: 'A farm the size of a bookshelf,',
+  headlineAccent: 'run by an engine that learns.',
   subhead:
     'We are wiring a real vertical farm to an AI engine that uses data from each growing cycle to inform future improvements. Join Early Access to see the builds, system diagrams, and monthly progress as we build toward an increasingly automated vFarm twin.',
   primary: { to: '/vfarm#signup', label: 'Join vFarm early access' },
