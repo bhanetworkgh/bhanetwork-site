@@ -26,11 +26,6 @@ export function Footer() {
                 {l.label}
               </Link>
             ))}
-            {g.label === 'Company' && (
-              <a href={footer.teamLogin.href} className="footer-link">
-                {footer.teamLogin.label}
-              </a>
-            )}
           </nav>
         ))}
       </div>

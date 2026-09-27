@@ -139,7 +139,7 @@ export function FormAField({
                 onChange={() => (multi ? toggle(option) : onChange(option))}
                 aria-label={
                   q.type === 'scale' && q.scaleLabels && (i === 0 || i === 4)
-                    ? `${option} — ${q.scaleLabels[i === 0 ? 0 : 1]}`
+                    ? `${option}: ${q.scaleLabels[i === 0 ? 0 : 1]}`
                     : undefined
                 }
               />

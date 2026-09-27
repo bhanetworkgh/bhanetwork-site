@@ -2,25 +2,21 @@ import { Link } from 'react-router-dom';
 import { buildLog, ctaBand, hero, launchBar, whatVfarm, whatWeDo, whyFarm } from '../content/home';
 import { team } from '../content/team';
 import { faq } from '../content/faq';
-import { countdown } from '../content/site';
 import { useLanding } from '../config/landingConfig';
 import { Accordion } from '../components/Accordion';
 import { Avatar } from '../components/Avatar';
-import { useNow } from '../components/Countdown';
+import { Countdown } from '../components/Countdown';
 import { Icon } from '../components/Icon';
 import { RenderPanel } from '../components/RenderPanel';
 import { LaunchBar } from '../components/LaunchBar';
-import { FLAGSHIP_AT, remaining } from '../lib/flagship';
+import { FLAGSHIP_AT } from '../lib/flagship';
 import { images } from '../lib/images';
 
 /**
- * The facts panel beside the headline. Facts that cannot go stale, and the
- * launch countdown worked out live. A render replaces it once the approved
- * renders folder has one for the strip.
+ * The facts panel beside the headline: facts that cannot go stale. A render
+ * replaces it once the approved renders folder has one for the strip.
  */
 function HeroPanel() {
-  const now = useNow();
-  const days = now === null ? null : remaining(now).days;
   const strip = images.renders.strip;
   if (strip) {
     return (
@@ -35,19 +31,10 @@ function HeroPanel() {
   const { cards } = hero;
   return (
     <div className="hero-panel">
-      <div className="hero-panel-launch">
-        <span className="kicker lime">{cards.launch.label}</span>
-        <span className="hero-panel-days">
-          {days === null ? <span className="skeleton skeleton-num on-forest" /> : days}
-        </span>
-        <span className="hero-panel-note">
-          {days === null ? ' ' : countdown.daysToGo(days)} · {countdown.dateLabel}
-        </span>
-      </div>
       <dl className="hero-panel-facts">
         <div>
           <dt>{cards.builders.label}</dt>
-          <dd>{cards.builders.value}</dd>
+          <dd className="hero-panel-big">{cards.builders.value}</dd>
         </div>
         <div>
           <dt>{cards.sessions.label}</dt>
@@ -93,7 +80,9 @@ export function Home() {
                 {hero.secondary.label}
               </Link>
             </div>
-            <LaunchBar label={launchBar.daysTo} end={FLAGSHIP_AT} />
+            <div className="hero-count">
+              <Countdown tone="dark" />
+            </div>
           </div>
           <HeroPanel />
         </div>

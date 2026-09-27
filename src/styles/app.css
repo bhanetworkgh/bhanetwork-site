@@ -171,14 +171,15 @@ main:focus {
 }
 
 .display {
-  font-size: clamp(54px, 7.4vw, 108px);
+  /* Sized by width and height, so the hero fits short laptop screens too. */
+  font-size: clamp(44px, min(7vw, 9.5vh), 104px);
   line-height: 0.95;
   letter-spacing: -0.02em;
   text-wrap: balance;
 }
 
 .display-vfarm {
-  font-size: clamp(52px, 6.4vw, 96px);
+  font-size: clamp(48px, min(6.2vw, 10vh), 92px);
 }
 
 .display-sm {
@@ -371,14 +372,7 @@ main:focus {
   min-height: 52px;
   padding: 0 28px;
 }
-:root[data-theme="dark"] .btn-forest {
-  background: var(--track);
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .btn-forest {
-    background: var(--track);
-  }
-}
+
 .btn-forest:hover {
   background: var(--forest-raised);
 }
@@ -487,29 +481,6 @@ main:focus {
 @media (hover: none) {
   .icon-btn:hover .tip {
     opacity: 0;
-  }
-}
-
-.theme-icon-sun,
-.theme-icon-moon {
-  display: inline-grid;
-  place-items: center;
-}
-.theme-icon-sun {
-  display: none;
-}
-:root[data-theme="dark"] .theme-icon-sun {
-  display: inline-grid;
-}
-:root[data-theme="dark"] .theme-icon-moon {
-  display: none;
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .theme-icon-sun {
-    display: inline-grid;
-  }
-  :root:not([data-theme="light"]) .theme-icon-moon {
-    display: none;
   }
 }
 
@@ -658,14 +629,18 @@ main:focus {
 }
 
 .hero {
-  padding: 56px 0 96px;
+  /* The hero fills the first screen, content centred, so nothing sits below the fold. */
+  min-height: calc(100svh - var(--nav-h));
+  display: flex;
+  align-items: center;
+  padding: clamp(24px, 4vh, 48px) 0;
 }
 
 .hero-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 420px;
+  grid-template-columns: minmax(0, 1fr) 400px;
   gap: 72px;
-  align-items: end;
+  align-items: center;
 }
 .hero-grid.is-even {
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -676,8 +651,27 @@ main:focus {
 .hero-copy {
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: clamp(14px, 2.6vh, 28px);
   min-width: 0;
+}
+.hero-panel-facts dd.hero-panel-big {
+  font-size: 96px;
+  line-height: 0.9;
+}
+.hero-count {
+  max-width: 520px;
+  padding-top: 4px;
+}
+.hero-count .countdown {
+  gap: 10px;
+}
+.hero-count .countdown-cell {
+  padding-top: 10px;
+  gap: 6px;
+}
+.hero-count .countdown-value,
+.hero-count .countdown-value.skeleton {
+  font-size: clamp(32px, min(4vw, 5.4vh), 56px);
 }
 
 .hero-panel {
@@ -803,6 +797,12 @@ main:focus {
   }
   .hero-panel-days {
     font-size: 96px;
+  }
+}
+
+@media (max-width: 1099px) {
+  .hero {
+    min-height: 0;
   }
 }
 
@@ -944,16 +944,7 @@ main:focus {
   background: var(--forest);
   color: var(--on-forest);
 }
-:root[data-theme="dark"] .tile-forest {
-  background: var(--forest);
-  box-shadow: inset 0 0 0 1px rgba(237, 235, 227, 0.1);
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .tile-forest {
-    background: var(--forest);
-    box-shadow: inset 0 0 0 1px rgba(237, 235, 227, 0.1);
-  }
-}
+
 .tile-lime {
   background: var(--lime);
   color: #13170f;
@@ -1079,14 +1070,7 @@ main:focus {
   flex-direction: column;
   gap: 48px;
 }
-:root[data-theme="dark"] .band-card {
-  background: var(--forest-raised);
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .band-card {
-    background: var(--forest-raised);
-  }
-}
+
 .band-card .h-section {
   max-width: 900px;
 }
@@ -1498,14 +1482,7 @@ main:focus {
   border-radius: 50%;
   background: var(--forest);
 }
-:root[data-theme="dark"] .claim-dot {
-  background: var(--lime);
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .claim-dot {
-    background: var(--lime);
-  }
-}
+
 @media (max-width: 1099px) {
   .claims-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1757,14 +1734,7 @@ main:focus {
   white-space: nowrap;
   user-select: none;
 }
-:root[data-theme="dark"] .footer-mark {
-  color: #13221a;
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .footer-mark {
-    color: #13221a;
-  }
-}
+
 @media (max-width: 899px) {
   .footer {
     padding-top: 40px;
@@ -1838,4 +1808,226 @@ main:focus {
   font-size: 15px;
   color: var(--moss);
   font-style: italic;
+}
+
+/* ---------------------------------------------------------------------------
+   Interaction. Things respond to the pointer: cards lift, buttons press,
+   links draw their underline, the hero arrives in sequence, answers slide
+   open. All of it switches off for anyone who asks their device for less
+   motion (the reduced-motion rule above).
+   --------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: no-preference) {
+  /* The hero arrives in order: kicker, headline, text, actions, countdown, panel. */
+  .hero-copy > *,
+  .hero-grid > .hero-panel,
+  .hero-grid > .hero-media {
+    animation: rise-in 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+  .hero-copy > :nth-child(1) { animation-delay: 0.05s; }
+  .hero-copy > :nth-child(2) { animation-delay: 0.15s; }
+  .hero-copy > :nth-child(3) { animation-delay: 0.3s; }
+  .hero-copy > :nth-child(4) { animation-delay: 0.42s; }
+  .hero-copy > :nth-child(5) { animation-delay: 0.54s; }
+  .hero-grid > .hero-panel,
+  .hero-grid > .hero-media { animation-delay: 0.35s; }
+
+  /* Cards in a grid rise one after another as they scroll in. */
+  .js .reveal {
+    transform: translateY(28px);
+  }
+  .js .bento > .reveal:nth-child(2),
+  .js .team-grid > .reveal:nth-child(2n) { transition-delay: 0.08s; }
+  .js .bento > .reveal:nth-child(3) { transition-delay: 0.16s; }
+  .js .bento > .reveal:nth-child(4) { transition-delay: 0.24s; }
+  .js .reveal.is-in {
+    transform: none;
+  }
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Tiles and cards lift toward the pointer. */
+.bento-tile,
+.team-card,
+.claim-card,
+.step-card,
+.hero-panel {
+  transition: transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1), box-shadow 0.35s ease, opacity 0.6s ease;
+}
+@media (hover: hover) {
+  .bento-tile:hover,
+  .step-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 24px 48px rgba(19, 23, 15, 0.12);
+  }
+  .team-card:hover,
+  .claim-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 32px rgba(19, 23, 15, 0.1);
+  }
+  .team-card:hover .avatar {
+    transform: scale(1.06);
+  }
+  .hero-panel:hover {
+    transform: translateY(-4px) rotate(-0.4deg);
+  }
+}
+.avatar-frame .avatar {
+  transition: transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1), opacity 0.3s ease;
+}
+
+/* Buttons: the gold one glows and lifts; every button presses in. */
+@media (hover: hover) {
+  .btn:hover {
+    transform: translateY(-2px);
+  }
+  .btn-gold:hover {
+    box-shadow: 0 10px 28px rgba(224, 184, 74, 0.45);
+  }
+  .btn-text:hover .btn-text-ring {
+    transform: rotate(-12deg) scale(1.08);
+  }
+}
+.btn:active {
+  transform: translateY(0) scale(0.97);
+}
+.btn-text-ring {
+  transition: background-color 0.15s ease, transform 0.25s ease;
+}
+
+/* Links draw their underline; the nav underlines the page you're on. */
+.link-underline {
+  box-shadow: none;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 100% 1px;
+  background-position: 0 calc(100% - 8px);
+  background-repeat: no-repeat;
+  transition: background-size 0.3s ease, opacity 0.15s ease;
+}
+@media (hover: hover) {
+  .link-underline:hover {
+    opacity: 1;
+    background-size: 0% 1px;
+    background-position: 100% calc(100% - 8px);
+  }
+}
+.nav-link {
+  position: relative;
+}
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  bottom: 8px;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.25s ease;
+}
+.nav-link:hover::after,
+.nav-link.active::after {
+  transform: scaleX(1);
+}
+.footer-link {
+  transition: opacity 0.15s ease, transform 0.2s ease;
+}
+@media (hover: hover) {
+  .footer-link:hover {
+    transform: translateX(4px);
+  }
+}
+
+/* FAQ answers slide open; the row shifts and the plus turns gold on hover. */
+.accordion-q,
+.faq-q {
+  transition: padding-left 0.25s ease, color 0.15s ease;
+}
+.accordion-icon,
+.faq-icon {
+  transition: transform 0.25s ease, background-color 0.2s ease, color 0.2s ease;
+}
+@media (hover: hover) {
+  .accordion-q:hover,
+  .faq-q:hover {
+    padding-left: 8px;
+  }
+  .accordion-q:hover .accordion-icon,
+  .faq-q:hover .faq-icon {
+    background: var(--gold);
+    color: var(--gold-on);
+  }
+}
+.accordion-a:not([hidden]),
+.faq-item[open] .faq-a {
+  animation: open-down 0.3s ease-out;
+}
+@keyframes open-down {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* The countdown's seconds tick visibly. */
+.countdown-cell:last-child .countdown-value:not(.skeleton) {
+  animation: tick 1s ease-out infinite;
+}
+@keyframes tick {
+  0% {
+    opacity: 0.55;
+    transform: translateY(-3px);
+  }
+  30%,
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* The form: each step and each question slides in; choices press. */
+.ea-head,
+.ea-main .form-field {
+  animation: rise-in 0.4s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+.form-choice {
+  transition: background-color 0.15s ease, color 0.15s ease, transform 0.15s ease;
+}
+.form-choice:active {
+  transform: scale(0.96);
+}
+.step-progress-fill {
+  transition: width 0.5s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+/* The phone dock slides up once the page has loaded. */
+@media (max-width: 699px) and (prefers-reduced-motion: no-preference) {
+  .dock {
+    animation: dock-in 0.5s 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+}
+@keyframes dock-in {
+  from {
+    opacity: 0;
+    transform: translateY(120%);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }

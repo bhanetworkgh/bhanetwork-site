@@ -32,7 +32,7 @@ export function metaFor(path: string, config: LandingConfig | null): PageMeta {
       const headline = config?.early_access.headline.trim();
       return {
         ...base,
-        title: headline ? `${headline} — ${SITE_NAME}` : copy.vfarmFallbackTitle,
+        title: headline ? `${headline} | ${SITE_NAME}` : copy.vfarmFallbackTitle,
         description: config?.early_access.body.trim() ?? '',
       };
     }
