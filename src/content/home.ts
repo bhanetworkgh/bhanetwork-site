@@ -13,7 +13,7 @@ export const hero = {
   /* The facts panel beside the headline. Only facts that cannot go stale.
      The launch number is worked out live from the countdown target. */
   cards: {
-    launch: { label: 'vFarm launch' },
+    launch: { label: 'vFarm build milestone' },
     builders: { label: 'Founding builders', value: '6' },
     sessions: { label: 'Every session', value: 'logged, reviewed, on the record' },
     ground: { label: 'Proving ground', value: 'Real crops. Real sensors.' },

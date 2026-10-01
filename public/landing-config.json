@@ -21,16 +21,16 @@
     "error_message": "That didn't go through. Try again, or email hello@bhanetwork.org."
   },
   "supporting_claims": [
-    "vFarm is being developed as an enclosed, pesticide-free growing system.",
-    "Continuous environmental monitoring and digital-twin updates are part of the current product direction.",
+    "vFarm is being developed as a monitored growing system.",
+    "Monitoring of supported operating signals and configuration-backed digital-twin development are part of the current product direction.",
     "Verified build, CAD, render, configuration and monitoring progress may be shown with its real status.",
     "Early participants may receive priority consideration and preferential pricing treatment, but exact benefits remain subject to final SPEC, BOM, production pricing and commercial approval."
   ],
   "what_vfarm_is": [
-    { "title": "A vertical farm rig sized for a spare room.", "body": "Four tiers, roughly the footprint of a bookshelf." },
-    { "title": "Base vFarm: frame, trays, lights, pumps.", "body": "Everything the rig needs to grow without a laptop attached." },
-    { "title": "Monitoring that reports what it did.", "body": "pH, temperature, flow. It says when something needs you." },
-    { "title": "One flagship rig designed for monitored operation with increasing automation by 31 Oct.", "body": "Twenty-four hours, no hands. That is the bar." }
+    { "title": "A vertical farm rig sized for a spare room.", "body": "P1.0 is a two-tier open-rack vFarm build, roughly the footprint of a bookshelf." },
+    { "title": "Base vFarm includes the physical frame, trays, lights and pumps; control and automation capabilities are shown only when verified.", "body": "" },
+    { "title": "Monitoring captures supported operating signals and surfaces verified system events for review.", "body": "" },
+    { "title": "P1.0 is being built for monitored operation, with increasing automation as the development goal.", "body": "" }
   ],
   "status_tile": {
     "enabled": true,
