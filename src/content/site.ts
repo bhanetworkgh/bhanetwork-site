@@ -11,7 +11,7 @@ export const SITE_URL = 'https://bhanetwork.org';
 export const SITE_NAME = 'Bays Horizon Network';
 
 /** The Open Graph / Twitter image every page shares. A brand card, not a vFarm image. */
-export const OG_IMAGE = `${SITE_URL}/og.png`;
+export const OG_IMAGE = `${SITE_URL}/og-v2.png`; /* renamed 1 Oct so link previews drop the cached old design */
 
 /** Who we are, for search engines (schema.org Organization). Only facts we can stand behind. */
 export const ORGANIZATION = {
@@ -56,7 +56,7 @@ export const footer = {
   contactLabel: 'Contact',
   email: 'admin@bhanetwork.org',
   copyright: '© 2026 Bays Horizon Network',
-  launch: 'vFarm launch · Oct 31',
+  launch: 'vFarm build milestone · Oct 31.',
   watermark: 'Bays Horizon',
 };
 
@@ -81,7 +81,7 @@ export const meta = {
 
 /** The launch countdown, shared by Home and /vfarm. */
 export const countdown = {
-  label: 'vFarm launch',
+  label: 'vFarm build milestone',
   dateLabel: 'Oct 31',
   units: { days: 'Days', hours: 'Hours', minutes: 'Minutes', seconds: 'Seconds' },
   daysToGo: (n: number) => `${n} ${n === 1 ? 'day' : 'days'} to go`,
