@@ -256,8 +256,10 @@ export const FORM_A_STEPS: readonly Step[] = [
       {
         key: 'reservation_openness',
         entry: 1934982349,
+        // 2 Oct: Hardik's change 3 (B93H/TSNR S2). Was the "small Early Access reservation
+        // commitment" question. Same entry and options, so stored answers keep their meaning.
         title:
-          'Would you consider a small Early Access reservation commitment in exchange for priority consideration as pilot units become available?',
+          'Would you be open to a design-partner discussion after structured intake and readiness review?',
         type: 'radio',
         required: true,
         options: ['Yes', "Maybe - I'd like more details first", "No - I'm interested in updates only"],
