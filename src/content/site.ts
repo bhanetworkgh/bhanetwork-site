@@ -55,6 +55,19 @@ export const footer = {
   ],
   contactLabel: 'Contact',
   email: 'admin@bhanetwork.org',
+  /**
+   * Social pages. A page with an `href` is live and links out; one without is
+   * not set up yet and is shown as "soon", never as a dead link. Add the href
+   * here when a page goes live and it becomes a link everywhere the footer is.
+   */
+  socialLabel: 'Follow',
+  socialSoon: 'soon',
+  social: [
+    { id: 'x', label: 'X', handle: '@bha_vfarm', href: 'https://x.com/bha_vfarm' },
+    { id: 'instagram', label: 'Instagram', handle: '', href: '' },
+    { id: 'facebook', label: 'Facebook', handle: '', href: '' },
+    { id: 'tiktok', label: 'TikTok', handle: '', href: '' },
+  ],
   copyright: '© 2026 Bays Horizon Network',
   launch: 'vFarm build milestone · Oct 31.',
   watermark: 'Bays Horizon',
