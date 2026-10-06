@@ -1,5 +1,24 @@
 import { Link } from 'react-router-dom';
+import { siFacebook, siInstagram, siTiktok, siX } from 'simple-icons';
 import { footer } from '../content/site';
+
+/** The platforms' own marks, from the simple-icons package: one 24 by 24 path each. */
+const SOCIAL_ICON: Record<string, string> = {
+  x: siX.path,
+  instagram: siInstagram.path,
+  facebook: siFacebook.path,
+  tiktok: siTiktok.path,
+};
+
+function SocialIcon({ id }: { id: string }) {
+  const d = SOCIAL_ICON[id];
+  if (!d) return null;
+  return (
+    <svg className="footer-social-icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">
+      <path d={d} fill="currentColor" />
+    </svg>
+  );
+}
 
 /**
  * The forest footer: one line about what we're doing, the contact address,
@@ -26,21 +45,21 @@ export function Footer() {
                     <a
                       className="footer-social-pill"
                       href={s.href}
+                      title={`${s.label}${s.handle ? ` ${s.handle}` : ''}`}
                       target="_blank"
                       rel="me noopener noreferrer"
                       aria-label={`${s.label}${s.handle ? `, ${s.handle}` : ''} (opens in a new tab)`}
                     >
-                      {s.label}
-                      <span className="footer-social-arrow" aria-hidden="true">
-                        ↗
-                      </span>
+                      <SocialIcon id={s.id} />
                     </a>
                   ) : (
-                    <span className="footer-social-pill is-soon" aria-label={`${s.label}, coming soon`}>
-                      {s.label}
-                      <span className="footer-social-soon" aria-hidden="true">
-                        {footer.socialSoon}
-                      </span>
+                    <span
+                      className="footer-social-pill is-soon"
+                      role="img"
+                      aria-label={`${s.label}, coming ${footer.socialSoon}`}
+                      title={`${s.label}: coming ${footer.socialSoon}`}
+                    >
+                      <SocialIcon id={s.id} />
                     </span>
                   )}
                 </li>

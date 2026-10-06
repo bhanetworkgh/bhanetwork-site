@@ -15,7 +15,8 @@
     "gsap": "^3.15.0",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
-    "react-router-dom": "^6.30.6"
+    "react-router-dom": "^6.30.6",
+    "simple-icons": "^15.0.0"
   },
   "devDependencies": {
     "@types/node": "^26.6.2",
