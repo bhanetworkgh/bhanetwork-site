@@ -3,7 +3,7 @@ import { footer } from '../content/site';
 
 /**
  * The forest footer: one line about what we're doing, the contact address,
- * the site links, and the network's name set large as a watermark.
+ * the social pages (live ones link out, the rest say "soon"), the site links, and the network's name set large as a watermark.
  */
 export function Footer() {
   return (
@@ -17,6 +17,36 @@ export function Footer() {
               {footer.email}
             </a>
           </p>
+          <div className="footer-social">
+            <span className="footer-group-label">{footer.socialLabel}</span>
+            <ul className="footer-social-list">
+              {footer.social.map((s) => (
+                <li key={s.id}>
+                  {s.href ? (
+                    <a
+                      className="footer-social-pill"
+                      href={s.href}
+                      target="_blank"
+                      rel="me noopener noreferrer"
+                      aria-label={`${s.label}${s.handle ? `, ${s.handle}` : ''} (opens in a new tab)`}
+                    >
+                      {s.label}
+                      <span className="footer-social-arrow" aria-hidden="true">
+                        ↗
+                      </span>
+                    </a>
+                  ) : (
+                    <span className="footer-social-pill is-soon" aria-label={`${s.label}, coming soon`}>
+                      {s.label}
+                      <span className="footer-social-soon" aria-hidden="true">
+                        {footer.socialSoon}
+                      </span>
+                    </span>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
         {footer.groups.map((g) => (
           <nav key={g.label} className="footer-group" aria-label={g.label}>
