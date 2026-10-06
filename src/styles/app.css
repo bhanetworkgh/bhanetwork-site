@@ -1688,6 +1688,10 @@ main:focus {
 .footer-social {
   margin-top: 8px;
 }
+.footer-social .footer-group-label {
+  display: block;
+  padding-bottom: 14px;
+}
 .footer-social-list {
   display: flex;
   flex-wrap: wrap;
