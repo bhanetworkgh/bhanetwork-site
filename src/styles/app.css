@@ -1691,21 +1691,20 @@ main:focus {
 .footer-social-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 10px;
   margin: 0;
   padding: 0;
   list-style: none;
 }
-/* One pill per page. A live page is a link; one not set up yet is dashed and dim. */
+/* One round button per page. A live page is a link; one not set up yet is dashed and dim. */
 .footer-social-pill {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  min-height: 44px;
-  padding: 0 16px;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
   border: 1px solid rgba(237, 235, 227, 0.4);
-  border-radius: 999px;
-  font-size: 15px;
+  border-radius: 50%;
   color: var(--on-forest);
   transition: border-color 0.15s ease, background-color 0.15s ease, color 0.15s ease;
 }
@@ -1714,19 +1713,15 @@ a.footer-social-pill:hover {
   background-color: var(--lime);
   color: var(--forest);
 }
-.footer-social-arrow {
-  font-size: 13px;
-  line-height: 1;
+.footer-social-icon {
+  display: block;
 }
 .footer-social-pill.is-soon {
   border-style: dashed;
   border-color: rgba(237, 235, 227, 0.22);
   color: var(--on-forest-faint);
+  opacity: 0.55;
   cursor: default;
-}
-.footer-social-soon {
-  font-family: var(--font-mono);
-  font-size: 11px;
 }
 .footer-group {
   display: flex;
