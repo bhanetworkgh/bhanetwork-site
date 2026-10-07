@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { privacy } from '../content/privacy';
 import { FORM_A_QUESTIONS } from '../lib/formA';
 
@@ -20,6 +21,21 @@ export function Privacy() {
         ))}
       </ul>
       <p>{s.collects.extra}</p>
+
+      <h2 id="sms">{s.phone.heading}</h2>
+      <p>{s.phone.collects}</p>
+      <p>{s.phone.use}</p>
+      <p>{s.phone.sharing}</p>
+      <p>
+        <strong>{s.phone.optOut}</strong>
+      </p>
+      <p>
+        {s.phone.termsBefore}
+        <Link className="link" to="/terms">
+          {s.phone.termsLabel}
+        </Link>
+        {s.phone.termsAfter}
+      </p>
 
       <h2>{s.why.heading}</h2>
       <p>{s.why.body}</p>

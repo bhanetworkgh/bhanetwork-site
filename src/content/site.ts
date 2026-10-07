@@ -50,7 +50,10 @@ export const footer = {
     },
     {
       label: 'Company',
-      links: [{ to: '/privacy', label: 'Privacy' }],
+      links: [
+        { to: '/privacy', label: 'Privacy' },
+        { to: '/terms', label: 'Terms' },
+      ],
     },
   ],
   contactLabel: 'Contact',
@@ -83,7 +86,12 @@ export const meta = {
   privacy: {
     title: 'Privacy | Bays Horizon Network',
     description:
-      'What the vFarm early-access form collects, why, where it goes, how long it is kept and how to have it removed.',
+      'What Bays Horizon Network collects through the vFarm early-access form and through customer care by text and phone, why, where it goes and how to have it removed.',
+  },
+  terms: {
+    title: 'Terms and Conditions | Bays Horizon Network',
+    description:
+      'Terms for Bays Horizon SMS Customer Care: what the text-message program is, message frequency, cost, how to opt out and how to get help.',
   },
   vfarmFallbackTitle: 'vFarm | Bays Horizon Network',
   notFound: {

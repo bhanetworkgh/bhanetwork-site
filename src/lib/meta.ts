@@ -18,7 +18,7 @@ export interface PageMeta {
   noindex?: boolean;
 }
 
-export const ROUTES = ['/', '/vfarm', '/privacy'] as const;
+export const ROUTES = ['/', '/vfarm', '/privacy', '/terms'] as const;
 
 export function metaFor(path: string, config: LandingConfig | null): PageMeta {
   /* The link-preview image: the manifest's hero render when set, else the brand card. */
@@ -28,6 +28,8 @@ export function metaFor(path: string, config: LandingConfig | null): PageMeta {
       return { ...base, ...copy.home };
     case '/privacy':
       return { ...base, ...copy.privacy };
+    case '/terms':
+      return { ...base, ...copy.terms };
     case '/vfarm': {
       const headline = config?.early_access.headline.trim();
       return {
