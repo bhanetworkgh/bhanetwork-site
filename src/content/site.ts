@@ -64,7 +64,7 @@ export const footer = {
   socialSoon: 'soon',
   social: [
     { id: 'x', label: 'X', handle: '@bha_vfarm', href: 'https://x.com/bha_vfarm' },
-    { id: 'instagram', label: 'Instagram', handle: '', href: '' },
+    { id: 'instagram', label: 'Instagram', handle: '@bayshorizonnetwork', href: 'https://www.instagram.com/bayshorizonnetwork/' },
     { id: 'facebook', label: 'Facebook', handle: '', href: '' },
     { id: 'tiktok', label: 'TikTok', handle: '', href: '' },
   ],
