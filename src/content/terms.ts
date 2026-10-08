@@ -6,18 +6,25 @@
  *
  * Four lines are fixed wording from the registration brief and must not be
  * reworded without Jason: the program name, `rates`, `frequency` and `optOut`.
+ *
+ * 8 Oct 2026: the intro and "What the program is" now name the same products
+ * and message types as the campaign description (Customer Service Twin, vFarm
+ * monitoring; account verification, subscription and appointment
+ * confirmations, 1:1 support replies) and cover sample 2's YES/NO call
+ * confirmation. "How you join" is NOT yet rewritten: it waits on the consent
+ * step in Customer Service Twin onboarding (LOOP-1791321965741-SBAU).
  */
 
 export const terms = {
   heading: 'Terms and Conditions',
   program: 'Bays Horizon SMS Customer Care',
-  updated: 'Last updated 7 October 2026',
+  updated: 'Last updated 8 October 2026',
   intro:
-    'These terms cover Bays Horizon SMS Customer Care, the text-message customer care program run by Bays Horizon Network for our advisory work and our vFarm and engine products.',
+    'These terms cover Bays Horizon SMS Customer Care, the text-message customer care program run by Bays Horizon Network for our advisory and automation products, including the Customer Service Twin and vFarm monitoring.',
   sections: {
     program: {
       heading: 'What the program is',
-      body: 'Bays Horizon SMS Customer Care lets you reach us, and lets us reach you, by text message about our advisory and vFarm and engine products. Messages are customer care and operational messages: answers to your questions, help getting set up, and notices about your account or service. We do not send marketing messages through this program.',
+      body: 'Bays Horizon SMS Customer Care lets you reach us, and lets us reach you, by text message about our advisory and automation products, including the Customer Service Twin and vFarm monitoring. Messages are customer care and operational messages: account verification, subscription and appointment confirmations, and one-to-one replies to your customer support questions about your service. An appointment confirmation may ask you to confirm an onboarding call by replying YES or NO. We do not send marketing messages through this program.',
     },
     consent: {
       heading: 'How you join',
