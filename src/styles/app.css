@@ -1674,6 +1674,16 @@ main:focus {
   line-height: 1.1;
   max-width: 400px;
 }
+.footer-sms {
+  margin: 0 0 1rem;
+  max-width: 34rem;
+  font-size: 0.875rem;
+  line-height: 1.55;
+}
+.footer-sms .footer-group-label {
+  display: block;
+  margin-bottom: 0.25rem;
+}
 .footer-contact {
   font-size: 15px;
   color: var(--on-forest-dim);

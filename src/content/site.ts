@@ -59,6 +59,25 @@ export const footer = {
   contactLabel: 'Contact',
   email: 'admin@bhanetwork.org',
   /**
+   * Text-message opt-in for "Bays Horizon SMS Customer Care" (12 Oct 2026).
+   * This is the public call to action the Twilio A2P campaign for (971)
+   * 588-5823 points reviewers to: keyword opt-in, with the disclosures next to
+   * the number. Keep it word for word with the campaign's Message Flow, opt-in
+   * message and the Terms page; change all three together or none.
+   */
+  sms: {
+    label: 'Customer care by text',
+    before: 'Text ',
+    keyword: 'START',
+    to: ' to ',
+    number: '(971) 588-5823',
+    href: 'sms:+19715885823?&body=START',
+    after:
+      ' to get Bays Horizon SMS Customer Care: replies to your questions and updates about your enquiry or account. Message frequency varies. Msg & data rates may apply. Reply STOP to opt out, HELP for help. No marketing messages.',
+    termsLabel: 'Terms',
+    privacyLabel: 'Privacy',
+  },
+  /**
    * Social pages. A page with an `href` is live and links out; one without is
    * not set up yet and is shown as "soon", never as a dead link. Add the href
    * here when a page goes live and it becomes a link everywhere the footer is.

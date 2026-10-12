@@ -11,14 +11,21 @@
  * and message types as the campaign description (Customer Service Twin, vFarm
  * monitoring; account verification, subscription and appointment
  * confirmations, 1:1 support replies) and cover sample 2's YES/NO call
- * confirmation. "How you join" is NOT yet rewritten: it waits on the consent
- * step in Customer Service Twin onboarding (LOOP-1791321965741-SBAU).
+ * confirmation.
+ *
+ * 12 Oct 2026: "How you join" rewritten to the opt-in that actually exists.
+ * The campaign was rejected for its opt-in information: it said people give
+ * their number on a site form, and no site form asks for one. People now join
+ * by texting START (or a question) to (971) 588-5823; the call to action is in
+ * the site footer (#text-us). When the Customer Service Twin onboarding adds
+ * its own consent step (LOOP-1791321965741-SBAU), add it here AND to the
+ * campaign's Message Flow in the same change.
  */
 
 export const terms = {
   heading: 'Terms and Conditions',
   program: 'Bays Horizon SMS Customer Care',
-  updated: 'Last updated 8 October 2026',
+  updated: 'Last updated 12 October 2026',
   intro:
     'These terms cover Bays Horizon SMS Customer Care, the text-message customer care program run by Bays Horizon Network for our advisory and automation products, including the Customer Service Twin and vFarm monitoring.',
   sections: {
@@ -28,7 +35,7 @@ export const terms = {
     },
     consent: {
       heading: 'How you join',
-      body: 'You receive messages from this program when you have given us your mobile number for your account, early access, a subscription or customer support and agreed to be contacted by text, or when you text our customer care number first. Agreeing to receive text messages is not a condition of buying anything from us.',
+      body: 'You join by texting START to (971) 588-5823, our customer care number, or by texting that number with a question. After you text START we send one message confirming you have joined, with how often we message, that message and data rates may apply, and how to opt out. Today we only text people who have texted this number first. Agreeing to receive text messages is not a condition of buying anything from us.',
     },
     frequency: {
       heading: 'How often we message',

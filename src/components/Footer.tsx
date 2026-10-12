@@ -36,6 +36,23 @@ export function Footer() {
               {footer.email}
             </a>
           </p>
+          <p className="footer-sms" id="text-us">
+            <span className="footer-group-label">{footer.sms.label}</span>
+            {footer.sms.before}
+            <strong>{footer.sms.keyword}</strong>
+            {footer.sms.to}
+            <a className="footer-email" href={footer.sms.href}>
+              {footer.sms.number}
+            </a>
+            {footer.sms.after}{' '}
+            <Link to="/terms" className="footer-email">
+              {footer.sms.termsLabel}
+            </Link>
+            {' · '}
+            <Link to="/privacy" className="footer-email">
+              {footer.sms.privacyLabel}
+            </Link>
+          </p>
           <div className="footer-social">
             <span className="footer-group-label">{footer.socialLabel}</span>
             <ul className="footer-social-list">
