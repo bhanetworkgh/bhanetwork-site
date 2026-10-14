@@ -87,7 +87,7 @@ export const footer = {
   social: [
     { id: 'x', label: 'X', handle: '@bha_vfarm', href: 'https://x.com/bha_vfarm' },
     { id: 'instagram', label: 'Instagram', handle: '@bayshorizonnetwork', href: 'https://www.instagram.com/bayshorizonnetwork/' },
-    { id: 'facebook', label: 'Facebook', handle: '', href: '' },
+    { id: 'facebook', label: 'Facebook', handle: 'BHA Network', href: 'https://www.facebook.com/share/1JacxK77Fn/' },
     { id: 'tiktok', label: 'TikTok', handle: '', href: '' },
   ],
   copyright: '© 2026 Bays Horizon Network',

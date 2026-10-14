@@ -514,8 +514,7 @@ main:focus {
 .wordmark-mark {
   width: 34px;
   height: 34px;
-  border-radius: 8px;
-  box-shadow: 0 0 0 1px rgba(224, 184, 74, 0.35);
+  object-fit: contain;
 }
 .wordmark-text {
   font-family: var(--font-display);
@@ -575,7 +574,6 @@ main:focus {
   .wordmark-mark {
     width: 30px;
     height: 30px;
-    border-radius: 7px;
   }
   .wordmark-text {
     font-size: 22px;
