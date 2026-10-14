@@ -11,7 +11,7 @@ export const SITE_URL = 'https://bhanetwork.org';
 export const SITE_NAME = 'Bays Horizon Network';
 
 /** The Open Graph / Twitter image every page shares. A brand card, not a vFarm image. */
-export const OG_IMAGE = `${SITE_URL}/og-v2.png`; /* renamed 1 Oct so link previews drop the cached old design */
+export const OG_IMAGE = `${SITE_URL}/og-v3.png`; /* v3 (14 Oct): the green BHA tree replaces the gold badge; a new name so link previews drop the cached card */
 
 /** Who we are, for search engines (schema.org Organization). Only facts we can stand behind. */
 export const ORGANIZATION = {
