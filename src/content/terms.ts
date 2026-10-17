@@ -20,12 +20,15 @@
  * the site footer (#text-us). When the Customer Service Twin onboarding adds
  * its own consent step (LOOP-1791321965741-SBAU), add it here AND to the
  * campaign's Message Flow in the same change.
+ *
+ * 17 Oct 2026: "Payments" added for Stripe account activation. It sits after
+ * the program sections and changes none of the four fixed lines.
  */
 
 export const terms = {
   heading: 'Terms and Conditions',
   program: 'Bays Horizon SMS Customer Care',
-  updated: 'Last updated 12 October 2026',
+  updated: 'Last updated 17 October 2026',
   intro:
     'These terms cover Bays Horizon SMS Customer Care, the text-message customer care program run by Bays Horizon Network for our advisory and automation products, including the Customer Service Twin and vFarm monitoring.',
   sections: {
@@ -67,6 +70,10 @@ export const terms = {
         'We use your phone number to run your account and to support you. It is never sold, and no mobile information is shared with third parties or affiliates for marketing or promotional purposes. The details are in our ',
       linkLabel: 'Privacy Policy',
       bodyAfter: '.',
+    },
+    payments: {
+      heading: 'Payments',
+      body: 'We only take a payment from you under a written agreement you have accepted, which sets out what you are paying for, the amount, what happens to a deposit, refunds and delivery. Payments are made by card on a checkout page run by Stripe, our payment processor, and Stripe emails you a receipt. Filling in our early-access form or texting our customer care number never commits you to paying anything. If you have a question about a charge, email us or text (971) 588-5823.',
     },
     changes: {
       heading: 'Changes to these terms',

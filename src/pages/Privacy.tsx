@@ -37,6 +37,9 @@ export function Privacy() {
         {s.phone.termsAfter}
       </p>
 
+      <h2 id="payments">{s.payments.heading}</h2>
+      <p>{s.payments.body}</p>
+
       <h2>{s.why.heading}</h2>
       <p>{s.why.body}</p>
 
@@ -48,6 +51,9 @@ export function Privacy() {
 
       <h2>{s.kept.heading}</h2>
       <p>{s.kept.body}</p>
+
+      <h2>{s.security.heading}</h2>
+      <p>{s.security.body}</p>
 
       <h2>{s.removal.heading}</h2>
       <p>

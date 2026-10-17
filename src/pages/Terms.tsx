@@ -54,6 +54,9 @@ export function Terms() {
         {s.privacy.bodyAfter}
       </p>
 
+      <h2 id="payments">{s.payments.heading}</h2>
+      <p>{s.payments.body}</p>
+
       <h2>{s.changes.heading}</h2>
       <p>{s.changes.body}</p>
     </section>
