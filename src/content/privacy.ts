@@ -15,7 +15,7 @@
 
 export const privacy = {
   heading: 'Privacy',
-  updated: 'Last updated 17 October 2026',
+  updated: 'Last updated 28 October 2026',
   intro:
     'Bays Horizon Network collects personal information in three ways. This site collects it in one place only: the vFarm early-access form on the vFarm page. Separately, we hold phone numbers and messages when you use our customer care by text or phone, and a record of any payment you make to us under a written agreement. This page explains what is collected in each case and what happens to it.',
   sections: {
@@ -72,5 +72,5 @@ export const privacy = {
       body: 'Nothing. This site stores nothing in your browser: no cookies, no local storage, no tracking, no analytics and no advertising scripts.',
     },
   },
-  contactEmail: 'admin@bhanetwork.org',
+  contactEmail: 'support@bhanetwork.org',
 };

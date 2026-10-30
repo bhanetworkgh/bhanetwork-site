@@ -18,7 +18,7 @@ export const ORGANIZATION = {
   name: SITE_NAME,
   url: `${SITE_URL}/`,
   logo: `${SITE_URL}/icon-512.png`,
-  email: 'admin@bhanetwork.org',
+  email: 'support@bhanetwork.org',
   description:
     'The building side of Bays Horizon: the team, the experiments and the AI engine behind the monitored vFarm.',
 };
@@ -57,7 +57,7 @@ export const footer = {
     },
   ],
   contactLabel: 'Contact',
-  email: 'admin@bhanetwork.org',
+  email: 'support@bhanetwork.org',
   /**
    * Text-message opt-in for "Bays Horizon SMS Customer Care" (12 Oct 2026).
    * This is the public call to action the Twilio A2P campaign for (971)

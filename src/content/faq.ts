@@ -60,7 +60,7 @@ export const faq: { heading: string; items: FaqEntry[] } = {
       q: 'How do I get in touch?',
       a: [
         'Email ',
-        { text: 'admin@bhanetwork.org', href: 'mailto:admin@bhanetwork.org' },
+        { text: 'support@bhanetwork.org', href: 'mailto:support@bhanetwork.org' },
         ' or text ',
         { text: '(971) 588-5823', href: 'sms:+19715885823' },
         ", our customer care number. We're glad to hear from partners, growers, builders and anyone curious about how the engine works.",

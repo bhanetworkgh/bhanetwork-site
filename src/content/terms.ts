@@ -28,7 +28,7 @@
 export const terms = {
   heading: 'Terms and Conditions',
   program: 'Bays Horizon SMS Customer Care',
-  updated: 'Last updated 17 October 2026',
+  updated: 'Last updated 28 October 2026',
   intro:
     'These terms cover Bays Horizon SMS Customer Care, the text-message customer care program run by Bays Horizon Network for our advisory and automation products, including the Customer Service Twin and vFarm monitoring.',
   sections: {
@@ -80,5 +80,5 @@ export const terms = {
       body: 'If we change these terms we will update this page and the date at the top.',
     },
   },
-  contactEmail: 'admin@bhanetwork.org',
+  contactEmail: 'support@bhanetwork.org',
 };
