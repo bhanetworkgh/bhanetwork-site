@@ -113,7 +113,7 @@ export const meta = {
   home: {
     title: 'Bays Horizon Network | Building the monitored vFarm in public',
     description:
-      'We are wiring a real vertical farm to an AI engine that uses data from each growing cycle to inform future improvements.',
+      'We are wiring a real vertical farm to an AI engine that will use data from each growing cycle to inform future improvements as it comes online.',
   },
   privacy: {
     title: 'Privacy | Bays Horizon Network',

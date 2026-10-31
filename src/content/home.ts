@@ -10,7 +10,7 @@ export const hero = {
      growing system." Jason's original second half was "run by an engine that learns." */
   headlineAccent: 'built to be monitored.',
   subhead:
-    'We are wiring a real vertical farm to an AI engine that uses data from each growing cycle to inform future improvements. Join Early Access to see the builds, system diagrams, and monthly progress as we build toward an increasingly automated vFarm twin.',
+    'We are wiring a real vertical farm to an AI engine that will use data from each growing cycle to inform future improvements as it comes online. Join Early Access to see the builds, system diagrams, and monthly progress as we build toward an increasingly automated vFarm twin.',
   primary: { to: '/vfarm#signup', label: 'Join vFarm early access' },
   secondary: { to: '/#team', label: 'Meet the team' },
   /* Two facts about vFarm, both from landing-config's what_vfarm_is. */
