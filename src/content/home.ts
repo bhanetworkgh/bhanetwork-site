@@ -41,17 +41,32 @@ export const stats = {
   ],
 };
 
-/** The base build, as big numbered rows. From landing-config's what_vfarm_is. */
+/**
+ * The base build, as big numbered rows that open. Each line restates the
+ * approved P1.0 renders' own labels (CAD intent, reference-informed); nothing
+ * here is a verified capability.
+ */
 export const rows = {
   eyebrow: 'The base build',
   heading: 'What comes in the rack.',
-  more: 'See vFarm',
-  note: 'Control and automation capabilities are shown only when verified.',
+  note: 'From the current P1.0 design: CAD intent, reference-informed. Control and automation capabilities are shown only when verified.',
   items: [
-    { title: 'The frame', to: '/vfarm' },
-    { title: 'Trays', to: '/vfarm' },
-    { title: 'Lights', to: '/vfarm' },
-    { title: 'Pumps', to: '/vfarm' },
+    {
+      title: 'The frame',
+      body: 'A two-tier open steel rack, roughly the footprint of a bookshelf. It holds two grow trays, one above the other, with the water reservoir underneath. Final dimensions and power are published after mechanical confirmation.',
+    },
+    {
+      title: 'Trays',
+      body: 'Two trays, each laid out for eight pots in a two by four grid. Each tray drains through its own valve into a shared drain riser, so one tier can be emptied without touching the other.',
+    },
+    {
+      title: 'Lights',
+      body: 'An LED tube runs over each tray, one upper and one lower, so every tier has its own light rather than sharing one from above.',
+    },
+    {
+      title: 'Pumps',
+      body: 'A submersible pump sits inside a 150 litre reservoir at the bottom of the rack and tops up each tray through a riser. Water drains back to the reservoir by gravity, and a gate valve gives a manual top-up bypass.',
+    },
   ],
 };
 

@@ -55,10 +55,13 @@ export function Accordion({ items }: { items: FaqEntry[] }) {
                 </span>
               </button>
             </h3>
-            <div id={panel} role="region" aria-labelledby={btn} className="accordion-a" hidden={!isOpen}>
-              <p>
-                <Answer parts={item.a} />
-              </p>
+            {/* Height eases open and shut (grid rows 0fr to 1fr); a closed answer is inert. */}
+            <div id={panel} role="region" aria-labelledby={btn} className="accordion-a" inert={!isOpen}>
+              <div>
+                <p>
+                  <Answer parts={item.a} />
+                </p>
+              </div>
             </div>
           </div>
         );

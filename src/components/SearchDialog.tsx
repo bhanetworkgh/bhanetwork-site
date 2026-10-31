@@ -2,7 +2,6 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { faq, type AnswerPart } from '../content/faq';
 import { search } from '../content/site';
-import { useLanding } from '../config/landingConfig';
 import { Modal } from './Modal';
 import { Icon } from './Icon';
 
@@ -17,7 +16,6 @@ const plain = (parts: AnswerPart[]) => parts.map((p) => (typeof p === 'string' ?
 
 /** Every place on the site a visitor might be looking for, built from the site's own copy. */
 function useIndex(): Entry[] {
-  const { config } = useLanding();
   return useMemo(() => {
     const pages: Entry[] = [
       { kind: 'Page', title: 'Home', text: 'Bays Horizon Network, the engine and the farm', to: '/' },
@@ -30,9 +28,8 @@ function useIndex(): Entry[] {
       { kind: 'Page', title: 'Terms', text: 'terms text messages sms customer care stop help', to: '/terms' },
     ];
     const home = faq.items.map((f) => ({ kind: 'Question', title: f.q, text: plain(f.a), to: '/#faq' }));
-    const vfarm = (config?.faq ?? []).map((f) => ({ kind: 'vFarm question', title: f.question, text: f.answer, to: '/vfarm#faq' }));
-    return [...pages, ...home, ...vfarm];
-  }, [config]);
+    return [...pages, ...home];
+  }, []);
 }
 
 function rank(index: Entry[], query: string): Entry[] {

@@ -50,7 +50,7 @@ async function variants(input, dir, name, candidates, prepare) {
   const list = [];
   for (const w of widthsFor(info.width, candidates)) {
     const file = `${name}-${w}.webp`;
-    await sharp(data).resize({ width: w }).webp({ quality: 80 }).toFile(resolve(out, dir, file));
+    await sharp(data).resize({ width: w }).webp({ quality: 88 }).toFile(resolve(out, dir, file));
     list.push({ url: `/img/${dir}/${file}`, w });
   }
   const largest = list[list.length - 1];

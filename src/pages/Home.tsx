@@ -33,6 +33,7 @@ function Eyebrow({ children, tone = 'light' }: { children: string; tone?: 'light
 
 export function Home() {
   const [openPrinciple, setOpenPrinciple] = useState(0);
+  const [openRow, setOpenRow] = useState(-1);
   const { config } = useLanding();
   const what = config?.what_vfarm_is.slice(0, 4) ?? [];
   /* Only real entries. Anything the config marks as a sample stays off the page. */
@@ -54,40 +55,44 @@ export function Home() {
         <div className={`hero hero-home${photos.hero ? ' has-photo' : ''}`}>
           {photos.hero && <Fill photo={photos.hero} className="hero-photo" />}
           <div className="hero-glow" aria-hidden="true" />
-          <div className="hero-copy">
-            <p className="pill-label on-dark">{hero.eyebrow}</p>
-            <h1 className="display">
-              <span className="display-accent">{hero.headlineLead}</span>
-              {/* The second half is drawn in the opposite corner; read here, once. */}
-              <span className="sr-only"> {hero.headlineAccent}</span>
-            </h1>
+          <div className="hero-col hero-col-left">
+            <div className="hero-copy">
+              <p className="pill-label on-dark">{hero.eyebrow}</p>
+              <h1 className="display">
+                <span className="display-accent">{hero.headlineLead}</span>
+                {/* The second half is drawn in the opposite corner; read here, once. */}
+                <span className="sr-only"> {hero.headlineAccent}</span>
+              </h1>
+            </div>
+            <div className="hero-side">
+              <p className="hero-small on-dark">{hero.subhead}</p>
+              <Link to={hero.primary.to} className="btn btn-gold">
+                <span className="btn-dot" aria-hidden="true" />
+                {hero.primary.label}
+              </Link>
+              <ul className="hero-chips">
+                {hero.facts.map((f) => (
+                  <li key={f.label} className="glass-chip">
+                    <span className="glass-chip-icon">
+                      <Icon name={f.icon as IconName} size={20} />
+                    </span>
+                    <span>
+                      <span className="glass-chip-label">{f.label}</span>
+                      <span className="glass-chip-value">{f.value}</span>
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
-          <div className="hero-stack">
-            <RenderStack renders={gallery} note={hero.stackNote} />
+          <div className="hero-col hero-col-right">
+            <div className="hero-stack">
+              <RenderStack renders={gallery} note={hero.stackNote} />
+            </div>
+            <p className="display display-end" aria-hidden="true">
+              {hero.headlineAccent}
+            </p>
           </div>
-          <div className="hero-side">
-            <p className="hero-small on-dark">{hero.subhead}</p>
-            <Link to={hero.primary.to} className="btn btn-gold">
-              <span className="btn-dot" aria-hidden="true" />
-              {hero.primary.label}
-            </Link>
-            <ul className="hero-chips">
-              {hero.facts.map((f) => (
-                <li key={f.label} className="glass-chip">
-                  <span className="glass-chip-icon">
-                    <Icon name={f.icon as IconName} size={20} />
-                  </span>
-                  <span>
-                    <span className="glass-chip-label">{f.label}</span>
-                    <span className="glass-chip-value">{f.value}</span>
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <p className="display display-end" aria-hidden="true">
-            {hero.headlineAccent}
-          </p>
         </div>
       </section>
 
@@ -145,7 +150,6 @@ export function Home() {
               <li key={item.title} className="feature reveal">
                 <span className="feature-num tabular">{String(i + 1).padStart(2, '0')}</span>
                 <span className="feature-title">{item.title}</span>
-                {item.body && <span className="feature-body">{item.body}</span>}
               </li>
             ))}
           </ol>
@@ -175,26 +179,27 @@ export function Home() {
           </div>
           <ol className="big-rows">
             {rows.items.map((r, i) => {
-              const inner = (
-                <>
-                  <span className="big-row-num tabular">({String(i + 1).padStart(2, '0')})</span>
-                  <span className="big-row-title">{r.title}</span>
-                  {r.to && (
-                    <span className="big-row-more" aria-hidden="true">
-                      {rows.more}
-                    </span>
-                  )}
-                </>
-              );
+              const isOpen = openRow === i;
               return (
-                <li key={r.title} className="reveal">
-                  {r.to ? (
-                    <Link to={r.to} className="big-row is-link">
-                      {inner}
-                    </Link>
-                  ) : (
-                    <div className="big-row">{inner}</div>
-                  )}
+                <li key={r.title} className={`big-row-item reveal${isOpen ? ' is-open' : ''}`}>
+                  <button
+                    type="button"
+                    className="big-row"
+                    aria-expanded={isOpen}
+                    aria-controls={`rack-${i}`}
+                    onClick={() => setOpenRow(isOpen ? -1 : i)}
+                  >
+                    <span className="big-row-num tabular">({String(i + 1).padStart(2, '0')})</span>
+                    <span className="big-row-title">{r.title}</span>
+                    <span className="big-row-toggle" aria-hidden="true">
+                      <Icon name="plus" size={22} />
+                    </span>
+                  </button>
+                  <div id={`rack-${i}`} className="big-row-body" role="region" inert={!isOpen}>
+                    <div>
+                      <p>{r.body}</p>
+                    </div>
+                  </div>
                 </li>
               );
             })}
@@ -257,7 +262,7 @@ export function Home() {
                       <Icon name="plus" size={16} />
                     </button>
                     {/* Height eases open and shut (grid rows 0fr to 1fr). */}
-                    <div id={`principle-${i}`} className="principle-body" role="region" aria-hidden={!isOpen}>
+                    <div id={`principle-${i}`} className="principle-body" role="region" inert={!isOpen}>
                       <div>
                         <p>{p.body}</p>
                       </div>
