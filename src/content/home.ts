@@ -18,7 +18,6 @@ export const hero = {
     { icon: 'sprout', label: 'Sized for', value: 'A spare room' },
     { icon: 'activity', label: 'Built for', value: 'Monitored operation' },
   ],
-  stackNote: 'Conceptual renders, reference-informed. Not the verified current P1.0. Hover or tap to look closer.',
 } as const;
 
 /** The about block: a big lowercase title, a label column and one statement. */
@@ -124,6 +123,13 @@ export const ctaBand = {
 /** The /vfarm facts on Home come from landing-config; these are only their headings. */
 export const whatVfarm = {
   eyebrow: 'vFarm P1.0',
+  /* Twelve words each, so the four sit evenly. Same meaning as landing-config's what_vfarm_is. */
+  lines: [
+    'Sized for a spare room: two growing tiers, roughly a bookshelf’s footprint.',
+    'Base build: frame, trays, lights and pumps; automation shown only when verified.',
+    'Monitoring captures supported signals and surfaces verified events for people to review.',
+    'Being built for monitored operation, with more automation as the development goal.',
+  ],
   heading: 'What vFarm is, in four lines.',
   link: { to: '/vfarm', label: 'See vFarm' },
 };

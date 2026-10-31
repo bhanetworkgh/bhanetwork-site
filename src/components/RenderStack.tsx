@@ -4,10 +4,10 @@ import type { Render } from '../lib/images';
 /**
  * The hero's three vFarm renders, stacked and floating. Hovering the stack
  * fans the cards out; hovering one card brings it forward and zooms it. On a
- * touch screen a tap brings a card forward. One caption under the stack says
- * what every card is, because each card's own banner is too small to read here.
+ * touch screen a tap brings a card forward. Each render carries its own
+ * "conceptual, not verified-current" banner, and its alt text says the same.
  */
-export function RenderStack({ renders, note }: { renders: Render[]; note: string }) {
+export function RenderStack({ renders }: { renders: Render[] }) {
   const [front, setFront] = useState(0);
   const cards = renders.slice(0, 3);
   if (!cards.length) return null;
@@ -42,7 +42,6 @@ export function RenderStack({ renders, note }: { renders: Render[]; note: string
           );
         })}
       </div>
-      <figcaption className="stack-note">{note}</figcaption>
     </figure>
   );
 }

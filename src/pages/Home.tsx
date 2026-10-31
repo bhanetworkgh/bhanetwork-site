@@ -35,7 +35,8 @@ export function Home() {
   const [openPrinciple, setOpenPrinciple] = useState(0);
   const [openRow, setOpenRow] = useState(-1);
   const { config } = useLanding();
-  const what = config?.what_vfarm_is.slice(0, 4) ?? [];
+  /* Four lines of equal length restating landing-config's what_vfarm_is (31 Oct, Destiny). */
+  const what = config?.what_vfarm_is.length ? whatVfarm.lines.map((title) => ({ title })) : [];
   /* Only real entries. Anything the config marks as a sample stays off the page. */
   const log = (config?.build_feed ?? []).filter((e) => !e.sample).slice(0, 6);
   const { gallery } = images.renders;
@@ -66,10 +67,6 @@ export function Home() {
             </div>
             <div className="hero-side">
               <p className="hero-small on-dark">{hero.subhead}</p>
-              <Link to={hero.primary.to} className="btn btn-gold">
-                <span className="btn-dot" aria-hidden="true" />
-                {hero.primary.label}
-              </Link>
               <ul className="hero-chips">
                 {hero.facts.map((f) => (
                   <li key={f.label} className="glass-chip">
@@ -87,7 +84,7 @@ export function Home() {
           </div>
           <div className="hero-col hero-col-right">
             <div className="hero-stack">
-              <RenderStack renders={gallery} note={hero.stackNote} />
+              <RenderStack renders={gallery} />
             </div>
             <p className="display display-end" aria-hidden="true">
               {hero.headlineAccent}
@@ -181,7 +178,10 @@ export function Home() {
             {rows.items.map((r, i) => {
               const isOpen = openRow === i;
               return (
-                <li key={r.title} className={`big-row-item reveal${isOpen ? ' is-open' : ''}`}>
+                /* The scroll-in class lives on the <li>; the open state on the div inside, so
+                   a click never wipes the class that keeps the row visible. */
+                <li key={r.title} className="reveal">
+                  <div className={`big-row-item${isOpen ? ' is-open' : ''}`}>
                   <button
                     type="button"
                     className="big-row"
@@ -199,6 +199,7 @@ export function Home() {
                     <div>
                       <p>{r.body}</p>
                     </div>
+                  </div>
                   </div>
                 </li>
               );

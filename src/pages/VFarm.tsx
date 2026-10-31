@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useLanding } from '../config/landingConfig';
 import { vfarmLabels } from '../content/vfarm';
-import { ClaimsGrid, Qualifier } from '../components/ClaimsList';
+import { Qualifier } from '../components/ClaimsList';
 import { EarlyAccessForm } from '../components/EarlyAccessForm';
 import { Gallery } from '../components/Gallery';
 import { RenderPanel } from '../components/RenderPanel';
@@ -70,18 +70,9 @@ export function VFarm() {
         <section className="band-paper anchor-section" id="signup">
           <div className="container section signup">
             <div className="signup-head">
-              <div>
-                <p className="pill-label">{vfarmLabels.signupEyebrow}</p>
-                {ea.cta_label && <h2 className="h-signup">{ea.cta_label}</h2>}
-              </div>
-              {ea.body && (
-                <p className="body-lg dim signup-intro">
-                  {ea.body}
-                  {config.early_access_endpoint ? ` ${vfarmLabels.signupSteps}` : ''}
-                </p>
-              )}
+              <p className="pill-label">{vfarmLabels.signupEyebrow}</p>
+              {ea.cta_label && <h2 className="h-signup">{ea.cta_label}</h2>}
             </div>
-            <ClaimsGrid claims={config.supporting_claims} />
             <EarlyAccessForm config={config} ctaMode={ctaMode} />
           </div>
         </section>

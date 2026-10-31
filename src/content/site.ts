@@ -34,7 +34,6 @@ export const nav = {
   cta: { to: '/vfarm#signup', label: 'Join vFarm early access' },
   /* The way into the vFarm owner dashboard. Accounts are not open yet; /login says so. */
   getStarted: { to: '/login', label: 'Get started' },
-  searchLabel: 'Search the site',
   menuLabel: 'Menu',
   closeMenuLabel: 'Close menu',
 };
@@ -159,15 +158,6 @@ export const login = {
   primary: { to: '/vfarm#signup', label: 'Join Early Access' },
   secondary: { to: '/', label: 'Back to Home' },
   note: 'Early Access members hear first when accounts open.',
-};
-
-/** The site search: pages and sections a visitor can jump to. */
-export const search = {
-  label: 'Search the site',
-  placeholder: 'Search pages, questions and sections',
-  closeLabel: 'Close search',
-  empty: 'Nothing on the site matches that. Try another word, or write to support@bhanetwork.org.',
-  hint: 'Pages and questions',
 };
 
 export const notFound = {

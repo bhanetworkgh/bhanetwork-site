@@ -50,7 +50,7 @@ async function variants(input, dir, name, candidates, prepare) {
   const list = [];
   for (const w of widthsFor(info.width, candidates)) {
     const file = `${name}-${w}.webp`;
-    await sharp(data).resize({ width: w }).webp({ quality: 88 }).toFile(resolve(out, dir, file));
+    await sharp(data).resize({ width: w, kernel: 'lanczos3' }).webp({ quality: dir === 'renders' ? 92 : 88, smartSubsample: true }).toFile(resolve(out, dir, file));
     list.push({ url: `/img/${dir}/${file}`, w });
   }
   const largest = list[list.length - 1];
@@ -93,7 +93,11 @@ async function render(entry, slot) {
   const input = resolve(pub, 'renders', String(file ?? ''));
   if (!file || !existsSync(input)) throw new Error(`[images] renders/manifest.json ${slot}: file "${file}" not found in public/renders/`);
   if (!String(alt ?? '').trim()) throw new Error(`[images] renders/manifest.json ${slot}: "alt" is required`);
-  const img = await variants(input, 'renders', parse(file).name, RENDER_WIDTHS, (i) => i);
+  /* The renders arrive at 1672 px. Scale them to 2400 with Lanczos and a light
+     sharpen, so large and high-density screens get a crisper picture. */
+  const img = await variants(input, 'renders', parse(file).name, RENDER_WIDTHS, (i) =>
+    i.resize({ width: 2400, kernel: 'lanczos3' }).sharpen({ sigma: 0.7, m1: 0.5, m2: 1.5 }),
+  );
   return { ...img, alt: String(alt).trim(), caption: String(caption).trim() };
 }
 

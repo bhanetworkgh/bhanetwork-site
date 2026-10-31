@@ -3,7 +3,6 @@ import { Link, useLocation } from 'react-router-dom';
 import { nav } from '../content/site';
 import { Wordmark } from './Wordmark';
 import { Icon } from './Icon';
-import { SearchDialog } from './SearchDialog';
 
 type Spy = 'home' | 'team' | 'faq';
 
@@ -45,14 +44,21 @@ function useScrollSpy(active: boolean): Spy {
 
 /**
  * The sticky nav: wordmark left; Home · vFarm · Team · FAQ in the middle;
- * search and the gold Get started (the way to the owner sign-in) right. Team and FAQ are
+ * the gold Get started (the way to the owner sign-in) right. Team and FAQ are
  * sections of Home: from any page they switch to Home without a reload and
  * scroll to the section. On a phone the links and the gold button fold into
  * a menu that closes after a tap. The bar is forest on every page.
  */
 export function Nav() {
   const [open, setOpen] = useState(false);
-  const [searching, setSearching] = useState(false);
+  /* Once the page moves, a soft fade appears under the bar so text scrolls away beneath it. */
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 12);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
   const { pathname, hash } = useLocation();
   const onHome = pathname === '/';
   const spy = useScrollSpy(onHome);
@@ -97,20 +103,13 @@ export function Nav() {
   );
 
   return (
-    <header className="nav">
+    <header className={`nav${scrolled ? ' is-scrolled' : ''}`}>
       <div className="container nav-inner">
         <Wordmark onClick={(e) => onNavClick(e, '/')} />
         <nav className="nav-links" aria-label="Primary">
           {nav.links.map((l) => link(l, 'nav-link'))}
         </nav>
         <div className="nav-actions">
-          <button type="button" className="icon-btn nav-search" onClick={() => setSearching(true)}>
-            <Icon name="search" size={19} />
-            <span className="sr-only">{nav.searchLabel}</span>
-            <span className="tip" aria-hidden="true">
-              {nav.searchLabel}
-            </span>
-          </button>
           <Link
             to={nav.getStarted.to}
             className="btn btn-gold btn-sm nav-cta"
@@ -151,7 +150,6 @@ export function Nav() {
           {nav.getStarted.label}
         </Link>
       </nav>
-      {searching && <SearchDialog onClose={() => setSearching(false)} />}
     </header>
   );
 }
