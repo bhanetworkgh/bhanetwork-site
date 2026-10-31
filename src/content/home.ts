@@ -1,54 +1,57 @@
-/** Home page copy. Nothing here is about vFarm's product claims; those live in landing-config. */
+/** Home page copy. Anything said about vFarm here restates landing-config; it never adds a claim. */
 
 export const hero = {
   eyebrow: 'Bays Horizon Network',
   /* The headline is set in two halves: the lead, then the butter accent. */
   /* Jason's approved line, 27 Sep 2026. */
   headlineLead: 'A farm the size of a bookshelf,',
-  headlineAccent: 'run by an engine that learns.',
+  /* Second half changed 31 Oct (Destiny): the site is about vFarm, not the team's
+     internals. From landing-config: "vFarm is being developed as a monitored
+     growing system." Jason's original second half was "run by an engine that learns." */
+  headlineAccent: 'built to be monitored.',
   subhead:
     'We are wiring a real vertical farm to an AI engine that uses data from each growing cycle to inform future improvements. Join Early Access to see the builds, system diagrams, and monthly progress as we build toward an increasingly automated vFarm twin.',
   primary: { to: '/vfarm#signup', label: 'Join vFarm early access' },
   secondary: { to: '/#team', label: 'Meet the team' },
-  /* Facts beside the headline. Only facts that cannot go stale. */
-  stat: { value: '6', label: 'Founding builders, and a founder' },
+  /* Two facts about vFarm, both from landing-config's what_vfarm_is. */
   facts: [
-    { icon: 'log', label: 'Every session', value: 'Logged, reviewed, on the record' },
-    { icon: 'sprout', label: 'Proving ground', value: 'Real crops. Real sensors.' },
+    { icon: 'sprout', label: 'Sized for', value: 'A spare room' },
+    { icon: 'activity', label: 'Built for', value: 'Monitored operation' },
   ],
+  stackNote: 'Conceptual renders, reference-informed. Not the verified current P1.0. Hover or tap to look closer.',
 } as const;
 
 /** The about block: a big lowercase title, a label column and one statement. */
 export const about = {
+  /* The three small lines across the top of the band, after VerdaAgro. */
+  meta: ['bha network', 'About the project', 'vFarm P1.0'],
   title: 'about bha',
-  labels: ['Bays Horizon Network', 'An AI engine', 'and a vertical farm'],
-  lead: 'We build AI engines that run real, physical systems.',
-  body: 'Our proving ground is vFarm, a vertical farm wired to an engine that learns from every growing cycle. Every working session is logged, reviewed and kept on the record, so what we say is what we can show.',
+  labels: ['vFarm P1.0', 'A vertical farm', 'built in the open'],
+  lead: 'vFarm is a vertical farm for a spare room, being built in the open.',
+  body: 'P1.0 is a two-tier open rack, roughly the footprint of a bookshelf, with trays, lights and pumps. It is being built for monitored operation, and what we show of it is only what has been verified.',
 };
 
-/**
- * Figures from the engine's own records, read from the dashboard on 31 Oct
- * 2026. Change them only from a fresh read, and change the date with them.
- */
+/** P1.0 in three figures, all from landing-config's what_vfarm_is. */
 export const stats = {
-  asOf: 'From the engine’s own records, 31 Oct 2026.',
+  asOf: 'P1.0 as described in the current vFarm spec. Final dimensions and power follow mechanical confirmation.',
   items: [
-    { value: '386', suffix: '', label: 'Build sessions logged and approved' },
-    { value: '429', suffix: '', label: 'Build patterns on record' },
-    { value: '55', suffix: 'k', label: 'Engine runs since 12 Sep 2026' },
+    { value: '2', suffix: '', label: 'Tiers in the P1.0 open rack' },
+    { value: '1', suffix: '', label: 'Bookshelf of floor space, roughly' },
+    { value: '4', suffix: '', label: 'Parts of the base build: frame, trays, lights and pumps' },
   ],
 };
 
-/** The four lanes the engine runs, as big numbered rows. Names only, no claims. */
+/** The base build, as big numbered rows. From landing-config's what_vfarm_is. */
 export const rows = {
-  eyebrow: 'What we build',
-  heading: 'From the farm to the engine.',
+  eyebrow: 'The base build',
+  heading: 'What comes in the rack.',
   more: 'See vFarm',
+  note: 'Control and automation capabilities are shown only when verified.',
   items: [
-    { title: 'vFarm P1.0', to: '/vfarm' },
-    { title: 'Monitoring Twin' },
-    { title: 'Research Twin' },
-    { title: 'North Star' },
+    { title: 'The frame', to: '/vfarm' },
+    { title: 'Trays', to: '/vfarm' },
+    { title: 'Lights', to: '/vfarm' },
+    { title: 'Pumps', to: '/vfarm' },
   ],
 };
 

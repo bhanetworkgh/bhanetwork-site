@@ -1,3 +1,50 @@
 {
-  "_readme": "Real photos from the team, one per slot: hero, stats, about, split, footer, and a list for cluster. Each { \"file\": \"name.jpg\", \"alt\": \"what is in it\" }. Files go in this folder. Never a photo of the vFarm rig itself; that is the renders' job. A slot left out is drawn without a photo."
+  "_readme": "Real photos from the team, one per slot: hero, stats, about, split, footer, and a list for cluster. Each { \"file\": \"name.jpg\", \"alt\": \"what is in it\" }. Files go in this folder. Never a photo of the vFarm rig itself; that is the renders' job. A slot left out is drawn without a photo.",
+  "_note": "Generated with an image model on 31 Oct 2026 (ElevenLabs flow HHQm58ymiHp4BkZFuAtP), at preview size. Mood pictures of crops and growing, never the vFarm rig. Replace with real team photos as they come.",
+  "stats": {
+    "file": "leaves-hand.jpg",
+    "alt": "A hand brushing leafy green plants in warm light"
+  },
+  "footer": {
+    "file": "herb-rows.jpg",
+    "alt": "Rows of leafy herbs in golden evening light"
+  },
+  "cluster": [
+    {
+      "file": "tomatoes.jpg",
+      "alt": "Ripe cherry tomatoes on the vine"
+    },
+    {
+      "file": "basil.jpg",
+      "alt": "Basil leaves in warm light"
+    },
+    {
+      "file": "seedling-hands.jpg",
+      "alt": "Hands holding a lettuce seedling"
+    },
+    {
+      "file": "strawberries.jpg",
+      "alt": "Strawberries hanging from the plant"
+    },
+    {
+      "file": "microgreens.jpg",
+      "alt": "Microgreens"
+    },
+    {
+      "file": "leaf.jpg",
+      "alt": "A leaf with water droplets"
+    },
+    {
+      "file": "roots.jpg",
+      "alt": "Plant roots in clear water"
+    },
+    {
+      "file": "tomato-flower.jpg",
+      "alt": "A tomato flower and green tomatoes"
+    },
+    {
+      "file": "soil-sensor.jpg",
+      "alt": "A soil sensor beside a seedling"
+    }
+  ]
 }

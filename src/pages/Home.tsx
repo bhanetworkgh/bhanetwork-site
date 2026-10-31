@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { about, buildLog, ctaBand, faqIntro, hero, lanes, rows, stats, whatVfarm, whatWeDo, whyFarm } from '../content/home';
 import { team } from '../content/team';
@@ -7,6 +8,7 @@ import { Accordion } from '../components/Accordion';
 import { Avatar } from '../components/Avatar';
 import { Icon, type IconName } from '../components/Icon';
 import { RenderPanel } from '../components/RenderPanel';
+import { RenderStack } from '../components/RenderStack';
 import { images, type Photo } from '../lib/images';
 
 /** A photo that fills its box; decorative, so the text beside it says what matters. */
@@ -30,11 +32,12 @@ function Eyebrow({ children, tone = 'light' }: { children: string; tone?: 'light
 }
 
 export function Home() {
+  const [openPrinciple, setOpenPrinciple] = useState(0);
   const { config } = useLanding();
   const what = config?.what_vfarm_is.slice(0, 4) ?? [];
   /* Only real entries. Anything the config marks as a sample stays off the page. */
   const log = (config?.build_feed ?? []).filter((e) => !e.sample).slice(0, 6);
-  const { strip, gallery } = images.renders;
+  const { gallery } = images.renders;
   /* The internals render beside "what vFarm is"; the rack render beside "why a farm". */
   const internals = gallery[1] ?? null;
   const rack = gallery[0] ?? null;
@@ -44,68 +47,58 @@ export function Home() {
 
   return (
     <>
-      {/* Hero: one deep green card, the headline in two halves at opposite corners. */}
-      <section className="hero-wrap">
-        <div className={`hero${photos.hero ? ' has-photo' : ''}`}>
+      {/* Hero, after VerdaAgro: the headline's first half top left, the renders
+          stacked and floating on the right, the words and two cards bottom left,
+          the second half large bottom right. */}
+      <section className="hero-wrap hero-stage">
+        <div className={`hero hero-home${photos.hero ? ' has-photo' : ''}`}>
           {photos.hero && <Fill photo={photos.hero} className="hero-photo" />}
           <div className="hero-glow" aria-hidden="true" />
-          <div className="hero-top">
-            <div className="hero-copy">
-              <p className="pill-label on-dark">{hero.eyebrow}</p>
-              <h1 className="display">
-                <span className="display-accent">{hero.headlineLead}</span>
-                {/* The second half is drawn in the opposite corner; read here, once. */}
-                <span className="sr-only"> {hero.headlineAccent}</span>
-              </h1>
-            </div>
-            <div className="hero-stat">
-              <span className="hero-stat-value tabular">{hero.stat.value}</span>
-              <span className="hero-stat-label">{hero.stat.label}</span>
-            </div>
+          <div className="hero-copy">
+            <p className="pill-label on-dark">{hero.eyebrow}</p>
+            <h1 className="display">
+              <span className="display-accent">{hero.headlineLead}</span>
+              {/* The second half is drawn in the opposite corner; read here, once. */}
+              <span className="sr-only"> {hero.headlineAccent}</span>
+            </h1>
           </div>
-
-          {strip && !photos.hero && (
-            <div className="hero-media">
-              <RenderPanel render={strip} sizes="(min-width: 1100px) 640px, 100vw" priority />
-            </div>
-          )}
-
-          <div className="hero-bottom">
-            <div className="hero-side">
-              <p className="lead on-dark">{hero.subhead}</p>
-              <div className="btn-row">
-                <Link to={hero.primary.to} className="btn btn-gold btn-lg">
-                  <span className="btn-dot" aria-hidden="true" />
-                  {hero.primary.label}
-                </Link>
-                <Link to={hero.secondary.to} className="btn btn-ghost btn-lg">
-                  {hero.secondary.label}
-                </Link>
-              </div>
-              <ul className="hero-chips">
-                {hero.facts.map((f) => (
-                  <li key={f.label} className="glass-chip">
-                    <span className="glass-chip-icon">
-                      <Icon name={f.icon as IconName} size={20} />
-                    </span>
-                    <span>
-                      <span className="glass-chip-label">{f.label}</span>
-                      <span className="glass-chip-value">{f.value}</span>
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <p className="display display-end" aria-hidden="true">
-              {hero.headlineAccent}
-            </p>
+          <div className="hero-stack">
+            <RenderStack renders={gallery} note={hero.stackNote} />
           </div>
+          <div className="hero-side">
+            <p className="hero-small on-dark">{hero.subhead}</p>
+            <Link to={hero.primary.to} className="btn btn-gold">
+              <span className="btn-dot" aria-hidden="true" />
+              {hero.primary.label}
+            </Link>
+            <ul className="hero-chips">
+              {hero.facts.map((f) => (
+                <li key={f.label} className="glass-chip">
+                  <span className="glass-chip-icon">
+                    <Icon name={f.icon as IconName} size={20} />
+                  </span>
+                  <span>
+                    <span className="glass-chip-label">{f.label}</span>
+                    <span className="glass-chip-value">{f.value}</span>
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <p className="display display-end" aria-hidden="true">
+            {hero.headlineAccent}
+          </p>
         </div>
       </section>
 
       {/* About: a big lowercase title, a label column and one statement. */}
       <section className="band-forest about">
         <div className="container">
+          <ul className="slide-meta" aria-hidden="true">
+            {about.meta.map((m) => (
+              <li key={m}>{m}</li>
+            ))}
+          </ul>
           <h2 className="about-title reveal">{about.title}</h2>
           <div className="about-grid">
             <ul className="about-labels">
@@ -206,6 +199,7 @@ export function Home() {
               );
             })}
           </ol>
+          <p className="stats-note rows-note">{rows.note}</p>
         </div>
       </section>
 
@@ -248,15 +242,29 @@ export function Home() {
             <Eyebrow tone="dark">{whatWeDo.eyebrow}</Eyebrow>
             <h2 className="h-section on-dark">{whatWeDo.heading}</h2>
             <div className="principles-list">
-              {principles.map((p, i) => (
-                <details key={p.title} className="principle" open={i === 0}>
-                  <summary>
-                    <span>{p.title}</span>
-                    <Icon name="plus" size={16} />
-                  </summary>
-                  <p>{p.body}</p>
-                </details>
-              ))}
+              {principles.map((p, i) => {
+                const isOpen = openPrinciple === i;
+                return (
+                  <div key={p.title} className={`principle${isOpen ? ' is-open' : ''}`}>
+                    <button
+                      type="button"
+                      className="principle-head"
+                      aria-expanded={isOpen}
+                      aria-controls={`principle-${i}`}
+                      onClick={() => setOpenPrinciple(isOpen ? -1 : i)}
+                    >
+                      <span>{p.title}</span>
+                      <Icon name="plus" size={16} />
+                    </button>
+                    {/* Height eases open and shut (grid rows 0fr to 1fr). */}
+                    <div id={`principle-${i}`} className="principle-body" role="region" aria-hidden={!isOpen}>
+                      <div>
+                        <p>{p.body}</p>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
             <Link to={whyFarm.button.to} className="btn btn-gold">
               <span className="btn-dot" aria-hidden="true" />
