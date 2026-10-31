@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { buildLog, ctaBand, faqIntro, hero, lanes, whatVfarm, whatWeDo, whyFarm } from '../content/home';
+import { about, buildLog, ctaBand, faqIntro, hero, lanes, rows, stats, whatVfarm, whatWeDo, whyFarm } from '../content/home';
 import { team } from '../content/team';
 import { faq } from '../content/faq';
 import { useLanding } from '../config/landingConfig';
@@ -7,7 +7,22 @@ import { Accordion } from '../components/Accordion';
 import { Avatar } from '../components/Avatar';
 import { Icon, type IconName } from '../components/Icon';
 import { RenderPanel } from '../components/RenderPanel';
-import { images } from '../lib/images';
+import { images, type Photo } from '../lib/images';
+
+/** A photo that fills its box; decorative, so the text beside it says what matters. */
+function Fill({ photo, sizes = '100vw', className = '' }: { photo: Photo; sizes?: string; className?: string }) {
+  return (
+    <img
+      className={`fill-photo ${className}`.trim()}
+      src={photo.src}
+      srcSet={photo.srcset}
+      sizes={sizes}
+      alt={photo.alt}
+      loading="lazy"
+      decoding="async"
+    />
+  );
+}
 
 /** A small outlined label above a heading. */
 function Eyebrow({ children, tone = 'light' }: { children: string; tone?: 'light' | 'dark' }) {
@@ -23,12 +38,16 @@ export function Home() {
   /* The internals render beside "what vFarm is"; the rack render beside "why a farm". */
   const internals = gallery[1] ?? null;
   const rack = gallery[0] ?? null;
+  const { photos } = images;
+  /* The principles open with "why a farm", then the three ways we build. */
+  const principles = [{ title: whyFarm.heading, body: whyFarm.body }, ...whatWeDo.cards];
 
   return (
     <>
       {/* Hero: one deep green card, the headline in two halves at opposite corners. */}
       <section className="hero-wrap">
-        <div className="hero">
+        <div className={`hero${photos.hero ? ' has-photo' : ''}`}>
+          {photos.hero && <Fill photo={photos.hero} className="hero-photo" />}
           <div className="hero-glow" aria-hidden="true" />
           <div className="hero-top">
             <div className="hero-copy">
@@ -45,7 +64,7 @@ export function Home() {
             </div>
           </div>
 
-          {strip && (
+          {strip && !photos.hero && (
             <div className="hero-media">
               <RenderPanel render={strip} sizes="(min-width: 1100px) 640px, 100vw" priority />
             </div>
@@ -84,6 +103,33 @@ export function Home() {
         </div>
       </section>
 
+      {/* About: a big lowercase title, a label column and one statement. */}
+      <section className="band-forest about">
+        <div className="container">
+          <h2 className="about-title reveal">{about.title}</h2>
+          <div className="about-grid">
+            <ul className="about-labels">
+              {about.labels.map((l) => (
+                <li key={l}>{l}</li>
+              ))}
+            </ul>
+            <p className="about-statement reveal">
+              <span className="about-lead">{about.lead}</span> {about.body}
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {photos.cluster.length >= 5 && (
+        <section className="cluster band-forest" aria-hidden="true">
+          {photos.cluster.slice(0, 9).map((p, i) => (
+            <span key={p.src} className={`cluster-dot cluster-${i}`}>
+              <Fill photo={p} sizes="320px" />
+            </span>
+          ))}
+        </section>
+      )}
+
       {what.length > 0 && (
         <section className="container section">
           <div className="intro-split">
@@ -113,21 +159,52 @@ export function Home() {
         </section>
       )}
 
-      {/* How we build: big numbered rows on the green band. */}
-      <section className="band-forest band-rows">
-        <div className="container">
-          <div className="band-head reveal">
-            <Eyebrow tone="dark">{whatWeDo.eyebrow}</Eyebrow>
-            <h2 className="h-section on-dark">{whatWeDo.line}</h2>
-          </div>
-          <ol className="big-rows">
-            {whatWeDo.cards.map((c, i) => (
-              <li key={c.title} className="big-row reveal">
-                <span className="big-row-num tabular">({String(i + 1).padStart(2, '0')})</span>
-                <span className="big-row-title">{c.title}</span>
-                <span className="big-row-body">{c.body}</span>
+      {/* The engine's own figures over a photo, then the lanes as big numbered rows. */}
+      <section className={`stats-band${photos.stats ? ' has-photo' : ''}`}>
+        {photos.stats && <Fill photo={photos.stats} className="stats-photo" />}
+        <div className="stats-shade" aria-hidden="true" />
+        <div className="container stats-inner">
+          <ul className="stats">
+            {stats.items.map((st) => (
+              <li key={st.label} className="stat reveal">
+                <span className="stat-value tabular">
+                  {st.value}
+                  {st.suffix && <span className="stat-suffix">{st.suffix}</span>}
+                </span>
+                <span className="stat-label">{st.label}</span>
               </li>
             ))}
+          </ul>
+          <p className="stats-note">{stats.asOf}</p>
+          <div className="band-head reveal">
+            <Eyebrow tone="dark">{rows.eyebrow}</Eyebrow>
+            <h2 className="h-section on-dark">{rows.heading}</h2>
+          </div>
+          <ol className="big-rows">
+            {rows.items.map((r, i) => {
+              const inner = (
+                <>
+                  <span className="big-row-num tabular">({String(i + 1).padStart(2, '0')})</span>
+                  <span className="big-row-title">{r.title}</span>
+                  {r.to && (
+                    <span className="big-row-more" aria-hidden="true">
+                      {rows.more}
+                    </span>
+                  )}
+                </>
+              );
+              return (
+                <li key={r.title} className="reveal">
+                  {r.to ? (
+                    <Link to={r.to} className="big-row is-link">
+                      {inner}
+                    </Link>
+                  ) : (
+                    <div className="big-row">{inner}</div>
+                  )}
+                </li>
+              );
+            })}
           </ol>
         </div>
       </section>
@@ -137,32 +214,53 @@ export function Home() {
         <div className="marquee-track">
           {[0, 1].map((copy) => (
             <ul key={copy} className="marquee-list" aria-hidden={copy === 1 ? 'true' : undefined}>
-              {lanes.items.map((item) => (
-                <li key={item} className="marquee-pill">
-                  {item}
-                </li>
-              ))}
+              {lanes.items.map((item, i) => {
+                /* Between the pills, a small photo from the team, when there are any. */
+                const p = photos.cluster.length ? photos.cluster[i % photos.cluster.length] : null;
+                return [
+                  <li key={item} className="marquee-pill">
+                    {item}
+                  </li>,
+                  p && (
+                    <li key={`${item}-photo`} className="marquee-photo">
+                      <Fill photo={p} sizes="120px" />
+                    </li>
+                  ),
+                ];
+              })}
             </ul>
           ))}
         </div>
       </section>
 
-      <section className="container section">
-        <div className="split-media">
-          {rack && (
-            <div className="split-media-img reveal">
-              <RenderPanel render={rack} className="media-card media-tall" sizes="(min-width: 1100px) 620px, 100vw" />
-            </div>
+      {/* Our principles: a photo on the left, an accordion on frosted glass on the right. */}
+      <section className="principles">
+        <div className="principles-media">
+          {photos.split ? (
+            <Fill photo={photos.split} sizes="(min-width: 1000px) 50vw, 100vw" />
+          ) : (
+            rack && <RenderPanel render={rack} className="principles-render" sizes="(min-width: 1000px) 50vw, 100vw" />
           )}
-          <div className="split-media-copy reveal">
-            <Eyebrow>{whyFarm.eyebrow}</Eyebrow>
-            <h2 className="h-section">{whyFarm.heading}</h2>
-            <p className="body-lg dim">{whyFarm.body}</p>
-            <Link to={whyFarm.button.to} className="link-arrow">
+        </div>
+        <div className="principles-panel">
+          {photos.split && <Fill photo={photos.split} className="principles-blur" sizes="50vw" />}
+          <div className="principles-copy reveal">
+            <Eyebrow tone="dark">{whatWeDo.eyebrow}</Eyebrow>
+            <h2 className="h-section on-dark">{whatWeDo.heading}</h2>
+            <div className="principles-list">
+              {principles.map((p, i) => (
+                <details key={p.title} className="principle" open={i === 0}>
+                  <summary>
+                    <span>{p.title}</span>
+                    <Icon name="plus" size={16} />
+                  </summary>
+                  <p>{p.body}</p>
+                </details>
+              ))}
+            </div>
+            <Link to={whyFarm.button.to} className="btn btn-gold">
+              <span className="btn-dot" aria-hidden="true" />
               {whyFarm.button.label}
-              <span className="link-arrow-ring" aria-hidden="true">
-                <Icon name="arrow" size={16} />
-              </span>
             </Link>
           </div>
         </div>

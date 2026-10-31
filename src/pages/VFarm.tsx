@@ -116,7 +116,7 @@ export function VFarm() {
       )}
 
       {config.faq.length > 0 && (
-        <section className="container section">
+        <section id="faq" className="container section anchor-section">
           <div className="faq-split reveal">
             <div>
               <p className="pill-label">{vfarmLabels.faqEyebrow}</p>

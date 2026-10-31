@@ -106,6 +106,34 @@ for (const [i, entry] of (Array.isArray(manifest.gallery) ? manifest.gallery : [
   renders.gallery.push(await render(entry, `gallery[${i}]`));
 }
 
+/* Photos ----------------------------------------------------------------- */
+
+/*
+ * Real photos from the team (crops, sensors, hands at work, the build), named
+ * in public/photos/manifest.json by slot: "hero", "stats", "about", "split",
+ * "footer" (one each) and "cluster" (a list). Each { file, alt }. They never
+ * stand in for vFarm itself — only the renders above show the rig. A slot
+ * left out is drawn without a photo.
+ */
+const PHOTO_WIDTHS = [480, 960, 1600, 2400];
+mkdirSync(resolve(out, 'photos'), { recursive: true });
+const photoManifestPath = resolve(pub, 'photos/manifest.json');
+const photoManifest = existsSync(photoManifestPath) ? JSON.parse(readFileSync(photoManifestPath, 'utf8')) : {};
+async function photo(entry, slot) {
+  if (!entry) return null;
+  const { file, alt } = entry;
+  const input = resolve(pub, 'photos', String(file ?? ''));
+  if (!file || !existsSync(input)) throw new Error(`[images] photos/manifest.json ${slot}: file "${file}" not found in public/photos/`);
+  if (!String(alt ?? '').trim()) throw new Error(`[images] photos/manifest.json ${slot}: "alt" is required`);
+  const img = await variants(input, 'photos', parse(file).name, PHOTO_WIDTHS, (i) => i);
+  return { ...img, alt: String(alt).trim() };
+}
+const photos = { cluster: [] };
+for (const slot of ['hero', 'stats', 'about', 'split', 'footer']) photos[slot] = await photo(photoManifest[slot], slot);
+for (const [i, entry] of (Array.isArray(photoManifest.cluster) ? photoManifest.cluster : []).entries()) {
+  photos.cluster.push(await photo(entry, `cluster[${i}]`));
+}
+
 /* The link-preview image: the hero, cropped to 1200×630. */
 let og = null;
 if (manifest.hero) {
@@ -117,7 +145,7 @@ if (manifest.hero) {
   og = '/img/og-hero.jpg';
 }
 
-writeFileSync(resolve(gen, 'images.json'), JSON.stringify({ team, renders, og }, null, 2) + '\n');
+writeFileSync(resolve(gen, 'images.json'), JSON.stringify({ team, renders, photos, og }, null, 2) + '\n');
 console.log(
-  `[images] team: ${Object.keys(team).length}/${TEAM_SLUGS.length} photos · renders: hero ${renders.hero ? 'yes' : 'no'}, strip ${renders.strip ? 'yes' : 'no'}, gallery ${renders.gallery.length}`,
+  `[images] team: ${Object.keys(team).length}/${TEAM_SLUGS.length} photos · renders: hero ${renders.hero ? 'yes' : 'no'}, strip ${renders.strip ? 'yes' : 'no'}, gallery ${renders.gallery.length} · photos: ${Object.entries(photos).filter(([k, v]) => (Array.isArray(v) ? v.length : v)).map(([k]) => k).join(', ') || 'none'}`,
 );

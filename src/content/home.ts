@@ -18,8 +18,43 @@ export const hero = {
   ],
 } as const;
 
+/** The about block: a big lowercase title, a label column and one statement. */
+export const about = {
+  title: 'about bha',
+  labels: ['Bays Horizon Network', 'An AI engine', 'and a vertical farm'],
+  lead: 'We build AI engines that run real, physical systems.',
+  body: 'Our proving ground is vFarm, a vertical farm wired to an engine that learns from every growing cycle. Every working session is logged, reviewed and kept on the record, so what we say is what we can show.',
+};
+
+/**
+ * Figures from the engine's own records, read from the dashboard on 31 Oct
+ * 2026. Change them only from a fresh read, and change the date with them.
+ */
+export const stats = {
+  asOf: 'From the engine’s own records, 31 Oct 2026.',
+  items: [
+    { value: '386', suffix: '', label: 'Build sessions logged and approved' },
+    { value: '429', suffix: '', label: 'Build patterns on record' },
+    { value: '55', suffix: 'k', label: 'Engine runs since 12 Sep 2026' },
+  ],
+};
+
+/** The four lanes the engine runs, as big numbered rows. Names only, no claims. */
+export const rows = {
+  eyebrow: 'What we build',
+  heading: 'From the farm to the engine.',
+  more: 'See vFarm',
+  items: [
+    { title: 'vFarm P1.0', to: '/vfarm' },
+    { title: 'Monitoring Twin' },
+    { title: 'Research Twin' },
+    { title: 'North Star' },
+  ],
+};
+
 export const whatWeDo = {
-  eyebrow: 'How we build',
+  eyebrow: 'Our principles',
+  heading: 'How we build.',
   line: 'We build from first principles, not on top of old processes.',
   cards: [
     {

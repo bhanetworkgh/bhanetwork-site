@@ -1,0 +1,3 @@
+{
+  "_readme": "Real photos from the team, one per slot: hero, stats, about, split, footer, and a list for cluster. Each { \"file\": \"name.jpg\", \"alt\": \"what is in it\" }. Files go in this folder. Never a photo of the vFarm rig itself; that is the renders' job. A slot left out is drawn without a photo."
+}

@@ -3,6 +3,7 @@ import { Layout } from './components/Layout';
 import { Home } from './pages/Home';
 import { VFarm } from './pages/VFarm';
 import { Privacy } from './pages/Privacy';
+import { Login } from './pages/Login';
 import { Terms } from './pages/Terms';
 import { NotFound } from './pages/NotFound';
 
@@ -23,6 +24,14 @@ export function App() {
         element={
           <Layout>
             <VFarm />
+          </Layout>
+        }
+      />
+      <Route
+        path="/login"
+        element={
+          <Layout>
+            <Login />
           </Layout>
         }
       />

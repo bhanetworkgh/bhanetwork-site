@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { nav } from '../content/site';
 import { Wordmark } from './Wordmark';
 import { Icon } from './Icon';
+import { SearchDialog } from './SearchDialog';
 
 type Spy = 'home' | 'team' | 'faq';
 
@@ -44,13 +45,14 @@ function useScrollSpy(active: boolean): Spy {
 
 /**
  * The sticky nav: wordmark left; Home · vFarm · Team · FAQ in the middle;
- * the gold call to action right. Team and FAQ are
+ * search and the gold Get started (the way to the owner sign-in) right. Team and FAQ are
  * sections of Home: from any page they switch to Home without a reload and
  * scroll to the section. On a phone the links and the gold button fold into
  * a menu that closes after a tap. The bar is forest on every page.
  */
 export function Nav() {
   const [open, setOpen] = useState(false);
+  const [searching, setSearching] = useState(false);
   const { pathname, hash } = useLocation();
   const onHome = pathname === '/';
   const spy = useScrollSpy(onHome);
@@ -102,12 +104,19 @@ export function Nav() {
           {nav.links.map((l) => link(l, 'nav-link'))}
         </nav>
         <div className="nav-actions">
+          <button type="button" className="icon-btn nav-search" onClick={() => setSearching(true)}>
+            <Icon name="search" size={19} />
+            <span className="sr-only">{nav.searchLabel}</span>
+            <span className="tip" aria-hidden="true">
+              {nav.searchLabel}
+            </span>
+          </button>
           <Link
-            to={nav.cta.to}
+            to={nav.getStarted.to}
             className="btn btn-gold btn-sm nav-cta"
-            onClick={(e) => onNavClick(e, nav.cta.to)}
+            onClick={(e) => onNavClick(e, nav.getStarted.to)}
           >
-            {nav.cta.label}
+            {nav.getStarted.label}
           </Link>
           <button
             type="button"
@@ -138,7 +147,11 @@ export function Nav() {
         >
           {nav.cta.label}
         </Link>
+        <Link to={nav.getStarted.to} className="btn btn-ghost-dark btn-lg nav-menu-cta" onClick={() => setOpen(false)}>
+          {nav.getStarted.label}
+        </Link>
       </nav>
+      {searching && <SearchDialog onClose={() => setSearching(false)} />}
     </header>
   );
 }

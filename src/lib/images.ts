@@ -19,8 +19,23 @@ export interface Render extends Img {
   caption: string;
 }
 
+/** A real photo from the team. Never of the vFarm rig itself; that is what the renders are for. */
+export interface Photo extends Img {
+  alt: string;
+}
+
+interface Photos {
+  hero: Photo | null;
+  stats: Photo | null;
+  about: Photo | null;
+  split: Photo | null;
+  footer: Photo | null;
+  cluster: Photo[];
+}
+
 interface Images {
   team: Record<string, Img>;
+  photos: Photos;
   renders: { hero: Render | null; strip: Render | null; gallery: Render[] };
   /** A 1200×630 crop of the hero for link previews, or null. */
   og: string | null;

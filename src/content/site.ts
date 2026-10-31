@@ -32,12 +32,25 @@ export const nav = {
     { id: 'faq', to: '/#faq', label: 'FAQ' },
   ],
   cta: { to: '/vfarm#signup', label: 'Join vFarm early access' },
+  /* The way into the vFarm owner dashboard. Accounts are not open yet; /login says so. */
+  getStarted: { to: '/login', label: 'Get started' },
+  searchLabel: 'Search the site',
   menuLabel: 'Menu',
   closeMenuLabel: 'Close menu',
 };
 
 export const footer = {
   line: 'Building the monitored vFarm in public.',
+  /* The glass card's line, in VerdaAgro's rhythm, grounded in what we do (Destiny, 31 Oct 2026). */
+  motto: ['Driven by first principles.', 'Grounded in real crops.', 'Focused on results.'],
+  textLabel: 'Text',
+  linksLabel: 'Useful links',
+  updates: {
+    heading: 'Get vFarm updates',
+    body: 'Builds, system diagrams and monthly progress, by email. Join Early Access to get them.',
+    button: { to: '/vfarm#signup', label: 'Join Early Access' },
+  },
+  backToTop: 'Back to top',
   groups: [
     {
       label: 'Site',
@@ -46,6 +59,7 @@ export const footer = {
         { to: '/vfarm', label: 'vFarm' },
         { to: '/#team', label: 'Team' },
         { to: '/#faq', label: 'FAQ' },
+        { to: '/login', label: 'Sign in' },
       ],
     },
     {
@@ -112,6 +126,10 @@ export const meta = {
     description:
       'Terms for Bays Horizon SMS Customer Care: what the text-message program is, message frequency, cost, how to opt out and how to get help.',
   },
+  login: {
+    title: 'Sign in | Bays Horizon Network',
+    description: 'vFarm owner accounts open when the first farms are installed.',
+  },
   vfarmFallbackTitle: 'vFarm | Bays Horizon Network',
   notFound: {
     title: 'Page not found | Bays Horizon Network',
@@ -125,6 +143,31 @@ export const countdown = {
   dateLabel: 'Oct 31',
   units: { days: 'Days', hours: 'Hours', minutes: 'Minutes', seconds: 'Seconds' },
   daysToGo: (n: number) => `${n} ${n === 1 ? 'day' : 'days'} to go`,
+};
+
+/** /login: where vFarm owners will sign in. Nobody can yet, and the page says so. */
+export const login = {
+  eyebrow: 'vFarm owners',
+  heading: 'Sign in to your vFarm.',
+  body: 'Owner accounts open when the first vFarm farms are installed. You will sign in here to see your farm: its crops, its sensors, its history and what the engine has learned from it.',
+  status: 'Not open yet',
+  points: [
+    'One account per farm, scoped to your own farm only.',
+    'Live readings and alerts from your farm, as the monitoring records them.',
+    'A chat assistant that answers questions about your farm.',
+  ],
+  primary: { to: '/vfarm#signup', label: 'Join Early Access' },
+  secondary: { to: '/', label: 'Back to Home' },
+  note: 'Early Access members hear first when accounts open.',
+};
+
+/** The site search: pages and sections a visitor can jump to. */
+export const search = {
+  label: 'Search the site',
+  placeholder: 'Search pages, questions and sections',
+  closeLabel: 'Close search',
+  empty: 'Nothing on the site matches that. Try another word, or write to support@bhanetwork.org.',
+  hint: 'Pages and questions',
 };
 
 export const notFound = {
