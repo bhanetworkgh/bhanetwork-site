@@ -2544,10 +2544,18 @@ a.footer-social-pill:hover {
 .hero-col {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  gap: 36px;
+  justify-content: flex-start;
+  gap: 28px;
   min-width: 0;
 }
+.hero.hero-home {
+  padding-top: calc(var(--nav-h) + 40px);
+  padding-bottom: 40px;
+}
+.hero-col-left { justify-content: center; }
+.hero-col-right { justify-content: center; gap: 0; }
+.hero-home .hero-col-right .display-end { margin-top: -28px; }
+@media (max-width: 1099px) { .hero-home .hero-col-right .display-end { margin-top: 0; } }
 .hero-home .hero-copy {
   position: relative;
   z-index: 2;
@@ -2722,10 +2730,10 @@ a.footer-social-pill:hover {
     flex-direction: column;
   }
   .stack-cards {
-    aspect-ratio: 16 / 11;
+    aspect-ratio: 16 / 9.4;
   }
   .hero-stack {
-    margin-top: 16px;
+    margin-top: 8px;
   }
   .slide-meta li:nth-child(3) {
     display: none;
