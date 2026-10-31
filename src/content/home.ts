@@ -2,7 +2,7 @@
 
 export const hero = {
   eyebrow: 'Bays Horizon Network',
-  /* The headline is set in two halves: the lead, then an italic lime accent. */
+  /* The headline is set in two halves: the lead, then the butter accent. */
   /* Jason's approved line, 27 Sep 2026. */
   headlineLead: 'A farm the size of a bookshelf,',
   headlineAccent: 'run by an engine that learns.',
@@ -10,17 +10,16 @@ export const hero = {
     'We are wiring a real vertical farm to an AI engine that uses data from each growing cycle to inform future improvements. Join Early Access to see the builds, system diagrams, and monthly progress as we build toward an increasingly automated vFarm twin.',
   primary: { to: '/vfarm#signup', label: 'Join vFarm early access' },
   secondary: { to: '/#team', label: 'Meet the team' },
-  /* The facts panel beside the headline. Only facts that cannot go stale.
-     The launch number is worked out live from the countdown target. */
-  cards: {
-    launch: { label: 'vFarm build milestone' },
-    builders: { label: 'Founding builders', value: '6' },
-    sessions: { label: 'Every session', value: 'logged, reviewed, on the record' },
-    ground: { label: 'Proving ground', value: 'Real crops. Real sensors.' },
-  },
-};
+  /* Facts beside the headline. Only facts that cannot go stale. */
+  stat: { value: '6', label: 'Founding builders, and a founder' },
+  facts: [
+    { icon: 'log', label: 'Every session', value: 'Logged, reviewed, on the record' },
+    { icon: 'sprout', label: 'Proving ground', value: 'Real crops. Real sensors.' },
+  ],
+} as const;
 
 export const whatWeDo = {
+  eyebrow: 'How we build',
   line: 'We build from first principles, not on top of old processes.',
   cards: [
     {
@@ -41,51 +40,49 @@ export const whatWeDo = {
   ],
 } as const;
 
-export const building = {
-  heading: "What we're building",
-  cards: [
-    {
-      icon: 'sprout',
-      title: 'vFarm',
-      body: 'A vertical farm cabinet for homes and shops, and the proving ground for our engine.',
-      to: '/vfarm',
-      linkLabel: 'See vFarm',
-    },
-    {
-      icon: 'users',
-      title: 'The team',
-      body: 'Six builders and a founder, building in the open.',
-      to: '/#team',
-      linkLabel: 'Meet the team',
-    },
+/** The running strip of what the team works on. Names only, no claims. */
+export const lanes = {
+  label: 'What the team works on',
+  items: [
+    'vFarm P1.0',
+    'Monitoring Twin',
+    'Research Twin',
+    'North Star',
+    'Customer Service Twin',
+    'Genie',
+    'Media Twin',
+    'Engine dashboard',
   ],
-} as const;
+};
 
 export const whyFarm = {
+  eyebrow: 'Why a farm',
   heading: 'Why is there a vertical farm here?',
   body: 'Because the farm is our proving ground. Crops, sensors, cameras and customers give our engine a real, physical system to run, where mistakes show up as data rather than slides. What we learn here carries forward into energy, housing, local production and, in time, advisory.',
   button: { to: '/vfarm', label: 'See vFarm' },
 };
 
 export const ctaBand = {
+  eyebrow: 'Building in public',
   heading: 'Follow the build.',
   button: { to: '/vfarm#signup', label: 'Join vFarm early access' },
 };
 
 /** The /vfarm facts on Home come from landing-config; these are only their headings. */
 export const whatVfarm = {
-  heading: 'What vFarm is,',
-  accentFour: 'in four lines.',
+  eyebrow: 'vFarm P1.0',
+  heading: 'What vFarm is, in four lines.',
   link: { to: '/vfarm', label: 'See vFarm' },
 };
 
 /** Shown only once landing-config's build_feed holds real (non-sample) entries. */
 export const buildLog = {
+  eyebrow: 'Build log',
   heading: 'The build log',
   body: 'Every entry is a real clip from the build. What worked, what broke, what fixed itself.',
 };
 
-export const launchBar = {
-  /* The phone dock has room for less. */
-  daysToShort: (n: number) => `${n} ${n === 1 ? 'day' : 'days'} to Oct 31`,
+export const faqIntro = {
+  eyebrow: 'Questions',
+  body: 'Anything else, write to us and a person replies.',
 };

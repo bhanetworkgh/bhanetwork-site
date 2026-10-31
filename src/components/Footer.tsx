@@ -21,13 +21,20 @@ function SocialIcon({ id }: { id: string }) {
 }
 
 /**
- * The forest footer: one line about what we're doing, the contact address,
- * the social pages (live ones link out, the rest say "soon"), the site links, and the network's name set large as a watermark.
+ * The green footer: the network's name set large in butter, and below it one
+ * glass card with the line about what we're doing, the contact address, the
+ * text-message opt-in (word for word with the A2P campaign), the social pages
+ * (live ones link out, the rest say "soon") and the site links.
  */
 export function Footer() {
   return (
     <footer className="footer">
-      <div className="container footer-top">
+      <div className="container footer-mark" aria-hidden="true">
+        {footer.watermark}
+      </div>
+      <div className="container">
+      <div className="footer-card">
+      <div className="footer-top">
         <div className="footer-brand">
           <p className="footer-line">{footer.line}</p>
           <p className="footer-contact">
@@ -95,12 +102,10 @@ export function Footer() {
           </nav>
         ))}
       </div>
-      <div className="container footer-base">
+      <div className="footer-base">
         <span>{footer.copyright}</span>
-        <span>{footer.launch}</span>
       </div>
-      <div className="container footer-mark" aria-hidden="true">
-        {footer.watermark}
+      </div>
       </div>
     </footer>
   );

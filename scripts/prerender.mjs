@@ -39,11 +39,11 @@ const configScript = `<script>window.__LANDING_CONFIG__=${JSON.stringify(rawConf
   .replace(/\u2029/g, '\\u2029')}</script>`;
 
 /*
- * Preload the two faces the first screen paints in — the body sans and the
- * headline serif — so the hero does not reflow when they arrive.
+ * Preload the face the first screen paints in (Geist, for headlines and
+ * text alike), so the hero does not reflow when it arrives.
  */
 const assets = await readdir(resolve(dist, 'assets'));
-const firstPaint = [/^geist-latin-.*\.woff$/, /^instrument-serif-latin-.*\.woff$/];
+const firstPaint = [/^geist-latin-.*\.woff$/];
 const fontPreload = firstPaint
   .map((re) => assets.find((f) => re.test(f)))
   .filter(Boolean)

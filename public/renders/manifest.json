@@ -1,1 +1,29 @@
-{ "hero": null, "strip": null, "gallery": [] }
+{
+  "hero": {
+    "file": "VFARM_EA_A_v0.7.png",
+    "alt": "Conceptual render of the P1.0 open rack: two trays of tomato plants under grow lights, a 150 litre reservoir below, top-up, drain valves and gravity return labelled.",
+    "caption": "Conceptual render, reference-informed. Not the verified current P1.0."
+  },
+  "strip": {
+    "file": "VFARM_EA_C_v0.7.png",
+    "alt": "Conceptual render comparing the P1.0 open rack, the current direction, with a future V2 cabinet concept that is not built or available.",
+    "caption": "Conceptual render. Left: P1.0 current direction. Right: a future V2 concept, not built or available."
+  },
+  "gallery": [
+    {
+      "file": "VFARM_EA_A_v0.7.png",
+      "alt": "Conceptual render of the P1.0 open rack with two trays of tomato plants, the reservoir and the plumbing labelled.",
+      "caption": "P1.0 open rack. Conceptual, reference-informed, not verified-current."
+    },
+    {
+      "file": "VFARM_EA_B_v0.7.png",
+      "alt": "Conceptual render of the rack internals: LED tubes, motorised drain valves, the top-up riser, the common drain riser and the 150 litre reservoir with its pump.",
+      "caption": "Rack internals and monitoring points. Conceptual, reference-informed, not verified-current."
+    },
+    {
+      "file": "VFARM_EA_C_v0.7.png",
+      "alt": "Conceptual render comparing the P1.0 open rack with a future V2 cabinet concept.",
+      "caption": "P1.0 current direction beside a future V2 concept, not built or available."
+    }
+  ]
+}
