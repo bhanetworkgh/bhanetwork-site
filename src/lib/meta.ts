@@ -1,6 +1,5 @@
 import type { LandingConfig } from '../types/landing';
 import { meta as copy, OG_IMAGE, ORGANIZATION, SITE_NAME, SITE_URL } from '../content/site';
-import { images } from './images';
 
 /**
  * Each route's <head>: title, description, canonical, Open Graph and Twitter.
@@ -21,8 +20,11 @@ export interface PageMeta {
 export const ROUTES = ['/', '/vfarm', '/login', '/privacy', '/terms'] as const;
 
 export function metaFor(path: string, config: LandingConfig | null): PageMeta {
-  /* The link-preview image: the manifest's hero render when set, else the brand card. */
-  const base = { path, image: images.og ? SITE_URL + images.og : OG_IMAGE };
+  /* The link-preview image: the brand card (og-v4, 1 Nov 2026), which carries
+     the hero render inside it, labelled. The bare render crop (images.og) is
+     still built but no longer used: a preview with no name or headline on it
+     says nothing about who shared it. */
+  const base = { path, image: OG_IMAGE };
   switch (path) {
     case '/':
       return { ...base, ...copy.home };
