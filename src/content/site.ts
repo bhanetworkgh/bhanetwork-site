@@ -100,8 +100,8 @@ export const footer = {
   social: [
     { id: 'facebook', label: 'Facebook', handle: 'BHA Network', href: 'https://www.facebook.com/share/1JacxK77Fn/' },
     { id: 'instagram', label: 'Instagram', handle: '@bayshorizonnetwork', href: 'https://www.instagram.com/bayshorizonnetwork/' },
-    { id: 'x', label: 'X', handle: '@bha_vfarm', href: 'https://x.com/bha_vfarm' },
     { id: 'linkedin', label: 'LinkedIn', handle: 'BHA Vertical Farm', href: 'https://www.linkedin.com/company/bha-vertical-farm' },
+    { id: 'x', label: 'X', handle: '@bha_vfarm', href: 'https://x.com/bha_vfarm' },
     { id: 'tiktok', label: 'TikTok', handle: '', href: '' },
   ],
   copyright: '© 2026 Bays Horizon Network',
