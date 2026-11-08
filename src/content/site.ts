@@ -25,12 +25,12 @@ export const ORGANIZATION = {
 };
 
 export const nav = {
-  /* Team and FAQ are sections of Home; the nav scrolls to them. */
+  /* FAQ is a section of Home; the nav scrolls to it. Support replaced Team in the nav (Destiny, 8 Nov 2026); Team stays in the footer. */
   links: [
     { id: 'home', to: '/', label: 'Home' },
     { id: 'vfarm', to: '/vfarm', label: 'vFarm' },
-    { id: 'team', to: '/#team', label: 'Team' },
     { id: 'faq', to: '/#faq', label: 'FAQ' },
+    { id: 'support', to: '/support', label: 'Support' },
   ],
   cta: { to: '/vfarm#signup', label: 'Join vFarm early access' },
   /* The way into the vFarm owner dashboard. Accounts are not open yet; /login says so. */

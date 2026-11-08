@@ -43,9 +43,9 @@ function useScrollSpy(active: boolean): Spy {
 }
 
 /**
- * The sticky nav: wordmark left; Home · vFarm · Team · FAQ in the middle;
- * the gold Get started (the way to the owner sign-in) right. Team and FAQ are
- * sections of Home: from any page they switch to Home without a reload and
+ * The sticky nav: wordmark left; Home · vFarm · FAQ · Support in the middle;
+ * the gold Get started (the way to the owner sign-in) right. FAQ is a
+ * section of Home: from any page they switch to Home without a reload and
  * scroll to the section. On a phone the links and the gold button fold into
  * a menu that closes after a tap. The bar is forest on every page.
  */
@@ -72,8 +72,13 @@ export function Nav() {
     return () => window.removeEventListener('keydown', onKey);
   }, [open]);
 
-  const isActive = (id: string) =>
-    id === 'vfarm' ? pathname.startsWith('/vfarm') : onHome && spy === id;
+  /* Team left the nav for Support (8 Nov 2026): while the Team section is in view, Home stays lit. */
+  const isActive = (id: string) => {
+    if (id === 'vfarm') return pathname.startsWith('/vfarm');
+    if (id === 'support') return pathname.startsWith('/support');
+    if (id === 'home') return onHome && (spy === 'home' || spy === 'team');
+    return onHome && spy === id;
+  };
 
   /*
    * A link to where we already are changes no location, so the router would
