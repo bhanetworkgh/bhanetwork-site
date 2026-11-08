@@ -104,7 +104,7 @@ export const footer = {
     { id: 'instagram', label: 'Instagram', handle: '@bayshorizonnetwork', href: 'https://www.instagram.com/bayshorizonnetwork/' },
     { id: 'linkedin', label: 'LinkedIn', handle: 'BHA Vertical Farm', href: 'https://www.linkedin.com/company/bha-vertical-farm' },
     { id: 'x', label: 'X', handle: '@bha_vfarm', href: 'https://x.com/bha_vfarm' },
-    { id: 'tiktok', label: 'TikTok', handle: '', href: '' },
+    { id: 'tiktok', label: 'TikTok', handle: '@bays.horizon.netwo', href: 'https://www.tiktok.com/@bays.horizon.netwo' },
   ],
   copyright: '© 2026 Bays Horizon Network',
   launch: 'vFarm build milestone · Oct 31.',
