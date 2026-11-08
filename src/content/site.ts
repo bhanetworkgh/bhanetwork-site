@@ -19,6 +19,7 @@ export const ORGANIZATION = {
   url: `${SITE_URL}/`,
   logo: `${SITE_URL}/icon-512.png`,
   email: 'support@bhanetwork.org',
+  telephone: '+1-971-588-5823',
   description:
     'The building side of Bays Horizon: the team, the experiments and the AI engine behind the monitored vFarm.',
 };
@@ -64,6 +65,7 @@ export const footer = {
     {
       label: 'Company',
       links: [
+        { to: '/support', label: 'Support' },
         { to: '/privacy', label: 'Privacy' },
         { to: '/terms', label: 'Terms' },
       ],
@@ -125,6 +127,11 @@ export const meta = {
     title: 'Terms and Conditions | Bays Horizon Network',
     description:
       'Terms for Bays Horizon SMS Customer Care: what the text-message program is, message frequency, cost, how to opt out and how to get help.',
+  },
+  support: {
+    title: 'Support | Bays Horizon Network',
+    description:
+      'How to reach Bays Horizon Network: call or text (971) 588-5823 or email support@bhanetwork.org. What Genie, our automated assistant, can and cannot do, and how to reach a person.',
   },
   login: {
     title: 'Sign in | Bays Horizon Network',

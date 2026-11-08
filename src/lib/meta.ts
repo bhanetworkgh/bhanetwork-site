@@ -17,7 +17,7 @@ export interface PageMeta {
   noindex?: boolean;
 }
 
-export const ROUTES = ['/', '/vfarm', '/login', '/privacy', '/terms'] as const;
+export const ROUTES = ['/', '/vfarm', '/login', '/privacy', '/terms', '/support'] as const;
 
 export function metaFor(path: string, config: LandingConfig | null): PageMeta {
   /* The link-preview image: the brand card (og-v4, 1 Nov 2026), which carries
@@ -34,6 +34,8 @@ export function metaFor(path: string, config: LandingConfig | null): PageMeta {
       return { ...base, ...copy.login, noindex: true };
     case '/terms':
       return { ...base, ...copy.terms };
+    case '/support':
+      return { ...base, ...copy.support };
     case '/vfarm': {
       const headline = config?.early_access.headline.trim();
       return {
@@ -69,6 +71,14 @@ function structuredData(m: PageMeta, url: string): string {
     logo: ORGANIZATION.logo,
     email: ORGANIZATION.email,
     description: ORGANIZATION.description,
+    contactPoint: {
+      '@type': 'ContactPoint',
+      contactType: 'customer support',
+      telephone: ORGANIZATION.telephone,
+      email: ORGANIZATION.email,
+      url: `${SITE_URL}/support`,
+      availableLanguage: 'English',
+    },
   };
   const site = {
     '@type': 'WebSite',

@@ -5,6 +5,7 @@ import { VFarm } from './pages/VFarm';
 import { Privacy } from './pages/Privacy';
 import { Login } from './pages/Login';
 import { Terms } from './pages/Terms';
+import { Support } from './pages/Support';
 import { NotFound } from './pages/NotFound';
 
 /** Every route renders inside the same layout, so navigation swaps only the page. */
@@ -50,6 +51,14 @@ export function App() {
         element={
           <Layout>
             <Terms />
+          </Layout>
+        }
+      />
+      <Route
+        path="/support"
+        element={
+          <Layout>
+            <Support />
           </Layout>
         }
       />

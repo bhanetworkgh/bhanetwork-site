@@ -9,6 +9,8 @@
  *   dist/vfarm/index.html      /vfarm
  *   dist/team/index.html       /team
  *   dist/privacy/index.html    /privacy
+ *   dist/terms/index.html      /terms
+ *   dist/support/index.html    /support
  *   dist/404.html              anything else
  *
  * Each gets its own <title>, description, canonical, Open Graph and Twitter
