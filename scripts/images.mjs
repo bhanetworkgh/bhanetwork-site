@@ -23,7 +23,7 @@ const pub = resolve(root, 'public');
 const out = resolve(pub, 'img');
 const gen = resolve(root, 'src/generated');
 
-const TEAM_SLUGS = ['jason-bays', 'destiny-arupi', 'jeganathan', 'kaiqi-yang', 'ahad', 'hardik-bhatt', 'kavin-g-n'];
+const TEAM_SLUGS = ['jason-bays', 'destiny-arupi', 'jeganathan', 'ahad', 'hardik-bhatt', 'kavin-g-n'];
 const TEAM_EXT = ['webp', 'jpg', 'jpeg', 'png', 'avif'];
 const TEAM_WIDTHS = [240, 480, 720];
 const RENDER_WIDTHS = [640, 1024, 1600, 2400];

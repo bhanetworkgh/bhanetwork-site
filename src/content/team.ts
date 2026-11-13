@@ -8,12 +8,11 @@
 
 export const team = {
   heading: 'Meet the team',
-  sub: 'Six builders and a founder, building in the open.',
+  sub: 'Five builders and a founder, building in the open.',
   members: [
     { slug: 'jason-bays', name: 'Jason Bays', role: 'Founder & Principal' },
     { slug: 'destiny-arupi', name: 'Destiny Arupi', role: 'Engine Steward' },
     { slug: 'jeganathan', name: 'Jeganathan', role: 'Senior Architect, vFarm' },
-    { slug: 'kaiqi-yang', name: 'Kaiqi Yang', role: 'Advanced Builder, Genie' },
     { slug: 'ahad', name: 'Ahad', role: 'Advanced Builder, Customer Service Twin' },
     { slug: 'hardik-bhatt', name: 'Hardik Bhatt', role: 'AI Systems Builder, Media Twin' },
     { slug: 'kavin-g-n', name: 'Kavin G N', role: 'Advanced Builder, vFarm Vision & IoT' },

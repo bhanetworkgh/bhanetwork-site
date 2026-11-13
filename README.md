@@ -96,7 +96,7 @@ fails the build.
 ## Team photos
 
 Name them `<slug>.<ext>` in `public/team/`: `jason-bays`, `destiny-arupi`,
-`jeganathan`, `kaiqi-yang`, `ahad`, `hardik-bhatt`, `kavin-g-n`. The build
+`jeganathan`, `ahad`, `hardik-bhatt`, `kavin-g-n`. The build
 crops each to a 4:5 portrait from the centre-top (so faces stay in frame) and
 converts it to WebP. Files with any other name are ignored, with a warning.
 
