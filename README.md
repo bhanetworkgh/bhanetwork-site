@@ -49,8 +49,10 @@ leaves the site for a font.
 - **Team and FAQ are sections of Home** (`/#team`, `/#faq`). The nav scrolls
   to them from any page without a reload and follows them with a scrollspy.
   The old `/team` page is gone: `/team` and `/team/…` redirect to `/#team`.
-- **The vFarm form mirrors Hardik's Form A** (`src/lib/formA.ts`; entry IDs in
-  `docs/form-a-entry-ids.md`) and posts JSON to the n8n intake webhook named
+- **The vFarm form asks four questions** since NZPQ (13 Nov 2026): name,
+  email, lane (Household or Industrial / Building Owner) and one short note
+  (`src/lib/formA.ts`; Form A mapping and release order in
+  `docs/form-a-entry-ids.md`). It posts JSON to the n8n intake webhook named
   in the config. Success shows only on HTTP 200 with `{"ok": true}`.
   `source_campaign` is always the config's value — no URL parameter can
   change it — and `utm_*` parameters travel separately in `utm`.

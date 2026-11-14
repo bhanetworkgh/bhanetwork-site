@@ -1,7 +1,7 @@
 import { FORM_A_STEPS } from '../lib/formA';
 
 /**
- * Where the visitor is in Form A's seven sections.
+ * Where the visitor is in the form's sections (one since NZPQ, 13 Nov 2026).
  *
  * `step` is the section on screen; `reached` is the furthest one they have
  * got to. A section before `reached` has passed its checks, so it is ticked
@@ -33,7 +33,9 @@ export function StepProgress({
   const label =
     question === null
       ? `Step ${step + 1} of ${total}`
-      : `Step ${step + 1} of ${total} · question ${question} of ${totalQuestions}`;
+      : total > 1
+        ? `Step ${step + 1} of ${total} · question ${question} of ${totalQuestions}`
+        : `Question ${question} of ${totalQuestions}`;
   const fill = question === null ? (step + 1) / total : question / totalQuestions;
   return (
     <div className="step-progress">
@@ -67,7 +69,7 @@ function Tick() {
   );
 }
 
-/** The seven section names, for the side panel. */
+/** The section names, for the side panel. Not drawn when there is only one. */
 export function StepList({
   step,
   reached,

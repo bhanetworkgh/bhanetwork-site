@@ -4,12 +4,12 @@
  * public/landing-config.json, never from here.
  */
 export const vfarmLabels = {
-  kicker: 'vFarm · founding buyer early access',
+  kicker: 'vFarm · early access',
   whatItIsEyebrow: 'P1.0',
   whatItIs: 'What it is,',
   whatItIsAccent: 'so far.',
   signupEyebrow: 'Early access',
-  signupSteps: 'Seven short steps.',
+  signupSteps: 'Four short questions.',
   /* Jason, 27 Sep: no guessed numbers. Shown until Jegan's canonical P1.0 figures are confirmed. */
   specsPending: 'P1.0 cabinet dimensions and power will be published after mechanical confirmation.',
   galleryEyebrow: 'Renders',

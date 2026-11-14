@@ -15,7 +15,7 @@
 
 export const privacy = {
   heading: 'Privacy',
-  updated: 'Last updated 28 October 2026',
+  updated: 'Last updated 14 November 2026',
   intro:
     'Bays Horizon Network collects personal information in three ways. This site collects it in one place only: the vFarm early-access form on the vFarm page. Separately, we hold phone numbers and messages when you use our customer care by text or phone, and a record of any payment you make to us under a written agreement. This page explains what is collected in each case and what happens to it.',
   sections: {
@@ -43,7 +43,7 @@ export const privacy = {
     },
     why: {
       heading: 'Why we collect the form answers',
-      body: 'To follow up with you about vFarm early access: to understand your use case, site and timing, and to decide who to talk to first as the programme develops. Nothing else.',
+      body: 'To follow up with you about vFarm early access: to know which lane you chose, household or industrial / building owner, and what you would hope vFarm would do, and to decide who to contact first if a pilot structure is approved. Nothing else.',
     },
     where: {
       heading: 'Where the form answers go',

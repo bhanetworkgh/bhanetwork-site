@@ -2,10 +2,11 @@ import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import type { CtaMode, IntakePayload, LandingConfig } from '../types/landing';
 import { readUtm } from '../lib/attribution';
 import {
+  buildIntakePayload,
   emptyAnswers,
   FORM_A_STEPS,
+  isAccepted,
   problemWith,
-  serialiseAnswers,
   type Answers,
 } from '../lib/formA';
 import { FormAField } from './FormAField';
@@ -16,12 +17,12 @@ import { Button, LinkButton } from './Button';
 /**
  * The Early Access form.
  *
- * The site hosts this itself and asks every question Hardik's Form A asks —
- * same wording, same options, same order, same required flags, mirrored in
- * src/lib/formA.ts — one Form A section per step, so it never reads as one
- * wall. It POSTs JSON to the n8n intake webhook named in the config at
- * `early_access_endpoint`, which writes the answers into Form A's response
- * sheet.
+ * The site hosts this itself. Since NZPQ (13 Nov 2026) it asks four things in
+ * one step: name, email, lane (Household or Industrial / Building Owner) and
+ * one short note, defined in src/lib/formA.ts. It POSTs JSON to the n8n intake
+ * webhook named in the config at `early_access_endpoint`, which writes the
+ * answers into Form A's response sheet. The step machinery below is kept, so a
+ * later step can be added without rebuilding the form.
  *
  * A submission means "we received your interest" and nothing else. Nothing
  * here reads, writes, stores or infers payment, subscriber status,
@@ -210,14 +211,13 @@ export function EarlyAccessForm({ config, ctaMode }: { config: LandingConfig; ct
 
     setState('submitting');
 
-    const payload: IntakePayload = {
-      ...serialiseAnswers(answers),
+    const payload: IntakePayload = buildIntakePayload(answers, {
       /* Always the config's key. No URL parameter is consulted for it. */
       source_campaign: config.source_campaign,
       page: window.location.pathname,
       utm,
       hp: trap,
-    };
+    });
 
     try {
       const response = await fetch(config.early_access_endpoint, {
@@ -226,15 +226,15 @@ export function EarlyAccessForm({ config, ctaMode }: { config: LandingConfig; ct
         body: JSON.stringify(payload),
       });
 
-      let body: { ok?: unknown } = {};
+      let body: unknown = null;
       try {
-        body = (await response.json()) as typeof body;
+        body = await response.json();
       } catch {
         /* No body, or not JSON. A failure, below. */
       }
 
-      /* HTTP 200 and {"ok": true}, both — nothing else is a success. */
-      if (response.status === 200 && body.ok === true) {
+      /* HTTP 200 and {"ok": true}, both — nothing else is a success (isAccepted). */
+      if (isAccepted(response.status, body)) {
         setState('success');
         return;
       }
@@ -267,19 +267,25 @@ export function EarlyAccessForm({ config, ctaMode }: { config: LandingConfig; ct
   }
 
   const canGoBack = step > 0 || (phone && q > 0);
+  /* One step: no side panel, and on a wide screen no step counter (it would only say "1 of 1"). */
+  const multiStep = FORM_A_STEPS.length > 1;
 
   return (
-    <div className="ea-card">
-      <aside className="ea-steps" aria-label="Sections">
-        <StepList step={step} reached={reached} disabled={busy} onSelect={selectStep} />
-      </aside>
+    <div className={`ea-card${multiStep ? '' : ' is-single'}`}>
+      {multiStep && (
+        <aside className="ea-steps" aria-label="Sections">
+          <StepList step={step} reached={reached} disabled={busy} onSelect={selectStep} />
+        </aside>
+      )}
       <form className="ea-main" ref={formRef} onSubmit={submit} noValidate>
         <div className="ea-progress-row">
-          <StepProgress
-            step={step}
-            question={phone ? questionNumber(step, q) : null}
-            totalQuestions={TOTAL_QUESTIONS}
-          />
+          {(multiStep || phone) && (
+            <StepProgress
+              step={step}
+              question={phone ? questionNumber(step, q) : null}
+              totalQuestions={TOTAL_QUESTIONS}
+            />
+          )}
           <span className="ea-required mono">
             <span aria-hidden="true">*</span> Required
           </span>

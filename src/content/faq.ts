@@ -45,7 +45,7 @@ export const faq: { heading: string; items: FaqEntry[] } = {
     {
       q: 'Is joining vFarm early access a purchase?',
       a: [
-        "No. It's an expression of interest: not a purchase, a paid subscription, a hardware reservation or a delivery commitment. You'll receive build-progress updates and help shape what we prioritise.",
+        "No. It's Early Access interest only, and preliminary planning only: not a quote or a commitment. No paid offer is currently approved for public use. You'll receive build-progress updates and help shape what we prioritise.",
       ],
     },
     {

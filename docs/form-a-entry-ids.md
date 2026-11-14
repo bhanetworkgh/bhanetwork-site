@@ -66,3 +66,32 @@ Notes:
   option is its own repeated `entry.644207337` value; in the response sheet
   Google Forms writes them joined with `, `.
 - Question 17 submits the number as a string: `1` to `5`.
+
+## NZPQ (13 Nov 2026): the site asks four questions
+
+Decision Watch DW-1794538347794-NZPQ. The /vfarm form now sends only:
+
+| Site JSON key | Form A question | Entry ID |
+|---|---|---|
+| `full_name` | Full name | `entry.50840312` |
+| `email` | Email address | `entry.2104531410` |
+| `lane` | **Early Access lane** (options `Household`, `Industrial / Building Owner`) | **not on Form A yet** |
+| `goal` | What would you like vFarm to help you accomplish? | `entry.1682579475` |
+
+The site shows `goal` as "What would you hope vFarm would do for you?"; the
+key still lands on Form A's question 9 through the intake workflow.
+
+**Required before this site version goes live, in this order:**
+
+1. Form A: add "Early Access lane" (two options, exactly as above, optional
+   on Google's side) and make every other question except Full name and Email
+   address optional. Read the new entry ID back into this file.
+2. n8n `vFarm Early Access — Website Intake` (`xxME1VLRkPdlLpaV`), node
+   "Check The Signup": stop requiring `organization_name`; add
+   `'Early Access lane': clean(b.lane, 100)` accepting only the two values.
+   Only after step 1: an answer key with no Form A question fails every signup.
+3. Dashboard `src/data/formA.ts`: add "Early Access lane" (and fix question
+   20's text).
+
+Released before steps 1 and 2, the webhook answers 400 (organization_name
+missing) and the site shows its error message, never a false success.

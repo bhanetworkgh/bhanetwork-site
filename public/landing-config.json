@@ -1,5 +1,5 @@
 {
-  "page_contract_version": "VFARM_LANDING_CONFIG_FUNNEL_v0.1",
+  "page_contract_version": "VFARM_LANDING_CONFIG_FUNNEL_v0.2_NZPQ",
   "mechanics_contract_version": "v0.2.2",
   "claim_state": "interest_only_live",
   "interest_url": "https://docs.google.com/forms/d/e/1FAIpQLSfQkBm4lz4UuyL0TnbuJ7iUeE4PmWfDlfTLrKkDd23WL7gtnQ/viewform?usp=header",
@@ -13,18 +13,17 @@
     "meta_description": "We are wiring a real vertical farm to an AI engine that uses data from each growing cycle to inform future improvements. Join Early Access to see the builds, system diagrams, and monthly progress."
   },
   "early_access": {
-    "headline": "Join vFarm Founding Buyer Early Access",
-    "body": "Receive build-progress updates, get priority consideration for future cabinet availability, and help shape crop and feature priorities.",
-    "qualifier": "This is an expression of interest—not a purchase, paid subscription, hardware reservation, delivery commitment, or SLA.",
+    "headline": "Join vFarm Early Access",
+    "body": "Tell us whether you are thinking about vFarm for a household or for an industrial site or building, and what you would hope it would do. Early Access interest only. Preliminary planning only, not quotes or commitments.",
+    "qualifier": "Early Access interest only. No paid offer is currently approved for public use.",
     "cta_label": "Join Early Access",
-    "success_message": "You're on the list. We'll send build updates as the flagship comes together.",
-    "error_message": "That didn't go through. Try again, or email hello@bhanetwork.org."
+    "success_message": "Thank you. Your Early Access interest is recorded. This is interest only, not a quote or commitment, and no paid offer is currently approved for public use. If a pilot structure is approved, Early Access participants will be the first we contact.",
+    "error_message": "That didn't go through. Your answers are still here: try again, or email support@bhanetwork.org."
   },
   "supporting_claims": [
     "vFarm is being developed as a monitored growing system.",
     "Monitoring of supported operating signals and configuration-backed digital-twin development are part of the current product direction.",
-    "Verified build, CAD, render, configuration and monitoring progress may be shown with its real status.",
-    "Early participants may receive priority consideration and preferential pricing treatment, but exact benefits remain subject to final SPEC, BOM, production pricing and commercial approval."
+    "Verified build, CAD, render, configuration and monitoring progress may be shown with its real status."
   ],
   "what_vfarm_is": [
     { "title": "A vertical farm rig sized for a spare room.", "body": "P1.0 is a two-tier open-rack vFarm build, roughly the footprint of a bookshelf." },

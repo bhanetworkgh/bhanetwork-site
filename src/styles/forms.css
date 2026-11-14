@@ -1,6 +1,7 @@
 /* ---------------------------------------------------------------------------
-   The Early Access form: a white card with the seven Form A sections on a
-   forest rail at the left and the questions on the right. On a phone the rail
+   The Early Access form: a white card with the form's sections on a forest
+   rail at the left and the questions on the right; with one section (NZPQ)
+   the rail is not drawn and the questions fill the card. On a phone the rail
    goes and one question shows at a time.
    --------------------------------------------------------------------------- */
 
@@ -11,6 +12,10 @@
   background: var(--card);
   overflow: hidden;
   box-shadow: var(--shadow-tile);
+}
+/* One step (NZPQ, 13 Nov 2026): no rail, the questions take the whole card. */
+.ea-card.is-single {
+  grid-template-columns: minmax(0, 1fr);
 }
 
 /* The section rail. */

@@ -117,8 +117,8 @@ export interface LandingState {
  * What the Early Access form POSTs to the n8n intake webhook, which writes it
  * into Form A's response sheet.
  *
- * One key per Form A question (see src/lib/formA.ts for the full list and
- * order), plus the four keys below. Nothing else is sent.
+ * One key per question in src/lib/formA.ts (full_name, email, lane, goal since
+ * NZPQ), plus the four keys below. Built by buildIntakePayload. Nothing else is sent.
  */
 export type IntakePayload = {
   [questionKey: string]: string | number | null | Record<string, string>;
