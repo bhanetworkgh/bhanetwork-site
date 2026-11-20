@@ -4,7 +4,7 @@
  * public/landing-config.json, never from here.
  */
 export const vfarmLabels = {
-  kicker: 'vFarm · founding buyer early access',
+  kicker: 'vFarm · early access',
   whatItIsEyebrow: 'P1.0',
   whatItIs: 'What it is,',
   whatItIsAccent: 'so far.',
