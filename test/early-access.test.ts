@@ -51,6 +51,11 @@ test('the lane has exactly the two NZPQ values', () => {
   assert.deepEqual([...(lane.options ?? [])], [...LANES]);
 });
 
+test("the lane question reads exactly Jason's approved label", () => {
+  const lane = FORM_A_QUESTIONS.find((q) => q.key === 'lane')!;
+  assert.equal(lane.title, 'Which fits you best?');
+});
+
 test('payload: four answers plus the envelope, nothing else', () => {
   const body = buildIntakePayload(filled(), envelope);
   assert.deepEqual(Object.keys(body).sort(), ['email', 'full_name', 'goal', 'hp', 'lane', 'page', 'source_campaign', 'utm']);

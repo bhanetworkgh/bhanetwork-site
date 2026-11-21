@@ -65,7 +65,7 @@ export const FORM_A_STEPS: readonly Step[] = [
       {
         key: 'lane',
         entry: null,
-        title: 'Which lane fits you?',
+        title: 'Which fits you best?',
         type: 'radio',
         required: true,
         options: LANES,
